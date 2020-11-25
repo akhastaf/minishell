@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/25 11:10:49 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/11/25 13:38:30 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,6 @@ void        minishell_loop(char **env)
     while(status)
     {
         pwd = ft_getenv(env, "PWD");
-        printf("%s\n", pwd);
-        printf("%s\n", ft_getenv(env, "HOME"));
-        printf("%s\n", ft_getenv(env, "USER"));
-        path = ft_split(ft_getenv(env, "PATH"), ':');
         while (path[i])
         {
             printf("%s\n", path[i]);
