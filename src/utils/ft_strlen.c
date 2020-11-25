@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/22 10:55:52 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/24 16:39:31 by akhastaf         ###   ########.fr       */
+/*   Created: 2020/11/22 10:55:43 by akhastaf          #+#    #+#             */
+/*   Updated: 2020/11/23 18:41:40 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/minishell.h"
-#include <fcntl.h>
-#include<sys/wait.h> 
-int     main(int ac, char **av, char **env)
+#include "../../include/minishell.h"
+
+size_t  ft_strlen(char const *str)
 {
+    int i;
     
-    minishell_loop(env);
-    return 0;
+    i = 0;
+    while (str[i])
+        i++;
+    return (i);
 }
