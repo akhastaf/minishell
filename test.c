@@ -21,14 +21,16 @@ void    set_pipe_r();
 
 void    set_pipe_w()
 {
-    pipe(g_fd);
+    // pipe(g_fd);
+    // printf("w r %d w %d\n", g_fd[0], g_fd[1]);
     dup2(g_fd[1], 1);
     close(g_fd[0]);
     close(g_fd[1]);
 }
 void    set_pipe_r()
 {
-    pipe(g_fd);
+    // pipe(g_fd);
+    // printf("r r %d w %d\n", g_fd[0], g_fd[1]);
     dup2(g_fd[0], 0);
     close(g_fd[0]);
     close(g_fd[1]);
@@ -36,18 +38,20 @@ void    set_pipe_r()
 void    my_execute(t_cmd cmdlist)
 {
     pid_t pid;
+    int status;
+    char str[1000];
 
-    
+    pipe(g_fd); // 16
     pid = fork();
-    waitpid(pid, NULL, 0);
+    waitpid(pid, &status, 0);
     if (pid == 0)
     {
-        printf("%s\n", cmdlist.path);
         if (cmdlist.opr)
             if (!strcmp(cmdlist.opr, "|"))
                 set_pipe_w();
         if (cmdlist.prev)
         {
+            printf("%s\n", str);
             if (cmdlist.prev->opr)
             {
                 if (!strcmp(cmdlist.prev->opr, "|"))
@@ -63,16 +67,19 @@ int     main()
     t_cmd *cmdlist;
     pid_t pid;
     t_cmd *cmd;
-    char *b[] = { "/usr/bin/grep", "statistics", NULL };
-    char *a[] = { "/sbin/ping", "-c", "4", "google.com", NULL };
+    char *b[] = { "grep", "statistics", NULL };
+    char *a[] = { "ping", "-c", "4", "google.com", NULL };
     
     cmdlist = malloc(sizeof(t_cmd));
     cmd = malloc(sizeof(t_cmd));
+    // ping -c 4 google.com | grep "statistics"
+    // PATH
+    // Builtins
 
-    cmdlist->path = "/sbin/ping";
+    cmdlist->path = "/sbin/ping"; 
     cmdlist->arg = a;
-    cmdlist->opr = "|";
-    cmdlist->next = cmd;
+    cmdlist->opr = NULL;
+    cmdlist->next = NULL;
     cmdlist->prev = NULL;
 
     cmd->path = "/usr/bin/grep";

@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/25 10:40:09 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/11/26 18:33:01 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@
 
 typedef struct  s_cmd
 {
-    char    *path;
+    char    *path; // /usr/bin/grep 
     char    **arg;
     char    opr;
     struct s_cmd   *next;
+    struct s_cmd   *prev;
 }           t_cmd;
 char    *g_line;
 
