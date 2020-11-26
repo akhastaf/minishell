@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/25 13:38:30 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/11/26 14:44:15 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,6 @@ void        minishell_loop(char **env)
     while(status)
     {
         pwd = ft_getenv(env, "PWD");
-        while (path[i])
-        {
-            printf("%s\n", path[i]);
-            i++;
-        }
         //read(0, l, 10);
         write(1, "\033[0;32m", 8);
         write(1, pwd, strlen(pwd));
