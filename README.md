@@ -1,2 +1,2 @@
 # minishell
-modif test
+modif test test2
