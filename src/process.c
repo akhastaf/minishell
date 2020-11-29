@@ -42,7 +42,7 @@ void    process_line()
         arg =  ft_split(cmd[i], ',');
         l = ft_size_arg(arg);
         new = ft_cmd_new(ft_getpath(arg[0]), arg, ft_getopr(arg));
-         if (arg[l-1])
+        if (new->opr)
             new->arg = ft_remove_arg(arg, arg[l-1]);
         ft_cmd_add_back(&g_sh.cmdlist, new);
         i++;
