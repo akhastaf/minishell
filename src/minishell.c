@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/26 14:44:15 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/11/28 14:24:39 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,16 @@ void        minishell_loop(char **env)
         write(1, "$> ", 3);
         write(1, "\033[0m", 5);
         readline();
-        printf("%s\n", g_line);
-        free(g_line);
+        if (!strcmp(g_sh.line, "env"))
+            ft_env(NULL);
+        printf("%s\n", g_sh.line);
+        free(g_sh.line);
         process_line();
         //excute();
     }
+}
+
+void    init_sh(char **env)
+{
+    g_sh.env = env;
 }

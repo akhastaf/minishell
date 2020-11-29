@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-t_cmd	*ft_cmd_new(void *path, char **arg, char opr)
+t_cmd	*ft_cmd_new(void *path, char **arg, char *opr)
 {
 	t_cmd	*new;
 
@@ -10,5 +10,6 @@ t_cmd	*ft_cmd_new(void *path, char **arg, char opr)
     new->arg = arg;
     new->opr = opr;
 	new->next = NULL;
+	new->prev = NULL;
 	return (new);
 }

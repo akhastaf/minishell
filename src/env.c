@@ -22,3 +22,17 @@ char    *ft_getenv(char **env, char *var)
     }
     return NULL;
 }
+
+int     ft_env(char **arg)
+{
+    int i;
+    
+    i = 0;
+    while (g_sh.env[i])
+    {
+        write(1, g_sh.env[i], ft_strlen(g_sh.env[i]));
+        write(1, "\n", 1);
+        i++;
+    }
+    return 1;
+}

@@ -4,16 +4,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include "include/minishell.h"
 
-typedef struct  s_cmd
-{
-    char    *path;
-    char    **arg;
-    char    *opr;
-    struct s_cmd   *next;
-    struct s_cmd   *prev;
+// typedef struct  s_cmd
+// {
+//     char    *path;
+//     char    **arg;
+//     char    *opr;
+//     struct s_cmd   *next;
+//     struct s_cmd   *prev;
     
-}           t_cmd;
+// }           t_cmd;
 int g_fd[2];
 void    my_execute(t_cmd cmdlist);
 void    set_pipe_w();
@@ -67,6 +68,8 @@ int     main()
     t_cmd *cmdlist;
     pid_t pid;
     t_cmd *cmd;
+    char *str;
+    char **t;
     char *b[] = { "grep", "statistics", NULL };
     char *a[] = { "ping", "-c", "4", "google.com", NULL };
     
@@ -88,10 +91,32 @@ int     main()
     cmd->next = NULL;
     cmd->prev = cmdlist;
 
-    while (cmdlist)
+    str = strdup("ping -c 2 'google.com tes' | grep statistics ; cd ~");
+    // int i = 0;
+    // while (str[i])
+    // {
+    //     printf("%c %d\n", str[i], (int)str[i]);
+    //     i++;
+    // }
+    get_next_line(0, &str);
+    t = ft_split_two(str, '|', ';');
+    int i;
+    i = 0;
+    char **ping;
+    char *c;
+    c = ft_strrepace(t[0]);
+    printf("%s\n", c);
+    ping = ft_split(c, ',');
+    
+    while (ping[i])
     {
-        my_execute(*cmdlist);
-        //printf("%s\n", cmdlist->path);  
-        cmdlist = cmdlist->next;
+        printf("%s\n", ping[i]);
+        i++;
     }
+    // while (cmdlist)
+    // {
+    //     my_execute(*cmdlist);
+    //     //printf("%s\n", cmdlist->path);  
+    //     cmdlist = cmdlist->next;
+    // }
 }
