@@ -6,10 +6,10 @@ char    *ft_strappend(char *str, char c)
     int l;
     int i;
 
-    if (str)
+    if (!str)
         return NULL;
     l = ft_strlen(str);
-    s = malloc(sizeof(char)* l + 2);
+    s = malloc(sizeof(char) * l + 1);
     i = 0;
     while (i < l)
     {
@@ -17,6 +17,7 @@ char    *ft_strappend(char *str, char c)
         i++;
     }
     s[i] = c;
-    s[++i] = 0;
+    i++;
+    s[i] = 0;
     return s;
 }

@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/28 14:24:56 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/11/29 14:28:10 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 # define BUFFER_SIZE 1
 # define ULIMIT 1
@@ -53,8 +55,11 @@ int		ft_readline(int fd, char **gard);
 void    process_line();
 
 // ENV
-char    *ft_getenv(char **env, char *var);
+char    *ft_getenv(char *var);
 int     ft_env(char **arg);
+
+//PATH
+char *ft_getpath(char *file);
 
 // UTILS
 char		*ft_strjoin(char  *s1, char  *s2);
@@ -72,5 +77,7 @@ char			*ft_strtrim(char const *s1, char const *set);
 char    *ft_strappend(char *str, char c);
 char				**ft_split_two(char const *s, char c1, char c2);
 char    *ft_strrepace(char *str);
+int     ft_size_arg(char **arg);
+int		ft_strcmp(const char *s1, const char *s2);
 
 #endif

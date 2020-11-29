@@ -92,27 +92,28 @@ int     main()
     cmd->prev = cmdlist;
 
     str = strdup("ping -c 2 'google.com tes' | grep statistics ; cd ~");
+    
     // int i = 0;
     // while (str[i])
     // {
     //     printf("%c %d\n", str[i], (int)str[i]);
     //     i++;
     // }
-    get_next_line(0, &str);
-    t = ft_split_two(str, '|', ';');
-    int i;
-    i = 0;
-    char **ping;
-    char *c;
-    c = ft_strrepace(t[0]);
-    printf("%s\n", c);
-    ping = ft_split(c, ',');
+    // get_next_line(0, &str);
+    // t = ft_split_two(str, '|', ';');
+    // int i;
+    // i = 0;
+    // char **ping;
+    // char *c;
+    // c = ft_strrepace(t[0]);
+    // printf("%s\n", c);
+    // ping = ft_split(c, ',');
     
-    while (ping[i])
-    {
-        printf("%s\n", ping[i]);
-        i++;
-    }
+    // while (ping[i])
+    // {
+    //     printf("%s\n", ping[i]);
+    //     i++;
+    // }
     // while (cmdlist)
     // {
     //     my_execute(*cmdlist);

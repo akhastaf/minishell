@@ -1,22 +1,22 @@
 #include "../include/minishell.h"
 
-char    *ft_getenv(char **env, char *var)
+char    *ft_getenv(char *var)
 {
     int i;
     int j;
 
     i = 0;
-    while (env[i])
+    while (g_sh.env[i])
     {
         j = 0;
         while (var[j])
         {
-            if (env[i][j] == 0 || var[j] != env[i][j])
+            if (g_sh.env[i][j] == 0 || var[j] != g_sh.env[i][j])
                 break;
             j++;
         }
         if (j == ft_strlen(var))
-                return env[i] + j + 1;
+                return g_sh.env[i] + j + 1;
         
         i++;
     }

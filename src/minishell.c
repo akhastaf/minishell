@@ -6,11 +6,37 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/28 14:24:39 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/11/29 14:23:02 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void    printf_arg(char **arg)
+{
+    int i;
+    
+    i = 0;
+    while (arg[i])
+    {
+        printf("arg[%d] %s\n", i, arg[i]);
+        i++;
+    }
+}
+
+void	print_cmd(t_cmd l)
+{
+	t_cmd *tmp = &l;
+	if (!tmp)
+		printf("NULL\n");
+	while (tmp)
+	{
+		printf("path %s\n", tmp->path);
+        printf_arg(tmp->arg);
+        printf("opr %s\n", tmp->opr);
+		tmp = tmp->next;
+	}
+}
 
 void        minishell_loop(char **env)
 {
@@ -30,7 +56,7 @@ void        minishell_loop(char **env)
     // }
     while(status)
     {
-        pwd = ft_getenv(env, "PWD");
+        pwd = ft_getenv("PWD");
         //read(0, l, 10);
         write(1, "\033[0;32m", 8);
         write(1, pwd, strlen(pwd));
@@ -40,9 +66,10 @@ void        minishell_loop(char **env)
         if (!strcmp(g_sh.line, "env"))
             ft_env(NULL);
         printf("%s\n", g_sh.line);
-        free(g_sh.line);
         process_line();
+        print_cmd(*g_sh.cmdlist);
         //excute();
+        free(g_sh.line);
     }
 }
 
