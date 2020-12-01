@@ -6,7 +6,7 @@ char    *ft_getopr(char **arg)
 
     l = ft_size_arg(arg);
     if (!ft_strcmp(arg[l - 1], "|") || !ft_strcmp(arg[l - 1], ";"))
-        return (arg[l - 1]);
+        return (ft_strdup(arg[l - 1]));
     return NULL;
 }
 
@@ -18,7 +18,10 @@ char    **ft_remove_arg(char **arg, char *str)
     while (arg[i])
     {
         if (!ft_strcmp(arg[i], str))
+        {
+            free(arg[i]);
             arg[i] = NULL;
+        }
         i++;
     }
     return arg;
@@ -38,14 +41,15 @@ void    process_line()
     i = 0;
     while (cmd[i])
     {
-        printf("cmd : %s\n", cmd[i]);
-        // cmd[i] = ft_strrepace(cmd[i]);
+        tmp = cmd[i];
+        cmd[i] = ft_strtrim(cmd[i], " ");
+        free(tmp);
         arg =  ft_split(cmd[i], ' ');
-        i++;
         new = ft_cmd_new(ft_getpath(arg[0]), arg, ft_getopr(arg));
         if (new->opr)
             new->arg = ft_remove_arg(arg, new->opr);
         ft_cmd_add_back(&g_sh.cmdlist, new);
+        i++;
         
     }
 }

@@ -9,6 +9,8 @@ t_cmd	*ft_cmd_new(void *path, char **arg, char *opr)
 	new->path = path;
     new->arg = arg;
     new->opr = opr;
+	new->red = NULL;
+	new->file = NULL;
 	new->next = NULL;
 	new->prev = NULL;
 	return (new);

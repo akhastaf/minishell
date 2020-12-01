@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/01 11:46:21 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/01 20:12:47 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ typedef struct  s_cmd
     char    *path; // /usr/bin/grep 
     char    **arg;
     char    *opr;
+    char    *red; // > < >> << 
+    char    *file; // >> file.txt // file.txt
     struct s_cmd   *next;
     struct s_cmd   *prev;
 }           t_cmd;
@@ -84,5 +86,8 @@ int     ft_size_arg(char **arg);
 int		ft_strcmp(const char *s1, const char *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 void    print_arg(char **arg);
+void    ft_cmd_remove(t_cmd *cmd);
+void    ft_delete_arg(char **arg);
+void    ft_cmd_list_remove(t_cmd **cmdlist);
 
 #endif

@@ -6,11 +6,17 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/01 11:55:53 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/01 20:45:44 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+void    ft_list_clear(t_cmd *cmdlist)
+{
+    
+}
+
 
 void    print_arg(char **arg)
 {
@@ -43,12 +49,7 @@ void        minishell_loop(char **env)
     int status;
 
     status = 1;
-    int i;
-    i=0;
     char *pwd;
-    char **path;
-    char l[10];
-    t_cmd cmd;
     // while (env[i])
     // {
     //     printf("%s\n", env[i]);
@@ -70,6 +71,7 @@ void        minishell_loop(char **env)
         //ft_envreplace(g_sh.line);
         print_cmd(*g_sh.cmdlist);
         //excute();
+        ft_cmd_list_remove(&g_sh.cmdlist);
         free(g_sh.line);
     }
 }

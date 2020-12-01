@@ -15,7 +15,7 @@ char *ft_getpath(char *file)
     path = ft_split(pathenv, ':');
 
     if (!stat(file, &sb))
-        return file;
+        return (ft_strdup(file));
     while (path[i])
     {
         filepath = ft_strappend(path[i], '/');
@@ -27,5 +27,5 @@ char *ft_getpath(char *file)
         free(filepath);
         i++;
     }
-    return file;
+    return (ft_strdup(file));
 }
