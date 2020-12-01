@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/30 18:44:59 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/01 11:46:21 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ char    *ft_strrepace(char *str);
 int     ft_size_arg(char **arg);
 int		ft_strcmp(const char *s1, const char *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+void    print_arg(char **arg);
 
 #endif

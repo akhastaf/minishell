@@ -6,13 +6,13 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/30 19:29:42 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/01 11:55:53 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void    printf_arg(char **arg)
+void    print_arg(char **arg)
 {
     int i;
     
@@ -32,7 +32,7 @@ void	print_cmd(t_cmd l)
 	while (tmp)
 	{
 		printf("path %s\n", tmp->path);
-        printf_arg(tmp->arg);
+        print_arg(tmp->arg);
         printf("opr %s\n", tmp->opr);
 		tmp = tmp->next;
 	}

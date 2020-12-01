@@ -39,13 +39,13 @@ void    process_line()
     while (cmd[i])
     {
         printf("cmd : %s\n", cmd[i]);
-        cmd[i] = ft_strrepace(cmd[i]);
-        arg =  ft_split(cmd[i], ',');
-        l = ft_size_arg(arg);
+        // cmd[i] = ft_strrepace(cmd[i]);
+        arg =  ft_split(cmd[i], ' ');
+        i++;
         new = ft_cmd_new(ft_getpath(arg[0]), arg, ft_getopr(arg));
         if (new->opr)
-            new->arg = ft_remove_arg(arg, arg[l-1]);
+            new->arg = ft_remove_arg(arg, new->opr);
         ft_cmd_add_back(&g_sh.cmdlist, new);
-        i++;
+        
     }
 }

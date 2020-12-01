@@ -13,6 +13,12 @@ static		int		ft_wordscount(const char *str, char c)
 		wc++;
 	while (s[i])
 	{
+		if (s[i] == 34 || s[i] == 39)
+        {
+            i++;
+            while (s[i] != 34 && s[i] != 39)
+                i++;
+        }
 		if (s[i] == c && s[i + 1] != c && s[i + 1])
 			wc++;
 		i++;
@@ -27,6 +33,16 @@ static	size_t		ft_wordlen(char *s, char c, int i)
 	j = 0;
 	while (s[i] != c && s[i])
 	{
+		if (s[i] == 34 || s[i] == 39)
+        {
+            i++;
+			j++;
+            while (s[i] != 34 && s[i] != 39)
+			{
+                i++;
+				j++;
+			}
+        }
 		j++;
 		i++;
 	}
@@ -54,9 +70,11 @@ char				**ft_split(char const *s, char c)
 
 	i = 0;
 	j = 0;
+	wc = 0;
 	if (!((char*)s))
 		return (NULL);
 	wc = ft_wordscount((char*)s, c);
+	printf("%d\n", wc);
 	if (!(words = malloc((wc + 1) * sizeof(char*))))
 		return (NULL);
 	while (j < wc && ((char*)s)[i])
