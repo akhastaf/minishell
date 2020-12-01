@@ -13,7 +13,6 @@ char *ft_getpath(char *file)
     i = 0;
     pathenv = ft_getenv("PATH");
     path = ft_split(pathenv, ':');
-
     while (path[i])
     {
         filepath = ft_strappend(path[i], '/');
@@ -25,5 +24,5 @@ char *ft_getpath(char *file)
         free(filepath);
         i++;
     }
-    return NULL;
+    return file;
 }

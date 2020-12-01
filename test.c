@@ -16,7 +16,8 @@
     
 // }           t_cmd;
 int g_fd[2];
-void    my_execute(t_cmd cmdlist);
+pid_t pid[2];
+void    my_execute(t_cmd cmdlist, char **env);
 void    set_pipe_w();
 void    set_pipe_r();
 
@@ -36,53 +37,85 @@ void    set_pipe_r()
     close(g_fd[0]);
     close(g_fd[1]);
 }
-void    my_execute(t_cmd cmdlist)
+void    my_execute(t_cmd cmdlist, char **env)
 {
-    pid_t pid;
     int status;
-    char str[1000];
 
-    pipe(g_fd); // 16
-    pid = fork();
-    waitpid(pid, &status, 0);
-    if (pid == 0)
+
+    pipe(g_fd);
+    if (!strcmp(cmdlist.path, "/sbin/ping"))
+        pid[0] = fork();
+    else
+        pid[1] = fork();
+    
+    
+    if (pid[1] == 0 && !strcmp(cmdlist.path, "/sbin/ping"))
     {
+        printf("%s\n", cmdlist.path);
         if (cmdlist.opr)
             if (!strcmp(cmdlist.opr, "|"))
                 set_pipe_w();
         if (cmdlist.prev)
         {
-            printf("%s\n", str);
             if (cmdlist.prev->opr)
             {
                 if (!strcmp(cmdlist.prev->opr, "|"))
                     set_pipe_r();
             }
         }
-        execve(cmdlist.path, cmdlist.arg, NULL);
+        execve(cmdlist.path, cmdlist.arg, env);
     }
+
+    if (pid[1] == 0 && !strcmp(cmdlist.path, "/usr/bin/grep"))
+    {
+        if (cmdlist.opr)
+            if (!strcmp(cmdlist.opr, "|"))
+                set_pipe_w();
+        if (cmdlist.prev)
+        {
+            if (cmdlist.prev->opr)
+            {
+                if (!strcmp(cmdlist.prev->opr, "|"))
+                    set_pipe_r();
+            }
+        }
+        execve(cmdlist.path, cmdlist.arg, env);
+    }
+    
+    // if (cmdlist.prev)
+    // {
+    //     if (!strcmp(cmdlist.prev->opr, "|"))
+    //     {
+    //         close(g_fd[0]);
+    //         close(g_fd[1]);
+    //     }
+    // }
+    
+    
 }
 
-int     main()
+int     main(int ac, char **av, char **env)
 {
     t_cmd *cmdlist;
-    pid_t pid;
     t_cmd *cmd;
+    t_cmd *cmd1;
     char *str;
     char **t;
-    char *b[] = { "grep", "statistics", NULL };
-    char *a[] = { "ping", "-c", "4", "google.com", NULL };
+    char *a[] = { "ping", "-c", "20", "google.com", NULL };
+    char *b[] = { "gerp", "round-trip min/avg/max/stddev", NULL };
+    char *c[] = {"echo", "test", NULL};
     
     cmdlist = malloc(sizeof(t_cmd));
     cmd = malloc(sizeof(t_cmd));
+    cmd1 = malloc(sizeof(t_cmd));
     // ping -c 4 google.com | grep "statistics"
     // PATH
     // Builtins
 
     cmdlist->path = "/sbin/ping"; 
     cmdlist->arg = a;
-    cmdlist->opr = NULL;
-    cmdlist->next = NULL;
+    cmdlist->opr = "|";
+    cmdlist->next = cmd;
     cmdlist->prev = NULL;
 
     cmd->path = "/usr/bin/grep";
@@ -90,6 +123,14 @@ int     main()
     cmd->opr = NULL;
     cmd->next = NULL;
     cmd->prev = cmdlist;
+
+    cmd1->path = "/bin/echo";
+    cmd1->arg = c;
+    cmd1->opr = NULL;
+    cmd1->next = NULL;
+    cmd1->prev = cmd;
+
+    int status;
 
     str = strdup("ping -c 2 'google.com tes' | grep statistics ; cd ~");
     
@@ -114,10 +155,13 @@ int     main()
     //     printf("%s\n", ping[i]);
     //     i++;
     // }
-    // while (cmdlist)
-    // {
-    //     my_execute(*cmdlist);
-    //     //printf("%s\n", cmdlist->path);  
-    //     cmdlist = cmdlist->next;
-    // }
+    while (cmdlist)
+    {
+        my_execute(*cmdlist, env);
+        cmdlist = cmdlist->next;
+    }
+    close(g_fd[0]);
+    close(g_fd[1]);
+    waitpid(pid[0], &status, 0);
+    waitpid(pid[1], &status, 0);
 }

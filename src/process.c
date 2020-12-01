@@ -38,6 +38,7 @@ void    process_line()
     i = 0;
     while (cmd[i])
     {
+        printf("cmd : %s\n", cmd[i]);
         cmd[i] = ft_strrepace(cmd[i]);
         arg =  ft_split(cmd[i], ',');
         l = ft_size_arg(arg);

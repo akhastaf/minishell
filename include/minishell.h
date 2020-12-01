@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/29 14:28:10 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/11/30 18:44:59 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ void    process_line();
 // ENV
 char    *ft_getenv(char *var);
 int     ft_env(char **arg);
+char    **ft_envcount(char *line);
+char    *ft_envreplace(char *line);
+char    *ft_getword(char *word);
 
 //PATH
 char *ft_getpath(char *file);
@@ -79,5 +82,6 @@ char				**ft_split_two(char const *s, char c1, char c2);
 char    *ft_strrepace(char *str);
 int     ft_size_arg(char **arg);
 int		ft_strcmp(const char *s1, const char *s2);
+size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 
 #endif
