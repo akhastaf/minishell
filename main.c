@@ -6,13 +6,14 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:52 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/01 12:00:20 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/02 11:05:15 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/minishell.h"
 #include <fcntl.h>
-#include<sys/wait.h> 
+#include<sys/wait.h>
+
 int     main(int ac, char **av, char **env)
 {
     init_sh(env);

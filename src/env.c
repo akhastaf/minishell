@@ -23,18 +23,45 @@ char    *ft_getenv(char *var)
     return NULL;
 }
 
-int     ft_env(char **arg)
+void    ft_setenv(char *var, char *val)
 {
     int i;
-    
+    int j;
+    char *new;
+
+    new = malloc(sizeof(char) * (int)ft_strlen(val) + (int)ft_strlen(var) + 2);
+
+    i = 0;
+    while (var[i])
+    {
+        new[i] = var[i];
+        i++;
+    }
+    new[i] = '=';
+    i++;
+    j = 0;
+    while (val[j])
+    {
+        new[i] = val[j];
+        i++;
+        j++;
+    }
+    new[i] = 0;
     i = 0;
     while (g_sh.env[i])
     {
-        write(1, g_sh.env[i], ft_strlen(g_sh.env[i]));
-        write(1, "\n", 1);
+        j = 0;
+        while (var[j])
+        {
+            if (g_sh.env[i][j] == 0 || var[j] != g_sh.env[i][j])
+                break;
+            j++;
+        }
+        if (j == ft_strlen(var))
+                g_sh.env[i] = new;
         i++;
     }
-    return 1;
+
 }
 
 char    **ft_envcount(char *line)

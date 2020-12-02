@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/01 20:12:47 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/02 10:33:43 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,20 @@ void    process_line();
 
 // ENV
 char    *ft_getenv(char *var);
-int     ft_env(char **arg);
 char    **ft_envcount(char *line);
 char    *ft_envreplace(char *line);
 char    *ft_getword(char *word);
+void    ft_setenv(char *var, char *val);
 
 //PATH
 char *ft_getpath(char *file);
+
+// BUILTINS
+void    builtins();
+int     builtins_pwd(char **arg);
+int     builtins_env(char **arg);
+int     builtins_cd(char **arg);
+
 
 // UTILS
 char		*ft_strjoin(char  *s1, char  *s2);
