@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/02 10:33:43 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/03 14:30:35 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,9 @@ t_sh    g_sh;
 
 // MINISHELLL
 void        minishell_loop(char **env);
+void    ft_printf_prompt();
 void    init_sh(char **env);
+void    ft_envadd(char *var);
 void        readline();
 
 // Parser
@@ -96,5 +98,6 @@ void    print_arg(char **arg);
 void    ft_cmd_remove(t_cmd *cmd);
 void    ft_delete_arg(char **arg);
 void    ft_cmd_list_remove(t_cmd **cmdlist);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
 
 #endif

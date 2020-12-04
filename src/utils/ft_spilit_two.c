@@ -47,7 +47,7 @@ static	void		*ft_dealocate(char ***tab, int i)
 	return (NULL);
 }
 
-char				**ft_split_two(char const *s, char c1, char c2)
+char				**ft_split_two(char const *s, char c1, char c2) // **ft_split_two(char const *s, char *set) set "|;"
 {
 	char	**words;
 	int		i;

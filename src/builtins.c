@@ -8,7 +8,7 @@ int     builtins_env(char **arg)
     while (g_sh.env[i])
     {
         write(1, g_sh.env[i], ft_strlen(g_sh.env[i]));
-        //write(1, "\n", 1);
+        write(1, "\n", 1);
         i++;
     }
     return 1;
@@ -50,10 +50,13 @@ int     builtins_cd(char **arg)
 
 void    builtins()
 {
-    if (!ft_strcmp(g_sh.cmdlist->arg[0], "pwd"))
-        builtins_pwd(g_sh.cmdlist->arg);
-    if (!ft_strcmp(g_sh.cmdlist->arg[0], "cd"))
-        builtins_cd(g_sh.cmdlist->arg);
-    if (!ft_strcmp(g_sh.cmdlist->arg[0], "env"))
-        builtins_env(g_sh.cmdlist->arg);
+    if (g_sh.cmdlist)
+    {
+        if (!ft_strcmp(g_sh.cmdlist->arg[0], "pwd"))
+            builtins_pwd(g_sh.cmdlist->arg);
+        if (!ft_strcmp(g_sh.cmdlist->arg[0], "cd"))
+            builtins_cd(g_sh.cmdlist->arg);
+        if (!ft_strcmp(g_sh.cmdlist->arg[0], "env"))
+            builtins_env(g_sh.cmdlist->arg);
+    }
 }

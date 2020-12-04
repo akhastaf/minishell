@@ -7,12 +7,17 @@ char    *ft_getopr(char **arg)
     l = ft_size_arg(arg);
     if (!ft_strcmp(arg[l - 1], "|") || !ft_strcmp(arg[l - 1], ";"))
         return (ft_strdup(arg[l - 1]));
+    if (ft_strchr(arg[l - 1], '|'))
+        return (ft_strdup("|"));
+    else if (ft_strchr(arg[l - 1], ';'))
+        return (ft_strdup(";"));
     return NULL;
 }
 
 char    **ft_remove_arg(char **arg, char *str)
 {
     int i;
+    int l;
 
     i = 0;
     while (arg[i])
@@ -21,8 +26,14 @@ char    **ft_remove_arg(char **arg, char *str)
         {
             free(arg[i]);
             arg[i] = NULL;
+            return arg;
         }
         i++;
+    }
+    if (ft_strchr(arg[i - 1], '|') || ft_strchr(arg[i - 1], ';'))
+    {
+        l = ft_strlen(arg[i - 1]);
+        arg[i - 1][l - 1] = 0;
     }
     return arg;
 }

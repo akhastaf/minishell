@@ -6,16 +6,11 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/02 10:38:04 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/03 19:43:59 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-void    ft_list_clear(t_cmd *cmdlist)
-{
-    
-}
 
 
 void    print_arg(char **arg)
@@ -25,7 +20,7 @@ void    print_arg(char **arg)
     i = 0;
     while (arg[i])
     {
-        printf("arg[%d] %s\n", i, arg[i]);
+        printf("%s\n", arg[i]);
         i++;
     }
 }
@@ -43,31 +38,27 @@ void	print_cmd(t_cmd l)
 		tmp = tmp->next;
 	}
 }
+void    ft_printf_prompt()
+{
+    char *pwd;
 
+    pwd = ft_getenv("PWD");
+    write(1, "\033[0;32m", 8);
+    write(1, pwd, strlen(pwd));
+    write(1, "$> ", 3);
+    write(1, "\033[0m", 5);
+}
 void        minishell_loop(char **env)
 {
     int status;
 
     status = 1;
-    char *pwd;
-    // while (env[i])
-    // {
-    //     printf("%s\n", env[i]);
-    //     i++;
-    // }
     while(status)
     {
-        pwd = ft_getenv("PWD");
-        //read(0, l, 10);
-        write(1, "\033[0;32m", 8);
-        write(1, pwd, strlen(pwd));
-        write(1, "$> ", 3);
-        write(1, "\033[0m", 5);
+        ft_printf_prompt();
         readline();
-        //printf("%d : %s\n", (int)ft_strlen(g_sh.line), g_sh.line);
         process_line();
-        //ft_envreplace(g_sh.line);
-        //print_cmd(*g_sh.cmdlist);
+        print_cmd(*g_sh.cmdlist);
         builtins();
         //excute();
         ft_cmd_list_remove(&g_sh.cmdlist);
@@ -77,5 +68,33 @@ void        minishell_loop(char **env)
 
 void    init_sh(char **env)
 {
+    int l;
+    int i;
+
+    l = ft_size_arg(env);
+    g_sh.env = malloc(l * sizeof(char*) + 1);
+    i = 0;
+    while (env[i])
+    {
+        g_sh.env[i] = ft_strdup(env[i]);
+        i++;
+    }
+}
+
+void    ft_envadd(char *var)
+{
+    int l;
+    int i;
+    char **env;
+    
+    l = ft_size_arg(g_sh.env);
+    printf("%d\n", l);
+    env = malloc(l * sizeof(char*) + 2);
+    ft_memcpy(env, g_sh.env, sizeof(char*) * l);
+    env[l] = ft_strdup(var);
+    env[l + 1] = NULL;
     g_sh.env = env;
+    l = ft_size_arg(g_sh.env);
+    printf("%d\n", l);
+    printf("%s\n", g_sh.env[l-1]);
 }
