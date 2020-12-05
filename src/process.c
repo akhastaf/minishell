@@ -58,6 +58,7 @@ void    process_line()
             cmd[i] = ft_strtrim(cmd[i], " ");
             free(tmp);
             arg =  ft_split(cmd[i], ' ');
+            
             new = ft_cmd_new(ft_getpath(arg[0]), arg, ft_getopr(arg));
             if (new->opr)
                 new->arg = ft_remove_arg(arg, new->opr);

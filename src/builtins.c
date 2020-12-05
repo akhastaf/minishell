@@ -55,8 +55,9 @@ int     builtins_echo(char **arg)
     int l;
 
     n = 0;
-    if (!ft_strcmp(arg[1], "-n"))
-        n = 1;
+    if (arg[1])
+        if (!ft_strcmp(arg[1], "-n"))
+            n = 1;
     i = 1;
     while (arg[i + n])
     {
@@ -86,10 +87,11 @@ int     builtins_unset(char **arg)
     i = 1;
     while (arg[i])
     {
-        ft_envremove(arg[i]);
+        if (ft_envremove(arg[i]))
+            return 0;
         i++;
     }
-    return 0;
+    return 1;
 }
 
 void    builtins_init()
@@ -117,7 +119,7 @@ int    builtins(t_cmd cmd)
             return g_sh.builtins_fun[i](cmd.arg);
         i++;
     }
-    return 1;
+    return -1;
 }
 
 

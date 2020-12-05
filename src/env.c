@@ -176,7 +176,7 @@ void    ft_envadd(char *var)
     l = ft_size_arg(g_sh.env);
 }
 
-void    ft_envremove(char *var)
+int    ft_envremove(char *var)
 {
     int i;
     int j;
@@ -195,7 +195,9 @@ void    ft_envremove(char *var)
                 g_sh.env[i + j] = g_sh.env[i + j + 1];
                 j++;
             }
+            return 1;
         }
         i++;
     }
+    return 0;
 }
