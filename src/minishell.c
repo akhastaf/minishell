@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/03 19:43:59 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/05 12:18:13 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void        minishell_loop(char **env)
         ft_printf_prompt();
         readline();
         process_line();
-        print_cmd(*g_sh.cmdlist);
-        builtins();
+        //print_cmd(*g_sh.cmdlist);
+        builtins(*g_sh.cmdlist);
         //excute();
         ft_cmd_list_remove(&g_sh.cmdlist);
         free(g_sh.line);
@@ -70,7 +70,7 @@ void    init_sh(char **env)
 {
     int l;
     int i;
-
+    
     l = ft_size_arg(env);
     g_sh.env = malloc(l * sizeof(char*) + 1);
     i = 0;
@@ -79,22 +79,5 @@ void    init_sh(char **env)
         g_sh.env[i] = ft_strdup(env[i]);
         i++;
     }
-}
-
-void    ft_envadd(char *var)
-{
-    int l;
-    int i;
-    char **env;
-    
-    l = ft_size_arg(g_sh.env);
-    printf("%d\n", l);
-    env = malloc(l * sizeof(char*) + 2);
-    ft_memcpy(env, g_sh.env, sizeof(char*) * l);
-    env[l] = ft_strdup(var);
-    env[l + 1] = NULL;
-    g_sh.env = env;
-    l = ft_size_arg(g_sh.env);
-    printf("%d\n", l);
-    printf("%s\n", g_sh.env[l-1]);
+    g_sh.env[i] = NULL;
 }

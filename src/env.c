@@ -160,3 +160,42 @@ char    *ft_getword(char *word)
     w = ft_strndup(word, i);
     return (w);
 }
+
+void    ft_envadd(char *var)
+{
+    int l;
+    int i;
+    char **env;
+    
+    l = ft_size_arg(g_sh.env);
+    env = malloc((l + 2 ) * sizeof(char*));
+    ft_memcpy(env, g_sh.env, sizeof(char*) * l);
+    env[l] = ft_strdup(var);
+    env[l + 1] = NULL;
+    g_sh.env = env;
+    l = ft_size_arg(g_sh.env);
+}
+
+void    ft_envremove(char *var)
+{
+    int i;
+    int j;
+    int l;
+
+    i = 0;
+    l = ft_strlen(var);
+    while (g_sh.env[i])
+    {
+        if (!ft_strncmp(g_sh.env[i], var, l) && g_sh.env[i][l] == '=')
+        {
+            j = 0;
+            free(g_sh.env[i]);
+            while (g_sh.env[i + j])
+            {
+                g_sh.env[i + j] = g_sh.env[i + j + 1];
+                j++;
+            }
+        }
+        i++;
+    }
+}

@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/03 14:30:35 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/05 12:20:35 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,17 @@
 
 # define BUFFER_SIZE 1
 # define ULIMIT 1
+# define BUILTINS_NUM 5
+
+typedef int fun_ptr(char **);
 
 typedef struct  s_cmd
 {
     char    *path; // /usr/bin/grep 
     char    **arg;
     char    *opr;
-    char    *red; // > < >> << 
-    char    *file; // >> file.txt // file.txt
+    char    *red;
+    char    *file;
     struct s_cmd   *next;
     struct s_cmd   *prev;
 }           t_cmd;
@@ -40,10 +43,10 @@ typedef struct s_sh
 {
     t_cmd   *cmdlist;
     char    **env;
+    fun_ptr *builtins_fun[BUILTINS_NUM];
+    char    *builtins_str[BUILTINS_NUM];
     char    *line;
 }       t_sh;
-
-char    *g_line;
 t_sh    g_sh;
 
 // MINISHELLL
@@ -64,15 +67,20 @@ char    **ft_envcount(char *line);
 char    *ft_envreplace(char *line);
 char    *ft_getword(char *word);
 void    ft_setenv(char *var, char *val);
+void    ft_envremove(char *var);
 
 //PATH
 char *ft_getpath(char *file);
 
 // BUILTINS
-void    builtins();
+int     builtins(t_cmd cmd);
 int     builtins_pwd(char **arg);
 int     builtins_env(char **arg);
 int     builtins_cd(char **arg);
+int     builtins_echo(char **arg);
+int     builtins_unset(char **arg);
+int     ft_isbuiltins(char *path);
+void    builtins_init();
 
 
 // UTILS
@@ -99,5 +107,6 @@ void    ft_cmd_remove(t_cmd *cmd);
 void    ft_delete_arg(char **arg);
 void    ft_cmd_list_remove(t_cmd **cmdlist);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif

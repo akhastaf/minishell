@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:52 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/03 19:03:12 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/05 12:21:29 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,9 @@
 int     main(int ac, char **av, char **env)
 {
     init_sh(env);
-    // ft_envadd("AH=bi");
-    // printf("%s\n", ft_getenv("AH"));
-    //print_arg(g_sh.env);
-    //print_arg(g_sh.env);
+    builtins_init();
+    ft_envadd("ME=ta");
+    ft_envadd("TE=te");
     minishell_loop(env);
     return 0;
 }
