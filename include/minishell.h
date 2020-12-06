@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/05 13:40:03 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/06 13:46:43 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void        readline();
 int get_next_line(int fd, char **line);
 int		ft_readline(int fd, char **gard);
 void    process_line();
+void    ft_refactor_line();
 
 // ENV
 char    *ft_getenv(char *var);
@@ -108,5 +109,6 @@ void    ft_delete_arg(char **arg);
 void    ft_cmd_list_remove(t_cmd **cmdlist);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int     ft_is_space(char c);
 
 #endif

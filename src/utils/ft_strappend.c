@@ -7,7 +7,12 @@ char    *ft_strappend(char *str, char c)
     int i;
 
     if (!str)
-        return NULL;
+    {
+        s = malloc(sizeof(char) * 2);
+        s[0] = c;
+        s[1] = 0;
+        return s;
+    }
     l = ft_strlen(str);
     s = malloc(sizeof(char) * l + 1);
     i = 0;

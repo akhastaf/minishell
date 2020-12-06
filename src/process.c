@@ -47,6 +47,7 @@ void    process_line()
     int i;
     int l;
 
+    //ft_refactor_line();
     if (g_sh.line)
     {
         new = NULL;
@@ -71,4 +72,42 @@ void    process_line()
         printf("tets\n");
     }
     
+}
+
+void    ft_refactor_line()
+{
+    char *var;
+    char *line;
+    int i;
+    int l;
+    int j;
+
+    line = NULL;
+    i = 0;
+    j = 0;
+    while (g_sh.line[i])
+    {
+        if (g_sh.line[i] == '$' && !ft_is_space(g_sh.line[i + 1]))
+        {
+            var = ft_getword(g_sh.line + i);
+            l = ft_strlen(var);
+            line = ft_strjoin(line, ft_getenv(var+1));
+            i = i + l - 1;
+            j = i;
+        }
+        else if (g_sh.line[i] == '~')
+        {
+            line = ft_strjoin(line, ft_getenv("HOME"));
+            i++;
+            j = i;
+        }
+        else
+        {
+            line = ft_strappend(line, g_sh.line[i]);
+            j++;
+        }
+        i++;
+    }
+    free(g_sh.line);
+    g_sh.line = line;
 }
