@@ -89,10 +89,18 @@ void    ft_refactor_line()
     {
         if (g_sh.line[i] == '$' && !ft_is_space(g_sh.line[i + 1]))
         {
-            var = ft_getword(g_sh.line + i);
-            l = ft_strlen(var);
-            line = ft_strjoin(line, ft_getenv(var+1));
-            i = i + l - 1;
+            if (g_sh.line[i + 1] == '?')
+            {
+                line = ft_strjoin(line, ft_itoa(g_sh.status));
+                i++;
+            }
+            else
+            {
+                var = ft_getword(g_sh.line + i);
+                l = ft_strlen(var);
+                line = ft_strjoin(line, ft_getenv(var+1));
+                i = i + l - 1;
+            }
             j = i;
         }
         else if (g_sh.line[i] == '~')

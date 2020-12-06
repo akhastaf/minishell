@@ -33,7 +33,10 @@ int     builtins_cd(char **arg)
     l = ft_size_arg(arg);
     oldpwd = getcwd(NULL, 0);
     if (l > 2)
+    {
         write(STDERR_FILENO, "cd: no such file or directory:\n", 32);
+        return 1;
+    }
     if (l == 2)
     {
         if (!chdir(arg[1]))
@@ -43,6 +46,8 @@ int     builtins_cd(char **arg)
             ft_setenv("OLDPWD", oldpwd);
             free(pwd);
         }
+        else
+            return 1;
     }
     free(oldpwd);
     return 0;

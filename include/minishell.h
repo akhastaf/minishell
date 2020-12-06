@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/06 13:46:43 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/06 14:10:29 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_sh
     fun_ptr *builtins_fun[BUILTINS_NUM];
     char    *builtins_str[BUILTINS_NUM];
     char    *line;
+    int     status;
 }       t_sh;
 t_sh    g_sh;
 
@@ -110,5 +111,6 @@ void    ft_cmd_list_remove(t_cmd **cmdlist);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int     ft_is_space(char c);
+char			*ft_itoa(int n);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/06 13:36:07 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/06 14:18:09 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,10 @@ void        minishell_loop(char **env)
         ft_refactor_line();
         process_line();
         //print_cmd(*g_sh.cmdlist);
-        builtins(*g_sh.cmdlist);
+        g_sh.status = builtins(*g_sh.cmdlist);
         //excute();
         ft_cmd_list_remove(&g_sh.cmdlist);
+        //g_sh.status = 0;
         free(g_sh.line);
     }
 }
