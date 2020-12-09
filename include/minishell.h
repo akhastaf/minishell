@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/06 14:10:29 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/09 12:13:17 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@
 
 # define BUFFER_SIZE 1
 # define ULIMIT 1
-# define BUILTINS_NUM 5
+# define BUILTINS_NUM 7
+
+# define IS_SCARACTER(x) (x == '$' || x == ';' x == '|')
 
 typedef int fun_ptr(char **);
 
@@ -74,6 +76,9 @@ int    ft_envremove(char *var);
 //PATH
 char *ft_getpath(char *file);
 
+//EXECUTION
+int     excute(t_cmd cmd);
+
 // BUILTINS
 int     builtins(t_cmd cmd);
 int     builtins_pwd(char **arg);
@@ -83,7 +88,7 @@ int     builtins_echo(char **arg);
 int     builtins_unset(char **arg);
 int     ft_isbuiltins(char *path);
 void    builtins_init();
-
+int     builtins_nothing(char **arg);
 
 // UTILS
 char		*ft_strjoin(char  *s1, char  *s2);
@@ -92,14 +97,12 @@ char		*ft_strchr(const char *s, int c);
 size_t      ft_strlen(char const *str);
 char		*ft_strndup(const char *s1, size_t n);
 char	*ft_checkerror(int fd, char **buff);
-char				**ft_split(char const *s, char c);
 t_cmd	*ft_cmd_new(void *path, char **arg, char *opr);
 void	ft_cmd_add_back(t_cmd **alst, t_cmd *new);
 t_cmd	*ft_lstlast(t_cmd *lst);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strtrim(char const *s1, char const *set);
 char    *ft_strappend(char *str, char c);
-char				**ft_split_two(char const *s, char c1, char c2);
 char    *ft_strrepace(char *str);
 int     ft_size_arg(char **arg);
 int		ft_strcmp(const char *s1, const char *s2);
@@ -112,5 +115,8 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int     ft_is_space(char c);
 char			*ft_itoa(int n);
+int     ft_strchrn(char *s, char c);
+char    **ft_argtrim(char **arg, char *set);
+char				**ft_split(char const *s, char *set);
 
 #endif

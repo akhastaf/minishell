@@ -101,9 +101,9 @@ int     main(int ac, char **av, char **env)
     t_cmd *cmd1;
     char *str;
     char **t;
-    char *a[] = { "ping", "-c", "20", "google.com", NULL };
+    char *a[] = { "ping", "-c", "2", "google.com", NULL };
     char *b[] = { "gerp", "round-trip min/avg/max/stddev", NULL };
-    char *c[] = {"echo", "test", NULL};
+    char *c[] = {"wc", NULL};
     
     cmdlist = malloc(sizeof(t_cmd));
     cmd = malloc(sizeof(t_cmd));
@@ -120,11 +120,11 @@ int     main(int ac, char **av, char **env)
 
     cmd->path = "/usr/bin/grep";
     cmd->arg = b;
-    cmd->opr = NULL;
-    cmd->next = NULL;
+    cmd->opr = "|";
+    cmd->next = cmd1;
     cmd->prev = cmdlist;
 
-    cmd1->path = "/bin/echo";
+    cmd1->path = "/usr/bin/wc";
     cmd1->arg = c;
     cmd1->opr = NULL;
     cmd1->next = NULL;

@@ -14,7 +14,7 @@ char *ft_getpath(char *file)
     pathenv = ft_getenv("PATH");
     if (!stat(file, &sb) || ft_isbuiltins(file) || !pathenv)
         return (ft_strdup(file));
-    path = ft_split(pathenv, ':');
+    path = ft_split(pathenv, ":");
     while (path[i])
     {
         filepath = ft_strappend(path[i], '/');

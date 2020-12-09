@@ -51,15 +51,13 @@ void    process_line()
     if (g_sh.line)
     {
         new = NULL;
-        cmd = ft_split_two(g_sh.line, '|', ';');
+        cmd = ft_split(g_sh.line, "|;");
+        cmd = ft_argtrim(cmd, " ");
         i = 0;
         while (cmd[i])
         {
-            tmp = cmd[i];
-            cmd[i] = ft_strtrim(cmd[i], " ");
-            free(tmp);
-            arg =  ft_split(cmd[i], ' ');
-            
+            arg =  ft_split(cmd[i], " ");
+            arg = ft_argtrim(arg, "'\"");
             new = ft_cmd_new(ft_getpath(arg[0]), arg, ft_getopr(arg));
             if (new->opr)
                 new->arg = ft_remove_arg(arg, new->opr);
@@ -67,11 +65,6 @@ void    process_line()
             i++;
         }
     }
-    else
-    {
-        printf("tets\n");
-    }
-    
 }
 
 void    ft_refactor_line()
@@ -79,12 +72,9 @@ void    ft_refactor_line()
     char *var;
     char *line;
     int i;
-    int l;
-    int j;
 
     line = NULL;
     i = 0;
-    j = 0;
     while (g_sh.line[i])
     {
         if (g_sh.line[i] == '$' && !ft_is_space(g_sh.line[i + 1]))
@@ -97,23 +87,14 @@ void    ft_refactor_line()
             else
             {
                 var = ft_getword(g_sh.line + i);
-                l = ft_strlen(var);
                 line = ft_strjoin(line, ft_getenv(var+1));
-                i = i + l - 1;
+                i = i + ft_strlen(var) - 1;
             }
-            j = i;
         }
         else if (g_sh.line[i] == '~')
-        {
             line = ft_strjoin(line, ft_getenv("HOME"));
-            i++;
-            j = i;
-        }
         else
-        {
             line = ft_strappend(line, g_sh.line[i]);
-            j++;
-        }
         i++;
     }
     free(g_sh.line);

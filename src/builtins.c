@@ -14,6 +14,12 @@ int     builtins_env(char **arg)
     return 0;
 }
 
+int     builtins_exit(char **arg)
+{
+    exit(0);
+    return 0;
+}
+
 int     builtins_pwd(char **arg)
 {
     char    *pwd;
@@ -67,10 +73,7 @@ int     builtins_echo(char **arg)
     while (arg[i + n])
     {
         l = ft_strlen(arg[i + n]);
-        if (arg[i + n][0] == 39 || arg[i + n][0] == 34)
-            write(1, arg[i + n] + 1, l - 2);
-        else
-            write(1, arg[i + n], l);
+        write(1, arg[i + n], l);
         if (arg[i + n + 1])
             write(1, " ", 1);
         i++;
@@ -82,6 +85,38 @@ int     builtins_echo(char **arg)
 
 int     builtins_export(char **arg)
 {
+    int i;
+    int n;
+    char *var;
+
+    if (ft_size_arg(arg) == 1)
+    {
+        i = 0;
+        while (g_sh.env[i])
+        {
+            if (ft_strncmp(g_sh.env[i], "_=", 2))
+            {
+                write(1, "declare -x ", 11);
+                write(1, g_sh.env[i], ft_strlen(g_sh.env[i]));
+                write(1, "\n", 1);
+            }
+            i++;
+        }
+    }
+    i = 1;
+    while (arg[i])
+    {
+        n = ft_strchrn(arg[i], '=');
+        var = ft_strndup(arg[i], n);
+        if (ft_getenv(var))
+        {
+            ft_envremove(var);
+            ft_envadd(arg[i]);
+        }
+        else if (var && arg[i][0] != '$')
+            ft_envadd(arg[i]);
+        i++;
+    }
     return 0;
 }
 
@@ -92,11 +127,10 @@ int     builtins_unset(char **arg)
     i = 1;
     while (arg[i])
     {
-        if (ft_envremove(arg[i]))
-            return 0;
+        ft_envremove(arg[i]);
         i++;
     }
-    return 1;
+    return 0;
 }
 
 void    builtins_init()
@@ -106,11 +140,15 @@ void    builtins_init()
     g_sh.builtins_fun[2] = &builtins_env;
     g_sh.builtins_fun[3] = &builtins_echo;
     g_sh.builtins_fun[4] = &builtins_unset;
+    g_sh.builtins_fun[5] = &builtins_export;
+    g_sh.builtins_fun[6] = &builtins_exit;
     g_sh.builtins_str[0] = "pwd";
     g_sh.builtins_str[1] = "cd";
     g_sh.builtins_str[2] = "env";
     g_sh.builtins_str[3] = "echo";
     g_sh.builtins_str[4] = "unset";
+    g_sh.builtins_str[5] = "export";
+    g_sh.builtins_str[6] = "exit";
 }
 
 int    builtins(t_cmd cmd)
