@@ -35,7 +35,14 @@ int     builtins_cd(char **arg)
     int l;
     char *oldpwd;
     char *pwd;
+    char *s;
 
+    l = ft_size_arg(arg);
+    if (!arg[1])
+    {
+        s = ft_getenv("HOME");
+        arg = ft_argadd(arg, s);
+    }
     l = ft_size_arg(arg);
     oldpwd = getcwd(NULL, 0);
     if (l > 2)

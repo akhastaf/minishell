@@ -42,12 +42,9 @@ void    process_line()
 {
     char **arg;
     char **cmd;
-    char *tmp;
     t_cmd *new;
     int i;
-    int l;
 
-    //ft_refactor_line();
     if (g_sh.line)
     {
         new = NULL;

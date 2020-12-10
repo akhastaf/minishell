@@ -17,7 +17,7 @@
 // }           t_cmd;
 int g_fd[2];
 pid_t pid[2];
-void    my_execute(t_cmd cmdlist, char **env);
+int    my_execute(t_cmd cmdlist, char **env);
 void    set_pipe_w();
 void    set_pipe_r();
 
@@ -37,7 +37,7 @@ void    set_pipe_r()
     close(g_fd[0]);
     close(g_fd[1]);
 }
-void    my_execute(t_cmd cmdlist, char **env)
+int    my_execute(t_cmd cmdlist, char **env)
 {
     int status;
 
@@ -79,8 +79,10 @@ void    my_execute(t_cmd cmdlist, char **env)
                     set_pipe_r();
             }
         }
-        execve(cmdlist.path, cmdlist.arg, env);
+        if (execve(cmdlist.path, cmdlist.arg, env) < 0)
+            printf("HI\n");
     }
+    return 1;
     
     // if (cmdlist.prev)
     // {
@@ -101,7 +103,7 @@ int     main(int ac, char **av, char **env)
     t_cmd *cmd1;
     char *str;
     char **t;
-    char *a[] = { "ping", "-c", "2", "google.com", NULL };
+    char *a[] = { "trete", "-c", "2", "google.com", NULL };
     char *b[] = { "gerp", "round-trip min/avg/max/stddev", NULL };
     char *c[] = {"wc", NULL};
     
@@ -112,10 +114,10 @@ int     main(int ac, char **av, char **env)
     // PATH
     // Builtins
 
-    cmdlist->path = "/sbin/ping"; 
+    cmdlist->path = "hdjdh"; 
     cmdlist->arg = a;
-    cmdlist->opr = "|";
-    cmdlist->next = cmd;
+    cmdlist->opr = NULL;
+    cmdlist->next = NULL;
     cmdlist->prev = NULL;
 
     cmd->path = "/usr/bin/grep";
@@ -157,7 +159,9 @@ int     main(int ac, char **av, char **env)
     // }
     while (cmdlist)
     {
-        my_execute(*cmdlist, env);
+        if (execve(cmdlist->path, cmdlist->arg, env) < 0)
+            printf("-bash: %s: command not found\n", cmdlist->path);
+        //my_execute(*cmdlist, env);
         cmdlist = cmdlist->next;
     }
     close(g_fd[0]);

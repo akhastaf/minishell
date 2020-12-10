@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/09 12:13:17 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/10 18:28:49 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <errno.h>
 
 # define BUFFER_SIZE 1
 # define ULIMIT 1
@@ -44,6 +45,8 @@ typedef struct  s_cmd
 typedef struct s_sh
 {
     t_cmd   *cmdlist;
+    pid_t   pid;
+    int     sigint;
     char    **env;
     fun_ptr *builtins_fun[BUILTINS_NUM];
     char    *builtins_str[BUILTINS_NUM];
@@ -77,7 +80,8 @@ int    ft_envremove(char *var);
 char *ft_getpath(char *file);
 
 //EXECUTION
-int     excute(t_cmd cmd);
+int     excute(t_cmd *cmdlist);
+void     ft_launch(t_cmd cmd);
 
 // BUILTINS
 int     builtins(t_cmd cmd);
@@ -105,6 +109,7 @@ char			*ft_strtrim(char const *s1, char const *set);
 char    *ft_strappend(char *str, char c);
 char    *ft_strrepace(char *str);
 int     ft_size_arg(char **arg);
+char    **ft_argadd(char **arg, char *var);
 int		ft_strcmp(const char *s1, const char *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 void    print_arg(char **arg);

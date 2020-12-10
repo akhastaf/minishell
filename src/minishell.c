@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/09 12:14:24 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/10 18:36:20 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,20 @@ void    print_arg(char **arg)
         printf("|%s|\n", arg[i]);
         i++;
     }
+}
+
+char    **ft_argadd(char **arg, char *var)
+{
+    int l;
+    int i;
+    char **new;
+    
+    l = ft_size_arg(arg);
+    new = malloc(sizeof(char*) * (l + 2));
+    ft_memcpy(new, arg, sizeof(char *) * l);
+    new[l] = ft_strdup(var);
+    new[l+1] = NULL;
+    return new;
 }
 
 void	print_cmd(t_cmd l)
@@ -60,7 +74,7 @@ void        minishell_loop(char **env)
         ft_refactor_line();
         process_line();
         print_cmd(*g_sh.cmdlist);
-        g_sh.status = excute(*g_sh.cmdlist);
+        g_sh.status = excute(g_sh.cmdlist);
         ft_cmd_list_remove(&g_sh.cmdlist);
         free(g_sh.line);
         // if (!g_sh.cmdlist->path)
