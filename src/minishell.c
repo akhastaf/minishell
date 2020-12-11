@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/10 18:36:20 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/11 11:52:13 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ char    **ft_argadd(char **arg, char *var)
     return new;
 }
 
-void	print_cmd(t_cmd l)
+void	print_cmd(t_cmd *l)
 {
-	t_cmd *tmp = &l;
+	t_cmd *tmp = l;
 	if (!tmp)
 		printf("NULL\n");
 	while (tmp)
@@ -73,9 +73,11 @@ void        minishell_loop(char **env)
         readline();
         ft_refactor_line();
         process_line();
-        print_cmd(*g_sh.cmdlist);
+        //print_cmd(g_sh.cmdlist);
         g_sh.status = excute(g_sh.cmdlist);
         ft_cmd_list_remove(&g_sh.cmdlist);
+        //printf("---------------------\n");
+        //print_cmd(g_sh.cmdlist);
         free(g_sh.line);
         // if (!g_sh.cmdlist->path)
         // {

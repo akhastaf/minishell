@@ -2,10 +2,13 @@
 
 void    ft_cmd_list_remove(t_cmd **cmdlist)
 {
-    while (*cmdlist)
+    t_cmd *cmd;
+
+    cmd = *cmdlist;
+    while (cmd)
     {
-        ft_cmd_remove(*cmdlist);
-        *cmdlist = (*cmdlist)->next;
+        ft_cmd_remove(cmd);
+        cmd = cmd->next;
     }
     *cmdlist = NULL;
 }

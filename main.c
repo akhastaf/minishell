@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:52 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/10 11:39:11 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/11 11:36:03 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void sig_c(int signum)
 
 int     main(int ac, char **av, char **env)
 {
-    signal(SIGINT, sig_c);
+    //signal(SIGINT, sig_c);
     init_sh(env);
     builtins_init();
     g_sh.cmdlist = NULL;

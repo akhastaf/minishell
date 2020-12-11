@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/10 18:28:49 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/11 11:49:41 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_sh
     char    *builtins_str[BUILTINS_NUM];
     char    *line;
     int     status;
+    int     is_b;
 }       t_sh;
 t_sh    g_sh;
 
@@ -81,7 +82,7 @@ char *ft_getpath(char *file);
 
 //EXECUTION
 int     excute(t_cmd *cmdlist);
-void     ft_launch(t_cmd cmd);
+void     ft_launch(t_cmd *cmd);
 
 // BUILTINS
 int     builtins(t_cmd cmd);
