@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/11 11:49:41 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/11 20:39:04 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void    ft_printf_prompt();
 void    init_sh(char **env);
 void    ft_envadd(char *var);
 void        readline();
+char    *ft_tilde(char *line, int i);
 
 // Parser
 int get_next_line(int fd, char **line);
@@ -124,5 +125,7 @@ char			*ft_itoa(int n);
 int     ft_strchrn(char *s, char c);
 char    **ft_argtrim(char **arg, char *set);
 char				**ft_split(char const *s, char *set);
+char	*ft_strremove(char *s, char c);
+int     ft_countcahr(char *s, char c);
 
 #endif

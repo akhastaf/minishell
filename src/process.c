@@ -3,13 +3,15 @@
 char    *ft_getopr(char **arg)
 {
     int l;
+    int len;
 
     l = ft_size_arg(arg);
     if (!ft_strcmp(arg[l - 1], "|") || !ft_strcmp(arg[l - 1], ";"))
         return (ft_strdup(arg[l - 1]));
-    if (ft_strchr(arg[l - 1], '|'))
+    len = ft_strlen(arg[l-1]);
+    if (arg[l-1][len-1] == '|')
         return (ft_strdup("|"));
-    else if (ft_strchr(arg[l - 1], ';'))
+    else if (arg[l-1][len-1] == ';')
         return (ft_strdup(";"));
     return NULL;
 }
@@ -42,6 +44,7 @@ void    process_line()
 {
     char **arg;
     char **cmd;
+    char *opr;
     t_cmd *new;
     int i;
 
@@ -53,12 +56,17 @@ void    process_line()
         i = 0;
         while (cmd[i])
         {
+            cmd[i] = ft_strremove(cmd[i], '\\');
+            printf("cmd : %s\n", cmd[i]);
             arg =  ft_split(cmd[i], " ");
+            opr = ft_getopr(arg);
+            if (opr)
+                arg = ft_remove_arg(arg, opr);
             arg = ft_argtrim(arg, "'\"");
-            new = ft_cmd_new(ft_getpath(arg[0]), arg, ft_getopr(arg));
-            if (new->opr)
-                new->arg = ft_remove_arg(arg, new->opr);
+            new = ft_cmd_new(ft_getpath(arg[0]), arg, opr);
             ft_cmd_add_back(&g_sh.cmdlist, new);
+            if (!opr && cmd[i + 1])
+                break;
             i++;
         }
     }
@@ -89,11 +97,22 @@ void    ft_refactor_line()
             }
         }
         else if (g_sh.line[i] == '~')
-            line = ft_strjoin(line, ft_getenv("HOME"));
+        {
+            line = ft_tilde(line, i);
+            i = (g_sh.line[i + 1] == '+' ? i + 1 : i);
+        }
         else
             line = ft_strappend(line, g_sh.line[i]);
         i++;
     }
     free(g_sh.line);
     g_sh.line = line;
+}
+
+char    *ft_tilde(char *line, int i)
+{
+    if (g_sh.line[i + 1] == '+')
+        return ft_strjoin(line, ft_getenv("PWD"));
+    else
+        return ft_strjoin(line, ft_getenv("HOME"));
 }

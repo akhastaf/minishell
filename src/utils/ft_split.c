@@ -1,16 +1,28 @@
 #include "../../include/minishell.h"
 
-
-int     is_seperator(char c, char *set)
+int		is_specialcar(char c)
 {
-    int i;
+	if (c == '"' || c == '\'' || c == '|' || c == '$' || c == '~' || c == ';')
+		return 1;
+	return 0;
+}
+
+int     is_seperator(char *s, int i, char *set)
+{
+    int j;
     
-    i = 0;
-    while (set[i])
+    j = 0;
+    while (set[j])
     {
-        if (set[i] == c)
-            return 1;
-        i++;
+        if (set[j] == s[i])
+		{
+			if (i > 0)
+			{
+				if (s[i - 1] != '\\' || !is_specialcar(s[i]))
+					return 1;
+			}
+		}
+        j++;
     }
     return 0;
 }
@@ -24,7 +36,7 @@ static		int		ft_wordscount(const char *str, char *set)
 	s = (char*)str;
 	i = 0;
 	wc = 0;
-	if (!is_seperator(s[i], set))
+	if (!is_seperator(s, i, set))
 		wc++;
 	while (s[i])
 	{
@@ -34,7 +46,7 @@ static		int		ft_wordscount(const char *str, char *set)
             while (s[i] != 34 && s[i] != 39)
                 i++;
         }
-		if (is_seperator(s[i], set) && !is_seperator(s[i + 1], set) && s[i + 1])
+		if (is_seperator(s, i, set) && !is_seperator(s, i + 1, set) && s[i + 1])
 			wc++;
 		i++;
 	}
@@ -46,7 +58,7 @@ static	size_t		ft_wordlen(char *s, char *set, int i)
 	int j;
 
 	j = 0;
-	while (!is_seperator(s[i], set) && s[i])
+	while (!is_seperator(s, i, set) && s[i])
 	{
 		if (s[i] == 34 || s[i] == 39)
         {
@@ -61,6 +73,8 @@ static	size_t		ft_wordlen(char *s, char *set, int i)
 		j++;
 		i++;
 	}
+	if (is_specialcar(s[i]))
+		j++;
 	return (j);
 }
 
@@ -93,7 +107,7 @@ char				**ft_split(char const *s, char *set)
 		return (NULL);
 	while (j < wc && ((char*)s)[i])
 	{
-		while (is_seperator(((char*)s)[i], set) && ((char*)s)[i])
+		while (is_seperator(((char*)s), i, set) && ((char*)s)[i])
 			i++;
 		len = ft_wordlen((char*)s, set, i);
 		if (!(words[j] = ft_substr((char*)s, i, len)))
