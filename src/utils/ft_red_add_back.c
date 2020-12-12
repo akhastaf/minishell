@@ -1,13 +1,13 @@
 #include "../../include/minishell.h"
 
-void	ft_cmd_add_back(t_cmd **alst, t_cmd *new)
+void	ft_red_add_back(t_red **alst, t_red *new)
 {
-	t_cmd *temp;
+	t_red *temp;
 
 	temp = *alst;
 	if (temp)
 	{
-		temp = ft_cmd_last(temp);
+		temp = ft_red_last(temp);
 		(temp)->next = new;
 	}
 	else

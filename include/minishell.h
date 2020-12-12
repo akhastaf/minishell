@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/11 20:39:04 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/12 12:16:24 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,20 @@
 # define IS_SCARACTER(x) (x == '$' || x == ';' x == '|')
 
 typedef int fun_ptr(char **);
+typedef struct s_red
+{
+    char *type;
+    char *file;
+    struct s_red *next;
+}   t_red;
 
 typedef struct  s_cmd
 {
     char    *path; // /usr/bin/grep 
     char    **arg;
     char    *opr;
-    char    *red;
     char    *file;
+    t_red   *red;
     struct s_cmd   *next;
     struct s_cmd   *prev;
 }           t_cmd;
@@ -96,6 +102,10 @@ int     ft_isbuiltins(char *path);
 void    builtins_init();
 int     builtins_nothing(char **arg);
 
+// REDIRECTION
+t_red   *get_redirection(char *cmd);
+char    *remove_red(char *cmd);
+
 // UTILS
 char		*ft_strjoin(char  *s1, char  *s2);
 char		*ft_strdup(const char *s1);
@@ -103,9 +113,9 @@ char		*ft_strchr(const char *s, int c);
 size_t      ft_strlen(char const *str);
 char		*ft_strndup(const char *s1, size_t n);
 char	*ft_checkerror(int fd, char **buff);
-t_cmd	*ft_cmd_new(void *path, char **arg, char *opr);
+t_cmd	*ft_cmd_new(void *path, char **arg, char *opr, t_red *red);
 void	ft_cmd_add_back(t_cmd **alst, t_cmd *new);
-t_cmd	*ft_lstlast(t_cmd *lst);
+t_cmd	*ft_cmd_last(t_cmd *lst);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char			*ft_strtrim(char const *s1, char const *set);
 char    *ft_strappend(char *str, char c);
@@ -127,5 +137,12 @@ char    **ft_argtrim(char **arg, char *set);
 char				**ft_split(char const *s, char *set);
 char	*ft_strremove(char *s, char c);
 int     ft_countcahr(char *s, char c);
+void	ft_red_add_back(t_red **alst, t_red *new);
+t_red	*ft_red_last(t_red *lst);
+void    ft_red_list_remove(t_red **redlist);
+t_red	*ft_red_new(void *type, char *file);
+void    ft_red_remove(t_red *red);
+int     ft_tab_min(int tab[], int i);
+int     ft_strnchrn(char *s, char *set);
 
 #endif

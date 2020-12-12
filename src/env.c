@@ -151,6 +151,8 @@ char    *ft_getword(char *word)
     char *w;
 
     i = 0;
+    while (word[i] == ' ')
+        i++;
     while(word[i])
     {
         if (word[i] == ' ')

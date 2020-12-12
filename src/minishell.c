@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/11 18:51:54 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/12 11:50:26 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,15 @@ char    **ft_argadd(char **arg, char *var)
     return new;
 }
 
+void    print_red(t_red *red)
+{
+    while (red)
+    {
+        printf("type : %s | file : %s\n", red->type, red->file);
+        red = red->next;
+    }
+}
+
 void	print_cmd(t_cmd *l)
 {
 	t_cmd *tmp = l;
@@ -48,6 +57,7 @@ void	print_cmd(t_cmd *l)
 	{
 		printf("path |%s|\n", tmp->path);
         print_arg(tmp->arg);
+        print_red(tmp->red);
         printf("opr |%s|\n", tmp->opr);
 		tmp = tmp->next;
 	}

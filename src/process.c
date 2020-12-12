@@ -1,17 +1,13 @@
 #include "../include/minishell.h"
 
-char    *ft_getopr(char **arg)
+char    *ft_getopr(char *cmd)
 {
-    int l;
     int len;
 
-    l = ft_size_arg(arg);
-    if (!ft_strcmp(arg[l - 1], "|") || !ft_strcmp(arg[l - 1], ";"))
-        return (ft_strdup(arg[l - 1]));
-    len = ft_strlen(arg[l-1]);
-    if (arg[l-1][len-1] == '|')
+    len = ft_strlen(cmd);
+    if (cmd[len-1] == '|')
         return (ft_strdup("|"));
-    else if (arg[l-1][len-1] == ';')
+    else if (cmd[len-1] == ';')
         return (ft_strdup(";"));
     return NULL;
 }
@@ -46,6 +42,7 @@ void    process_line()
     char **cmd;
     char *opr;
     t_cmd *new;
+    t_red *red;
     int i;
 
     if (g_sh.line)
@@ -57,13 +54,14 @@ void    process_line()
         while (cmd[i])
         {
             cmd[i] = ft_strremove(cmd[i], '\\');
-            printf("cmd : %s\n", cmd[i]);
+            red = get_redirection(cmd[i]);
+            opr = ft_getopr(cmd[i]);
+            cmd[i] = remove_red(cmd[i]);
             arg =  ft_split(cmd[i], " ");
-            opr = ft_getopr(arg);
             if (opr)
                 arg = ft_remove_arg(arg, opr);
             arg = ft_argtrim(arg, "'\"");
-            new = ft_cmd_new(ft_getpath(arg[0]), arg, opr);
+            new = ft_cmd_new(ft_getpath(arg[0]), arg, opr, red);
             ft_cmd_add_back(&g_sh.cmdlist, new);
             if (!opr && cmd[i + 1])
                 break;
