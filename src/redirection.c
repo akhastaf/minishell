@@ -24,7 +24,7 @@ t_red   *get_redirection(char *cmd)
             type = ft_strdup("<");
         if (type)
         {
-            red = ft_red_new(type, ft_getword(cmd + i + 1));
+            red = ft_red_new(type, ft_getword(cmd + i + 1, " ><"));
             ft_red_add_back(&redlist, red);
         }
         type = NULL;

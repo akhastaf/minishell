@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/12 12:16:24 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/13 10:29:21 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void    ft_refactor_line();
 char    *ft_getenv(char *var);
 char    **ft_envcount(char *line);
 char    *ft_envreplace(char *line);
-char    *ft_getword(char *word);
+char    *ft_getword(char *word, char *set);
 void    ft_setenv(char *var, char *val);
 int    ft_envremove(char *var);
 

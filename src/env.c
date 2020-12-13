@@ -85,7 +85,7 @@ char    **ft_envcount(char *line)
     {
         if (line[i] == '$')
         {
-            w = ft_getword(line + i + 1);
+            w = ft_getword(line + i + 1, " ");
             evar[j] = ft_strdup(ft_getenv(w));
             printf("%s\n", evar[j]);
         }
@@ -145,7 +145,7 @@ char    *ft_envreplace(char *line)
     return new;
 
 }
-char    *ft_getword(char *word)
+char    *ft_getword(char *word, char *set)
 {
     int i;
     char *w;
@@ -155,7 +155,7 @@ char    *ft_getword(char *word)
         i++;
     while(word[i])
     {
-        if (word[i] == ' ')
+        if (ft_strchr(set, word[i]))
             break;
         i++;
     }

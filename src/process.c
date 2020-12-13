@@ -89,7 +89,7 @@ void    ft_refactor_line()
             }
             else
             {
-                var = ft_getword(g_sh.line + i);
+                var = ft_getword(g_sh.line + i, " ");
                 line = ft_strjoin(line, ft_getenv(var+1));
                 i = i + ft_strlen(var) - 1;
             }
