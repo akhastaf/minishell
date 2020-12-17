@@ -8,9 +8,9 @@ void    setup_redirection(t_cmd *cmd)
     while (red)
     {
         if (red && red->type[0] == '<')
-            cmd->fdin = open(red->file, get_option(red), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+            cmd->fdin = open(red->file, get_option(red), S_IRWXU);
         if (red && red->type[0] == '>')
-            cmd->fdout = open(red->file, get_option(red), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+            cmd->fdout = open(red->file, get_option(red), S_IRWXU);
         if (red->next && red->type[0] == '>')
             close(cmd->fdout);
         red = red->next;
@@ -77,11 +77,11 @@ int    get_option(t_red *red)
     int option;
 
      option = O_CREAT;
-    if (red->type && red->type[0] == '>')
-        option = option | O_WRONLY;
+    if (red->type && red->type[0] == '>' && red->type[1] != '>')
+        option = option | O_WRONLY | O_TRUNC;
     else if (red->type && red->type[0] == '<')
         option = option | O_RDONLY;
-    else if (red->type && ft_strcmp(red->type, ">>"))
+    else if (red->type && !ft_strcmp(red->type, ">>"))
         option = option | O_WRONLY | O_APPEND;
     return option;
 }
