@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/13 10:29:21 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/17 14:09:44 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct  s_cmd
     char    *path; // /usr/bin/grep 
     char    **arg;
     char    *opr;
-    char    *file;
+    int     pipe[2];
     t_red   *red;
     struct s_cmd   *next;
     struct s_cmd   *prev;
@@ -58,6 +58,8 @@ typedef struct s_sh
     char    *builtins_str[BUILTINS_NUM];
     char    *line;
     int     status;
+    int     in;
+    int     out;
     int     is_b;
 }       t_sh;
 t_sh    g_sh;
@@ -69,6 +71,7 @@ void    init_sh(char **env);
 void    ft_envadd(char *var);
 void        readline();
 char    *ft_tilde(char *line, int i);
+void    increment_shlvl();
 
 // Parser
 int get_next_line(int fd, char **line);
@@ -105,6 +108,12 @@ int     builtins_nothing(char **arg);
 // REDIRECTION
 t_red   *get_redirection(char *cmd);
 char    *remove_red(char *cmd);
+
+// PIPE
+void    setup_pipe(t_cmd *cmd);
+void    reset_std();
+void    close_pipe();
+void    open_pipe();
 
 // UTILS
 char		*ft_strjoin(char  *s1, char  *s2);
@@ -144,5 +153,6 @@ t_red	*ft_red_new(void *type, char *file);
 void    ft_red_remove(t_red *red);
 int     ft_tab_min(int tab[], int i);
 int     ft_strnchrn(char *s, char *set);
+int		is_specialcar(char c);
 
 #endif

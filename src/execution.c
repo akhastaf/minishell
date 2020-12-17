@@ -9,13 +9,14 @@ int     excute(t_cmd *cmdlist)
     cmd = cmdlist;
     while (cmd)
     {
-        printf("excute : |%s|\n", cmd->path);
+        setup_pipe(cmd);
         i = 0;
         while (i < BUILTINS_NUM)
         {
             if (!ft_strcmp(cmd->path, g_sh.builtins_str[i]))
             {
                 g_sh.status = g_sh.builtins_fun[i](cmd->arg);
+                close(cmd->pipe[1]);
                 g_sh.is_b++;
                 break;
             }
@@ -24,6 +25,7 @@ int     excute(t_cmd *cmdlist)
         if (!g_sh.is_b)
             ft_launch(cmd);
         g_sh.is_b = 0;
+        reset_std();
         cmd = cmd->next;
     }
     return g_sh.status;
@@ -32,7 +34,7 @@ int     excute(t_cmd *cmdlist)
 void    ft_launch(t_cmd *cmd)
 {
     g_sh.pid = fork();
-    if (g_sh.pid == 0) // child p = 0; // parent p = 4578
+    if (g_sh.pid == 0)
     {
         if (execve(cmd->path, cmd->arg, g_sh.env))
         {
@@ -48,8 +50,8 @@ void    ft_launch(t_cmd *cmd)
     }
     else
     {
+        close(cmd->pipe[1]);
         waitpid(g_sh.pid, &g_sh.status, 0);
-        g_sh.status = *(int *)&(g_sh.status);
-        g_sh.status = ((g_sh.status >> 8) & 0x000000ff);
+        g_sh.status = WEXITSTATUS(g_sh.status);
     }
 }

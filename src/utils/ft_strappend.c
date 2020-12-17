@@ -14,7 +14,7 @@ char    *ft_strappend(char *str, char c)
         return s;
     }
     l = ft_strlen(str);
-    s = malloc(sizeof(char) * l + 1);
+    s = malloc(sizeof(char) * (l + 2));
     i = 0;
     while (i < l)
     {

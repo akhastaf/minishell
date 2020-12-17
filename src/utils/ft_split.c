@@ -1,12 +1,5 @@
 #include "../../include/minishell.h"
 
-int		is_specialcar(char c)
-{
-	if (c == '"' || c == '\'' || c == '|' || c == '$' || c == '~' || c == ';')
-		return 1;
-	return 0;
-}
-
 int     is_seperator(char *s, int i, char *set)
 {
     int j;
@@ -38,7 +31,7 @@ static		int		ft_wordscount(const char *str, char *set)
 	wc = 0;
 	if (!is_seperator(s, i, set))
 		wc++;
-	while (s[i])
+	while (s[i] != '\0')
 	{
 		if (s[i] == 34 || s[i] == 39)
         {

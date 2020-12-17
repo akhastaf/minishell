@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/12 11:50:26 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/17 14:07:05 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,22 +77,22 @@ void        minishell_loop(char **env)
     int status;
 
     status = 1;
+    g_sh.line = NULL;
     while(status)
     {
         ft_printf_prompt();
         readline();
         ft_refactor_line();
         process_line();
-        print_cmd(g_sh.cmdlist);
+        open_pipe();
+        // print_cmd(g_sh.cmdlist);
         g_sh.status = excute(g_sh.cmdlist);
+        close_pipe();
         ft_cmd_list_remove(&g_sh.cmdlist);
         //printf("---------------------\n");
         //print_cmd(g_sh.cmdlist);
+        g_sh.cmdlist = NULL;
         free(g_sh.line);
-        // if (!g_sh.cmdlist->path)
-        // {
-        // }
-        //g_sh.status = 0;
     }
 }
 
@@ -102,7 +102,7 @@ void    init_sh(char **env)
     int i;
     
     l = ft_size_arg(env);
-    g_sh.env = malloc(l * sizeof(char*) + 1);
+    g_sh.env = malloc((l + 1) * sizeof(char*));
     i = 0;
     while (env[i])
     {

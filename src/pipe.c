@@ -1,18 +1,49 @@
-//#include "../include/minishell.h"
+#include "../include/minishell.h"
 
-// void    set_pipe_w()
-// {
-//     // pipe(g_fd);
-//     // printf("w r %d w %d\n", g_fd[0], g_fd[1]);
-//     dup2(g_fd[1], 1);
-//     close(g_fd[0]);
-//     close(g_fd[1]);
-// }
-// void    set_pipe_r()
-// {
-//     // pipe(g_fd);
-//     // printf("r r %d w %d\n", g_fd[0], g_fd[1]);
-//     dup2(g_fd[0], 0);
-//     close(g_fd[0]);
-//     close(g_fd[1]);
-// }
+
+void    setup_pipe(t_cmd *cmd)
+{
+    if (cmd->opr && cmd->opr[0] == '|')
+    {
+        dup2(cmd->pipe[1], 1);
+    }
+    if (cmd->prev && cmd->prev->opr && cmd->prev->opr[0] == '|')
+    {
+        dup2(cmd->prev->pipe[0], 0);
+    }
+
+}
+
+void    reset_std()
+{
+    dup2(g_sh.in, 0);
+	dup2(g_sh.out, 1);
+}
+
+void    close_pipe()
+{
+    t_cmd *cmd;
+
+    cmd = g_sh.cmdlist;
+    while (cmd)
+    {
+        if (cmd->opr && cmd->opr[0] == '|')
+        {
+            close(cmd->pipe[0]);
+            close(cmd->pipe[1]);
+        }
+        cmd =  cmd->next;
+    }
+}
+
+void    open_pipe()
+{
+    t_cmd *cmd;
+    cmd = g_sh.cmdlist;
+    while (cmd)
+    {
+        if (cmd->opr && cmd->opr[0] == '|')
+            pipe(cmd->pipe);
+        cmd =  cmd->next;
+    }
+}

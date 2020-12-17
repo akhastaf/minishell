@@ -52,6 +52,8 @@ int     builtins_cd(char **arg)
     }
     if (l == 2)
     {
+        if (!ft_strcmp(arg[1], "-"))
+            arg[1] = ft_strdup(ft_getenv("OLDPWD"));
         if (!chdir(arg[1]))
         {
             pwd = getcwd(NULL, 0);

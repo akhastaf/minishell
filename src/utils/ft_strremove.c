@@ -21,6 +21,11 @@ char	*ft_strremove(char *s, char c)
 			new[i] = s[l];
 			i++;
 		}
+		else if (s[l + 1] == c)
+		{
+			new[i] = s[l];
+			i++;
+		}
 		l++;
 	}
 	new[i] = 0;

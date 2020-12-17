@@ -35,10 +35,12 @@ int main()
 
         execve("/usr/bin/grep", b, NULL);
     }
-    close(fd[0]);
-    close(fd[1]);
+    // close(fd[0]);
+    // close(fd[1]);
     waitpid(pid, &s, 0);
     waitpid(pid1, &s, 0);
+
+    printf("\nhello after pipe\n");
 
     return 0;
 }
