@@ -1,16 +1,38 @@
 #include "../include/minishell.h"
 
+void    setup_redirection(t_cmd *cmd)
+{
+    t_red *red;
+
+    red = cmd->red;
+    while (red)
+    {
+        if (red && red->type[0] == '<')
+            cmd->fdin = open(red->file, get_option(red), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+        if (red && red->type[0] == '>')
+            cmd->fdout = open(red->file, get_option(red), S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
+        if (red->next && red->type[0] == '>')
+            close(cmd->fdout);
+        red = red->next;
+    }
+    if (cmd->fdout)
+        dup2(cmd->fdout, 1);
+    if (cmd->fdin)
+        dup2(cmd->fdin, 0);
+}
+
+
 t_red   *get_redirection(char *cmd)
 {
     int i;
     char *type;
     t_red *red;
     t_red *redlist;
+    char *file;
 
     i = 0;
     type = NULL;
     redlist = NULL;
-    printf("cmd : %s\n", cmd);
     while (cmd[i])
     {
         if (cmd[i] == '>' && cmd[i + 1] == '>')
@@ -24,7 +46,9 @@ t_red   *get_redirection(char *cmd)
             type = ft_strdup("<");
         if (type)
         {
-            red = ft_red_new(type, ft_getword(cmd + i + 1, " ><"));
+            file = ft_getword(cmd + i + 1, " ><");
+            file = ft_strtrim(file, " ");
+            red = ft_red_new(type, file);
             ft_red_add_back(&redlist, red);
         }
         type = NULL;
@@ -46,4 +70,18 @@ char    *remove_red(char *cmd)
     if (i)
         return (ft_substr(cmd, 0, i));
     return ft_strdup(cmd);
+}
+
+int    get_option(t_red *red)
+{
+    int option;
+
+     option = O_CREAT;
+    if (red->type && red->type[0] == '>')
+        option = option | O_WRONLY;
+    else if (red->type && red->type[0] == '<')
+        option = option | O_RDONLY;
+    else if (red->type && ft_strcmp(red->type, ">>"))
+        option = option | O_WRONLY | O_APPEND;
+    return option;
 }

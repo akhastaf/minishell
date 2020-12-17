@@ -10,6 +10,7 @@ int     excute(t_cmd *cmdlist)
     while (cmd)
     {
         setup_pipe(cmd);
+        setup_redirection(cmd);
         i = 0;
         while (i < BUILTINS_NUM)
         {

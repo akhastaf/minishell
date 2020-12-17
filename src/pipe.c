@@ -11,7 +11,6 @@ void    setup_pipe(t_cmd *cmd)
     {
         dup2(cmd->prev->pipe[0], 0);
     }
-
 }
 
 void    reset_std()

@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/17 14:09:44 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/17 18:35:41 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 #include <errno.h>
 
 # define BUFFER_SIZE 1
@@ -43,6 +44,8 @@ typedef struct  s_cmd
     char    **arg;
     char    *opr;
     int     pipe[2];
+    int     fdin;
+    int     fdout;
     t_red   *red;
     struct s_cmd   *next;
     struct s_cmd   *prev;
@@ -108,6 +111,8 @@ int     builtins_nothing(char **arg);
 // REDIRECTION
 t_red   *get_redirection(char *cmd);
 char    *remove_red(char *cmd);
+void    setup_redirection(t_cmd *cmd);
+int    get_option(t_red *red);
 
 // PIPE
 void    setup_pipe(t_cmd *cmd);
