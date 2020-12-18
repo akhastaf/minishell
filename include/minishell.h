@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/17 18:35:41 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/18 11:00:43 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ t_red   *get_redirection(char *cmd);
 char    *remove_red(char *cmd);
 void    setup_redirection(t_cmd *cmd);
 int    get_option(t_red *red);
+void    close_fd(t_cmd *cmd);
+int     ft_redcount(char *cmd);
 
 // PIPE
 void    setup_pipe(t_cmd *cmd);

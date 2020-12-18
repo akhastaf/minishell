@@ -27,6 +27,7 @@ int     excute(t_cmd *cmdlist)
             ft_launch(cmd);
         g_sh.is_b = 0;
         reset_std();
+        close_fd(cmd);
         cmd = cmd->next;
     }
     return g_sh.status;

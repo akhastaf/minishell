@@ -5,14 +5,22 @@ void    setup_redirection(t_cmd *cmd)
     t_red *red;
 
     red = cmd->red;
+    cmd->fdout = 0;
+    cmd->fdin = 0;
     while (red)
     {
         if (red && red->type[0] == '<')
             cmd->fdin = open(red->file, get_option(red), S_IRWXU);
         if (red && red->type[0] == '>')
             cmd->fdout = open(red->file, get_option(red), S_IRWXU);
-        if (red->next && red->type[0] == '>')
+        if (cmd->fdin < 0)
+            perror("Error");
+        if (cmd->fdout< 0)
+            perror("Error");
+        if (red->next && cmd->fdout && red->type[0] != '<')
             close(cmd->fdout);
+        if (red->next && cmd->fdin && red->type[0] == '<')
+            close(cmd->fdin);
         red = red->next;
     }
     if (cmd->fdout)
@@ -59,29 +67,80 @@ t_red   *get_redirection(char *cmd)
 
 char    *remove_red(char *cmd)
 {
-    int tab[3];
     int i;
+    int j;
+    int len;
     char *new;
 
-    tab[0] = ft_strchrn(cmd, '>');
-    tab[1] = ft_strchrn(cmd, '<');
-    tab[2] = ft_strnchrn(cmd, ">>");
-    i = ft_tab_min(tab, 3);
-    if (i)
-        return (ft_substr(cmd, 0, i));
-    return ft_strdup(cmd);
+    len = ft_redcount(cmd);
+    new = malloc(ft_strlen(cmd) - len + 1);
+    i = 0;
+    j = 0;
+    while (cmd[i])
+    {
+        if (cmd[i] == '>' && cmd[i + 1] == '>')
+        {
+            i = i + ft_strlen(ft_getword(cmd + i + 2, "> <"));
+            i = i + 2;
+        }
+        else if (cmd[i] == '>' || cmd[i] == '<' )
+        {
+            i = i + ft_strlen(ft_getword(cmd + i + 1, "> <"));
+            i++;
+        }
+        if (cmd[i] != '>' && cmd[i] != '<')
+        {
+            new[j] = cmd[i];
+            j++;
+            i++;
+        }
+    }
+    new[j] = 0;
+    return new;
 }
 
 int    get_option(t_red *red)
 {
     int option;
 
-     option = O_CREAT;
+     option = 0;
     if (red->type && red->type[0] == '>' && red->type[1] != '>')
-        option = option | O_WRONLY | O_TRUNC;
+        option = O_CREAT | O_WRONLY | O_TRUNC;
     else if (red->type && red->type[0] == '<')
-        option = option | O_RDONLY;
+        option = O_RDONLY;
     else if (red->type && !ft_strcmp(red->type, ">>"))
-        option = option | O_WRONLY | O_APPEND;
+        option = O_CREAT | O_WRONLY | O_APPEND;
     return option;
+}
+
+void    close_fd(t_cmd *cmd)
+{
+    close(cmd->fdout);
+    close(cmd->fdin);
+}
+
+int     ft_redcount(char *cmd)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    while (cmd[i])
+    {
+
+        if (cmd[i] == '>' && cmd[i + 1] == '>')
+        {
+            j = j + 2;
+            j = j + ft_strlen(ft_getword(cmd + i + 2, "> <"));
+            i = i + 2;
+        }
+        else if (cmd[i] == '>' || cmd[i] == '<' )
+        {
+            j++;
+            j = j + ft_strlen(ft_getword(cmd + i + 1, "> <"));
+        }
+        i++;
+    }
+    return j;
 }
