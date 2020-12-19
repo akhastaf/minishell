@@ -73,6 +73,8 @@ char    *remove_red(char *cmd)
     char *new;
 
     len = ft_redcount(cmd);
+    printf("%d\n", (int)ft_strlen(cmd) - len + 1);
+    printf("%s\n", cmd);
     new = malloc(ft_strlen(cmd) - len + 1);
     i = 0;
     j = 0;
@@ -91,11 +93,13 @@ char    *remove_red(char *cmd)
         if (cmd[i] != '>' && cmd[i] != '<')
         {
             new[j] = cmd[i];
+            printf("j : %d new[%d]= %c\n", j, j, new[j]);
             j++;
             i++;
         }
     }
-    new[j] = 0;
+    new[--j] = 0;
+    printf("j : %d\n", j);
     return new;
 }
 
@@ -123,23 +127,27 @@ int     ft_redcount(char *cmd)
 {
     int i;
     int j;
+    int len;
 
     i = 0;
     j = 0;
     while (cmd[i])
     {
-
         if (cmd[i] == '>' && cmd[i + 1] == '>')
         {
             j = j + 2;
-            j = j + ft_strlen(ft_getword(cmd + i + 2, "> <"));
+            len = ft_strlen(ft_getword(cmd + i + 2, "> <"));
+            j = j + len;
             i = i + 2;
         }
         else if (cmd[i] == '>' || cmd[i] == '<' )
         {
             j++;
-            j = j + ft_strlen(ft_getword(cmd + i + 1, "> <"));
+            len = ft_strlen(ft_getword(cmd + i + 1, "> <"));
+            j = j + len;
+            j = j + ft_count_space(cmd + len + i + 1);
         }
+        len = 0;
         i++;
     }
     return j;

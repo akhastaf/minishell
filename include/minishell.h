@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/18 11:00:43 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/19 10:49:38 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,5 +161,6 @@ void    ft_red_remove(t_red *red);
 int     ft_tab_min(int tab[], int i);
 int     ft_strnchrn(char *s, char *set);
 int		is_specialcar(char c);
+int     ft_count_space(char *s);
 
 #endif
