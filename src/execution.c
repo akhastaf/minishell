@@ -9,6 +9,7 @@ int     excute(t_cmd *cmdlist)
     cmd = cmdlist;
     while (cmd)
     {
+        ft_warp_ref(&cmd);
         setup_pipe(cmd);
         setup_redirection(cmd);
         i = 0;
@@ -27,7 +28,6 @@ int     excute(t_cmd *cmdlist)
             ft_launch(cmd);
         g_sh.is_b = 0;
         reset_std();
-        close_fd(cmd);
         cmd = cmd->next;
     }
     return g_sh.status;
@@ -50,10 +50,19 @@ void    ft_launch(t_cmd *cmd)
                 perror(cmd->path);
         }
     }
-    else
+    close(cmd->pipe[1]);
+    waitpid(g_sh.pid, &g_sh.status, 0);
+    g_sh.status = WEXITSTATUS(g_sh.status);
+}
+
+void    ft_warp_ref(t_cmd **cmd)
+{
+    int i;
+
+    i = 0;
+    while ((*cmd)->arg[i])
     {
-        close(cmd->pipe[1]);
-        waitpid(g_sh.pid, &g_sh.status, 0);
-        g_sh.status = WEXITSTATUS(g_sh.status);
+        (*cmd)->arg[i] = ft_refactor_line((*cmd)->arg[i]);
+        i++;
     }
 }

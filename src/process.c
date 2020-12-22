@@ -62,9 +62,7 @@ void    process_line()
             if (opr)
                 arg = ft_remove_arg(arg, opr);
             arg = ft_argtrim(arg, "'\"");
-            new = ft_cmd_new(ft_getpath(arg[0]), arg, opr, red);
-            if (g_sh.cmdlist)
-                new->prev = g_sh.cmdlist;
+            new = ft_cmd_new(ft_strtrim(ft_getpath(arg[0]), " "), arg, opr, red);
             ft_cmd_add_back(&g_sh.cmdlist, new);
             if (!opr && cmd[i + 1])
                 break;
@@ -73,7 +71,7 @@ void    process_line()
     }
 }
 
-void    ft_refactor_line()
+char    *ft_refactor_line(char *s)
 {
     char *var;
     char *line;
@@ -82,34 +80,34 @@ void    ft_refactor_line()
     line = NULL;
     i = 0;
     //printf("g_sh.line : %s\n", g_sh.line);
-    while (g_sh.line[i])
+    while (s[i])
     {
         // if (g_sh.line[i])
-        if (g_sh.line[i] == '$' && !ft_is_space(g_sh.line[i + 1]))
+        if (s[i] == '$' && !ft_is_space(s[i + 1]))
         {
-            if (g_sh.line[i + 1] == '?')
+            if (s[i + 1] == '?')
             {
                 line = ft_strjoin(line, ft_itoa(g_sh.status));
                 i++;
             }
             else
             {
-                var = ft_getword(g_sh.line + i + 1, " "); //echo $PWD 
+                var = ft_getword(s + i + 1, " ");
                 line = ft_strjoin(line, ft_getenv(var));
                 i = i + ft_strlen(var);
             }
         }
-        else if (g_sh.line[i] == '~')
+        else if (s[i] == '~')
         {
             line = ft_tilde(line, i);
-            i = (g_sh.line[i + 1] == '+' ? i + 1 : i);
+            i = (s[i + 1] == '+' ? i + 1 : i);
         }
         else
-            line = ft_strappend(line, g_sh.line[i]);
+            line = ft_strappend(line, s[i]);
         i++;
     }
-    free(g_sh.line);
-    g_sh.line = line;
+    free(s);
+    return line;
 }
 
 char    *ft_tilde(char *line, int i)

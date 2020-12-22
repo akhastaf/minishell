@@ -9,6 +9,8 @@ void	ft_cmd_add_back(t_cmd **alst, t_cmd *new)
 	{
 		temp = ft_cmd_last(temp);
 		(temp)->next = new;
+		new->prev = temp;
+
 	}
 	else
 		*alst = new;

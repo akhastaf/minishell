@@ -67,39 +67,14 @@ t_red   *get_redirection(char *cmd)
 
 char    *remove_red(char *cmd)
 {
-    int i;
-    int j;
+    int s;
     int len;
     char *new;
 
-    len = ft_redcount(cmd);
-    printf("%d\n", (int)ft_strlen(cmd) - len + 1);
-    printf("%s\n", cmd);
-    new = malloc(ft_strlen(cmd) - len + 1);
-    i = 0;
-    j = 0;
-    while (cmd[i])
-    {
-        if (cmd[i] == '>' && cmd[i + 1] == '>')
-        {
-            i = i + ft_strlen(ft_getword(cmd + i + 2, "> <"));
-            i = i + 2;
-        }
-        else if (cmd[i] == '>' || cmd[i] == '<' )
-        {
-            i = i + ft_strlen(ft_getword(cmd + i + 1, "> <"));
-            i++;
-        }
-        if (cmd[i] != '>' && cmd[i] != '<')
-        {
-            new[j] = cmd[i];
-            printf("j : %d new[%d]= %c\n", j, j, new[j]);
-            j++;
-            i++;
-        }
-    }
-    new[--j] = 0;
-    printf("j : %d\n", j);
+    len = ft_redcount(cmd, (int)ft_strlen(cmd));
+    s = ft_strnchrn(cmd, "><");
+    new = ft_strndup(cmd, s);
+    new = ft_strjoin(new, cmd + len + s);
     return new;
 }
 
@@ -123,31 +98,37 @@ void    close_fd(t_cmd *cmd)
     close(cmd->fdin);
 }
 
-int     ft_redcount(char *cmd)
+int     ft_redcount(char *cmd, int l)
 {
     int i;
     int j;
+    int r;
     int len;
 
     i = 0;
     j = 0;
-    while (cmd[i])
+    r = 0;
+    while (i < l)
     {
         if (cmd[i] == '>' && cmd[i + 1] == '>')
         {
             j = j + 2;
-            len = ft_strlen(ft_getword(cmd + i + 2, "> <"));
-            j = j + len;
-            i = i + 2;
+            i++;
+            r = 1;
         }
-        else if (cmd[i] == '>' || cmd[i] == '<' )
+        else if (cmd[i] == '>' || cmd[i] == '<')
         {
             j++;
-            len = ft_strlen(ft_getword(cmd + i + 1, "> <"));
-            j = j + len;
-            j = j + ft_count_space(cmd + len + i + 1);
+            r = 1;
         }
-        len = 0;
+        if (r)
+        {
+            len = ft_strlen(ft_getword(cmd + i + 1, " ><;|"));
+            j = j + len + (ft_strnchrn(cmd + i + 1 + len, "><") ? ft_count_space(cmd + i + 1 + len) : 0);
+            i = i + j - 1;
+            //j = r;
+        }
+        r = 0;
         i++;
     }
     return j;

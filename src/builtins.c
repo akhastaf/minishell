@@ -16,7 +16,14 @@ int     builtins_env(char **arg)
 
 int     builtins_exit(char **arg)
 {
-    exit(0);
+    int i;
+
+    i = 0;
+    while (arg[0][i] && ft_isdigit(arg[0][i]))
+        i++;
+    if (arg[0][i] == 0)
+        exit(ft_atoi(arg[0]));
+    printf("exit not wworking\n");
     return 0;
 }
 

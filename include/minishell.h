@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/19 10:49:38 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/22 10:39:29 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void    increment_shlvl();
 int get_next_line(int fd, char **line);
 int		ft_readline(int fd, char **gard);
 void    process_line();
-void    ft_refactor_line();
+char    *ft_refactor_line(char *s);
+void    ft_warp_ref(t_cmd **cmd);
 
 // ENV
 char    *ft_getenv(char *var);
@@ -114,7 +115,7 @@ char    *remove_red(char *cmd);
 void    setup_redirection(t_cmd *cmd);
 int    get_option(t_red *red);
 void    close_fd(t_cmd *cmd);
-int     ft_redcount(char *cmd);
+int     ft_redcount(char *cmd, int l);
 
 // PIPE
 void    setup_pipe(t_cmd *cmd);
@@ -162,5 +163,6 @@ int     ft_tab_min(int tab[], int i);
 int     ft_strnchrn(char *s, char *set);
 int		is_specialcar(char c);
 int     ft_count_space(char *s);
-
+int		ft_atoi(const char *str);
+int		ft_isdigit(int c);
 #endif

@@ -6,6 +6,8 @@ char		*ft_strjoin(char  *s1, char  *s2)
 	char		*s;
 
 	i = 0;
+	if (!s1 && !s2)
+		return NULL;
 	if (!s1 && s2)
 		return (ft_strdup(s2));
 	if (s1 && !s2)
