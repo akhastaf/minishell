@@ -19,6 +19,11 @@ int     builtins_exit(char **arg)
     int i;
 
     i = 0;
+    if (ft_size_arg(arg) > 2)
+    {
+        write(2, "-bash: exit: too many arguments\n", 33);
+        return 1;
+    }
     if (arg[1])
     {
         while (arg[1][i] && ft_isdigit(arg[1][i]))

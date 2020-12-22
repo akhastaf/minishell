@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:48 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/02 10:43:29 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/22 14:37:42 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <fcntl.h>
 void    readline()
 {   
-    get_next_line(0, &g_sh.line);
+    int r = get_next_line(0, &g_sh.line);
+	printf("r : %d\n", r);
 }
 char	*ft_checkerror(int fd, char **buff)
 {
