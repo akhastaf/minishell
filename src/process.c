@@ -53,7 +53,6 @@ void    process_line()
         i = 0;
         while (cmd[i])
         {
-            cmd[i] = ft_strremove(cmd[i], '\\');
             red = get_redirection(cmd[i]);
             opr = ft_getopr(cmd[i]);
             cmd[i] = remove_red(cmd[i]);
@@ -82,8 +81,7 @@ char    *ft_refactor_line(char *s)
     //printf("g_sh.line : %s\n", g_sh.line);
     while (s[i])
     {
-        // if (g_sh.line[i])
-        if (s[i] == '$' && !ft_is_space(s[i + 1]))
+        if (s[i] == '$' && !ft_is_space(s[i + 1]) && s[i - 1] != '\\')
         {
             if (s[i + 1] == '?')
             {
@@ -97,7 +95,7 @@ char    *ft_refactor_line(char *s)
                 i = i + ft_strlen(var);
             }
         }
-        else if (s[i] == '~')
+        else if (s[i] == '~'  && s[i - 1] != '\\')
         {
             line = ft_tilde(line, i);
             i = (s[i + 1] == '+' ? i + 1 : i);

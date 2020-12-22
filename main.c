@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:52 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/21 11:16:54 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/22 12:14:23 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int     main(int ac, char **av, char **env)
     builtins_init();
     g_sh.cmdlist = NULL;
     g_sh.pid = 0;
+    g_sh.ret = 0;
     g_sh.in = dup(0); // 5
     g_sh.out = dup(1); // 6
     increment_shlvl();
@@ -50,7 +51,7 @@ int     main(int ac, char **av, char **env)
     // cmd1 = ft_strjoin(cmd1, cmd + c + c1);
     // printf("|%s|\n", cmd1);
     minishell_loop(env);
-    return 0;
+    return g_sh.ret;
 }
 
 void    increment_shlvl()

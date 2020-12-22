@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/22 10:39:29 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/22 12:13:58 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef struct s_sh
     int     in;
     int     out;
     int     is_b;
+    int     ret;
 }       t_sh;
 t_sh    g_sh;
 

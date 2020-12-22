@@ -19,12 +19,17 @@ int     builtins_exit(char **arg)
     int i;
 
     i = 0;
-    while (arg[0][i] && ft_isdigit(arg[0][i]))
-        i++;
-    if (arg[0][i] == 0)
-        exit(ft_atoi(arg[0]));
-    printf("exit not wworking\n");
-    return 0;
+    if (arg[1])
+    {
+        while (arg[1][i] && ft_isdigit(arg[1][i]))
+            i++;
+        if (arg[1][i] == 0)
+            g_sh.ret = ft_atoi(arg[1]);
+    }
+    else
+        g_sh.ret = 0;
+    exit(g_sh.ret);
+    return g_sh.ret;
 }
 
 int     builtins_pwd(char **arg)
