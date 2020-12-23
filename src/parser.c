@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:48 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/22 14:37:42 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/23 10:54:42 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 #include <fcntl.h>
 void    readline()
 {   
-    int r = get_next_line(0, &g_sh.line);
-	printf("r : %d\n", r);
+	int r;
+
+    r = get_next_line(0, &g_sh.line);
+	if (r == -2)
+		exit(0);
 }
 char	*ft_checkerror(int fd, char **buff)
 {
@@ -44,6 +47,8 @@ int		ft_readline(int fd, char **str)
 		if (ft_strchr(*str, '\n'))
 			break ;
 	}
+	if (buff[0] == 0)
+		return -2;
 	free(buff);
 	return (n);
 }
@@ -54,9 +59,11 @@ int		get_next_line(int fd, char **line)
 	char		*tmp;
 	char		*s;
 	int			n;
-
-	if ((n = ft_readline(fd, &str[fd]) < 0 || !line))
+	n = 0;
+	if ((n = ft_readline(fd, &str[fd])) == -1 || !line)
 		return (-1);
+	if (n == -2)
+		return -2;
 	if ((s = ft_strchr(str[fd], '\n')))
 	{
 		*line = ft_strndup(str[fd], s - str[fd]);

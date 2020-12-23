@@ -57,7 +57,6 @@ void    process_line()
             opr = ft_getopr(cmd[i]);
             cmd[i] = remove_red(cmd[i]);
             arg =  ft_split(cmd[i], " ");
-            print_arg(arg);
             if (opr)
                 arg = ft_remove_arg(arg, opr);
             arg = ft_argtrim(arg, "'\"");
@@ -78,7 +77,6 @@ char    *ft_refactor_line(char *s)
 
     line = NULL;
     i = 0;
-    //printf("g_sh.line : %s\n", g_sh.line);
     while (s[i])
     {
         if (s[i] == '$' && !ft_is_space(s[i + 1]) && s[i - 1] != '\\')
