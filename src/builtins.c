@@ -49,37 +49,43 @@ int     builtins_pwd(char **arg)
 
 int     builtins_cd(char **arg)
 {
-    int l;
     char *oldpwd;
+    char *opwd;
     char *pwd;
     char *s;
 
-    l = ft_size_arg(arg);
     if (!arg[1])
     {
         s = ft_getenv("HOME");
         arg = ft_argadd(arg, s);
     }
-    l = ft_size_arg(arg);
     oldpwd = getcwd(NULL, 0);
-    if (l > 2)
+    if (!ft_strcmp(arg[1], "-"))
     {
-        write(STDERR_FILENO, "cd: no such file or directory:\n", 32);
-        return 1;
-    }
-    if (l == 2)
-    {
-        if (!ft_strcmp(arg[1], "-"))
-            arg[1] = ft_strdup(ft_getenv("OLDPWD"));
-        if (!chdir(arg[1]))
-        {
-            pwd = getcwd(NULL, 0);
-            ft_setenv("PWD", pwd);
-            ft_setenv("OLDPWD", oldpwd);
-            free(pwd);
-        }
+        opwd = ft_getenv("OLDPWD");
+        if (opwd)
+            ft_putendl_fd(opwd, 1);
         else
+        {
+            ft_putendl_fd("-bash: cd: OLDPWD not set", 2);
             return 1;
+        }
+            arg[1] = ft_strdup(opwd);
+    }
+    if (!chdir(arg[1]))
+    {
+        pwd = getcwd(NULL, 0);
+        ft_setenv("PWD", pwd);
+        ft_setenv("OLDPWD", oldpwd);
+        free(pwd);
+    }
+    else
+    {
+        ft_putstr_fd("-bash: cd: ", 2);
+        ft_putstr_fd(arg[1], 2);
+        ft_putstr_fd(": ", 2);
+        ft_putendl_fd(strerror(errno), 2);
+        return 1;
     }
     free(oldpwd);
     return 0;

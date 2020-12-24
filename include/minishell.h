@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/22 12:13:58 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/24 14:09:24 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char    *ft_getenv(char *var);
 char    **ft_envcount(char *line);
 char    *ft_envreplace(char *line);
 char    *ft_getword(char *word, char *set);
-void    ft_setenv(char *var, char *val);
+int    ft_setenv(char *var, char *val);
 int    ft_envremove(char *var);
 
 //PATH
@@ -166,4 +166,6 @@ int		is_specialcar(char c);
 int     ft_count_space(char *s);
 int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
+void	ft_putendl_fd(char *s, int fd);
+void	ft_putstr_fd(char *s, int fd);
 #endif

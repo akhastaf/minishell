@@ -23,7 +23,7 @@ char    *ft_getenv(char *var)
     return NULL;
 }
 
-void    ft_setenv(char *var, char *val)
+int    ft_setenv(char *var, char *val)
 {
     int i;
     int j;
@@ -58,9 +58,15 @@ void    ft_setenv(char *var, char *val)
             j++;
         }
         if (j == ft_strlen(var))
-                g_sh.env[i] = new;
+        {
+            g_sh.env[i] = new;
+            return 1;
+        }
         i++;
     }
+    if (j != ft_strlen(var))
+        ft_envadd(new);
+    return 0;
 
 }
 
@@ -95,56 +101,6 @@ char    **ft_envcount(char *line)
     return evar;
 }
 
-char    *ft_envreplace(char *line)
-{
-    int i;
-    int j;
-    int k;
-    char **evar;
-    int len;
-    char *new;
-
-    evar = ft_envcount(line);
-    printf("ft_envcount is working\n");
-    i = 0;
-    j = 0;
-    len = 0;
-    while (line[i])
-    {
-        if (line[i] == '$' && evar[j])
-        {
-            len += strlen(evar[j]) - 1;
-            while (line[i] != ' ')
-                i++;
-            j++;
-        }
-        i++;
-        len++;
-    }
-    printf("%d\n", len);
-    new = malloc(len);
-    i = 0;
-    j = 0;
-    k = 0;
-    while (line[i])
-    {
-        if (line[i] == '$')
-        {
-            len = ft_strlen(evar[j]);
-            ft_strlcpy(new + k, evar[j], len);
-            k += len;
-            while (line[i] != ' ')
-                i++;
-            j++;
-        }
-        new[k] = line[i];
-        k++;
-    }
-    new[k] = 0;
-    printf("%s\n", new);
-    return new;
-
-}
 char    *ft_getword(char *word, char *set)
 {
     int i;

@@ -63,7 +63,8 @@ void    ft_warp_ref(t_cmd **cmd)
     while ((*cmd)->arg[i])
     {
         (*cmd)->arg[i] = ft_refactor_line((*cmd)->arg[i]);
-        (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\\');
+        if ((*cmd)->arg[i])
+            (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\\');
         i++;
     }
 }
