@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:48 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/25 10:24:37 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/25 10:46:50 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int    readline()
 	int r;
 
     r = get_next_line(0, &g_sh.line);
+	printf("|%s| %d\n", g_sh.line, r);
 	if (r == -2 && !g_sh.line)
 	{
 		ft_putendl_fd("\nexit", 1);
@@ -51,9 +52,11 @@ int		ft_readline(int fd, char **str)
 		if (ft_strchr(*str, '\n'))
 			break ;
 	}
+	printf("buff |%s|\n", buff);
 	if (buff[0] == 0)
 		return -2;
 	free(buff);
+	buff = NULL;
 	return (n);
 }
 
