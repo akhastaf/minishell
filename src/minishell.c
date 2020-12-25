@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/23 09:44:55 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/25 10:26:28 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,18 @@ void    ft_printf_prompt()
 void        minishell_loop(char **env)
 {
     int status;
+    int r;
+    char *tmp;
 
     status = 1;
     g_sh.line = NULL;
     while(status)
     {
+        tmp = NULL;
         ft_printf_prompt();
-        readline();
+        while ((r = readline()) == 0)
+            tmp = ft_strjoin(tmp, g_sh.line);
+        g_sh.line = ft_strjoin(tmp, g_sh.line);
         process_line();
         open_pipe();
         //print_cmd(g_sh.cmdlist);

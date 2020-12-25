@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/24 14:09:24 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/25 10:20:45 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void        minishell_loop(char **env);
 void    ft_printf_prompt();
 void    init_sh(char **env);
 void    ft_envadd(char *var);
-void        readline();
+int        readline();
 char    *ft_tilde(char *line, int i);
 void    increment_shlvl();
 

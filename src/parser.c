@@ -6,19 +6,23 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:48 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/23 10:54:42 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/25 10:24:37 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <fcntl.h>
-void    readline()
+int    readline()
 {   
 	int r;
 
     r = get_next_line(0, &g_sh.line);
-	if (r == -2)
+	if (r == -2 && !g_sh.line)
+	{
+		ft_putendl_fd("\nexit", 1);
 		exit(0);
+	}
+	return r;
 }
 char	*ft_checkerror(int fd, char **buff)
 {
@@ -62,7 +66,7 @@ int		get_next_line(int fd, char **line)
 	n = 0;
 	if ((n = ft_readline(fd, &str[fd])) == -1 || !line)
 		return (-1);
-	if (n == -2)
+	if (n == -2 && !str[fd])
 		return -2;
 	if ((s = ft_strchr(str[fd], '\n')))
 	{

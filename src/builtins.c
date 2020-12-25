@@ -33,6 +33,7 @@ int     builtins_exit(char **arg)
     }
     else
         g_sh.ret = 0;
+    ft_putendl_fd("exit", 1);
     exit(g_sh.ret);
     return g_sh.ret;
 }
