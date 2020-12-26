@@ -8,39 +8,40 @@
 
 int main()
 {
-    int fd[2];
-    pid_t pid;
-    pid_t pid1;
-    int s;
-    char *b[] = {"grep", "round-trip min/avg/max/stddev", NULL};
-    char *a[] = { "ping", "-c", "4", "google.com", NULL};
+    printf("Hello world!\n");
+    // int fd[2];
+    // pid_t pid;
+    // pid_t pid1;
+    // int s;
+    // char *b[] = {"grep", "round-trip min/avg/max/stddev", NULL};
+    // char *a[] = { "ping", "-c", "4", "google.com", NULL};
 
-    pipe(fd);
-    pid = fork();
+    // pipe(fd);
+    // pid = fork();
 
-    if (pid == 0)
-    {
-        dup2(fd[1], 1);
-        close(fd[0]);
-        close(fd[1]);
+    // if (pid == 0)
+    // {
+    //     dup2(fd[1], 1);
+    //     close(fd[0]);
+    //     close(fd[1]);
 
-        execve("/sbin/ping", a, NULL);
-    }
-    pid1 = fork();
-    if (pid1 == 0)
-    {
-        dup2(fd[0], 0);
-        close(fd[0]);
-        close(fd[1]);
+    //     execve("/sbin/ping", a, NULL);
+    // }
+    // pid1 = fork();
+    // if (pid1 == 0)
+    // {
+    //     dup2(fd[0], 0);
+    //     close(fd[0]);
+    //     close(fd[1]);
 
-        execve("/usr/bin/grep", b, NULL);
-    }
-    // close(fd[0]);
-    // close(fd[1]);
-    waitpid(pid, &s, 0);
-    waitpid(pid1, &s, 0);
+    //     execve("/usr/bin/grep", b, NULL);
+    // }
+    // // close(fd[0]);
+    // // close(fd[1]);
+    // waitpid(pid, &s, 0);
+    // waitpid(pid1, &s, 0);
 
-    printf("\nhello after pipe\n");
+    // printf("\nhello after pipe\n");
 
     return 0;
 }

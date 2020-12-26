@@ -9,6 +9,7 @@ int     excute(t_cmd *cmdlist)
     cmd = cmdlist;
     while (cmd)
     {
+        printf("|%s|\n", cmd->path);
         ft_warp_ref(&cmd);
         setup_pipe(cmd);
         setup_redirection(cmd);
@@ -35,20 +36,25 @@ int     excute(t_cmd *cmdlist)
 
 void    ft_launch(t_cmd *cmd)
 {
+    DIR *dir;
+
     g_sh.pid = fork();
     if (g_sh.pid == 0)
     {
         if (execve(cmd->path, cmd->arg, g_sh.env))
         {
-            write(1, "-bash ", 6);
-            if (errno == 2)
+            dir = opendir(cmd->path);
+            ft_putstr_fd("-bash ", 2);
+            if (errno == 2 || dir)
             {
-                write(1, cmd->path, ft_strlen(cmd->path));
-                write(1, ": command not found\n", 20);
+                ft_putstr_fd(cmd->path, 2);
+                ft_putendl_fd(": command not found", 2);
             }
             else
             {
-                perror(cmd->path);
+                ft_putstr_fd(cmd->path, 2);
+                ft_putstr_fd(": ", 2);
+                ft_putendl_fd(strerror(errno), 2);
             }
         }
     }
