@@ -12,7 +12,6 @@ int     excute(t_cmd *cmdlist)
         ft_warp_ref(&cmd);
         setup_pipe(cmd);
         setup_redirection(cmd);
-        printf("%s\n", cmd->path);
         i = 0;
         while (i < BUILTINS_NUM)
         {
