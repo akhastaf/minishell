@@ -7,27 +7,30 @@ int     excute(t_cmd *cmdlist)
 
     g_sh.is_b = 0;
     cmd = cmdlist;
-    while (cmd)
+    while (cmd )
     {
-        printf("|%s|\n", cmd->path);
         ft_warp_ref(&cmd);
         setup_pipe(cmd);
         setup_redirection(cmd);
         i = 0;
-        while (i < BUILTINS_NUM)
+        if (!g_sh.error)
         {
-            if (!ft_strcmp(cmd->path, g_sh.builtins_str[i]))
+            while (i < BUILTINS_NUM)
             {
-                g_sh.status = g_sh.builtins_fun[i](cmd->arg);
-                close(cmd->pipe[1]);
-                g_sh.is_b++;
-                break;
+                if (!ft_strcmp(cmd->path, g_sh.builtins_str[i]))
+                {
+                    g_sh.status = g_sh.builtins_fun[i](cmd->arg);
+                    close(cmd->pipe[1]);
+                    g_sh.is_b++;
+                    break;
+                }
+                i++;
             }
-            i++;
+            if (!g_sh.is_b)
+                ft_launch(cmd);
         }
-        if (!g_sh.is_b)
-            ft_launch(cmd);
         g_sh.is_b = 0;
+        g_sh.error = 0;
         reset_std();
         cmd = cmd->next;
     }

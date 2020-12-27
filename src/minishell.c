@@ -6,7 +6,7 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:46 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/25 10:44:05 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/27 11:38:21 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void        minishell_loop(char **env)
     status = 1;
     while(status)
     {
+        g_sh.error = 0;
         g_sh.line = NULL;
         tmp = NULL;
         ft_printf_prompt();

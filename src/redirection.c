@@ -13,10 +13,14 @@ void    setup_redirection(t_cmd *cmd)
             cmd->fdin = open(red->file, get_option(red), S_IRWXU);
         if (red && red->type[0] == '>')
             cmd->fdout = open(red->file, get_option(red), S_IRWXU);
-        if (cmd->fdin < 0)
-            perror("Error");
-        if (cmd->fdout< 0)
-            perror("Error");
+        if (cmd->fdin < 0 || cmd->fdout< 0)
+        {
+            g_sh.error = 1;
+            ft_putstr_fd("-bash ", 2);
+            ft_putstr_fd(red->file, 2);
+            ft_putstr_fd(": ", 2);
+            ft_putendl_fd(strerror(errno), 2);
+        }
         if (red->next && cmd->fdout && red->type[0] != '<')
             close(cmd->fdout);
         if (red->next && cmd->fdin && red->type[0] == '<')
