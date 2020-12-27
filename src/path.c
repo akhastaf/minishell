@@ -12,7 +12,7 @@ char *ft_getpath(char *file)
 
     i = 0;
     pathenv = ft_getenv("PATH");
-    if (ft_isbuiltins(file) || !pathenv)
+    if (file[0] == '.' || ft_isbuiltins(file) || !pathenv)
         return (ft_strdup(file));
     path = ft_split(pathenv, ":");
     while (path[i])

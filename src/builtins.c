@@ -121,6 +121,7 @@ int     builtins_export(char **arg)
     int i;
     int n;
     char *var;
+    char *val;
 
     if (ft_size_arg(arg) == 1)
     {
@@ -141,6 +142,9 @@ int     builtins_export(char **arg)
     {
         n = ft_strchrn(arg[i], '=');
         var = ft_strndup(arg[i], n);
+        val = ft_strtrim(arg[i] + n + 1, "'\"");
+        arg[i] = ft_strjoin(var, "=");
+        arg[i] = ft_strjoin(arg[i], val);
         if (ft_getenv(var))
         {
             ft_envremove(var);
