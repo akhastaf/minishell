@@ -8,7 +8,12 @@
 
 int main()
 {
-    printf("Hello world!\n");
+    int fd;
+    int fd1;
+    fd = open("file", O_RDONLY);
+    close(fd);
+    fd1 = open("file", O_WRONLY);
+    printf("fd %d fd1 %d\n", fd, fd1);
     // int fd[2];
     // pid_t pid;
     // pid_t pid1;

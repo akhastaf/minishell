@@ -46,3 +46,8 @@ void    open_pipe()
         cmd =  cmd->next;
     }
 }
+
+// void    reset_fd()
+// {
+//     g_sh.
+// }

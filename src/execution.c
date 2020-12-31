@@ -40,25 +40,38 @@ int     excute(t_cmd *cmdlist)
 void    ft_launch(t_cmd *cmd)
 {
     DIR *dir;
+    int err;
 
     g_sh.pid = fork();
     if (g_sh.pid == 0)
     {
         if (execve(cmd->path, cmd->arg, g_sh.env))
         {
+            err = errno; 
             dir = opendir(cmd->path);
             ft_putstr_fd("-bash ", 2);
-            if (errno == 2 || dir)
+            if (dir)
             {
+                ft_putstr_fd("|", 2);
                 ft_putstr_fd(cmd->path, 2);
+                ft_putstr_fd("|", 2);
+                ft_putendl_fd(": is a directory", 2);
+            }
+            else if (err == 2)
+            {
+                ft_putstr_fd("|", 2);
+                ft_putstr_fd(cmd->path, 2);
+                ft_putstr_fd("|", 2);
                 ft_putendl_fd(": command not found", 2);
+                exit(127);
             }
             else
             {
                 ft_putstr_fd(cmd->path, 2);
                 ft_putstr_fd(": ", 2);
-                ft_putendl_fd(strerror(errno), 2);
+                ft_putendl_fd(strerror(err), 2);
             }
+            exit(126);
         }
     }
     close(cmd->pipe[1]);

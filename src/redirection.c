@@ -21,9 +21,9 @@ void    setup_redirection(t_cmd *cmd)
             ft_putstr_fd(": ", 2);
             ft_putendl_fd(strerror(errno), 2);
         }
-        if (red->next && cmd->fdout && red->type[0] != '<')
+        if (red->next && cmd->fdout && red->next->type[0] != '<')
             close(cmd->fdout);
-        if (red->next && cmd->fdin && red->type[0] == '<')
+        if (red->next && cmd->fdin && red->next->type[0] == '<')
             close(cmd->fdin);
         red = red->next;
     }
@@ -58,7 +58,7 @@ t_red   *get_redirection(char *cmd)
             type = ft_strdup("<");
         if (type)
         {
-            file = ft_getword(cmd + i + 1, " ><");
+            file = ft_getword(cmd + i + 1, " ><|;");
             file = ft_strtrim(file, " ");
             red = ft_red_new(type, file);
             ft_red_add_back(&redlist, red);
@@ -128,9 +128,9 @@ int     ft_redcount(char *cmd, int l)
         if (r)
         {
             len = ft_strlen(ft_getword(cmd + i + 1, " ><;|"));
-            j = j + len + (ft_strnchrn(cmd + i + 1 + len, "><") ? ft_count_space(cmd + i + 1 + len) : 0);
-            i = i + j - 1;
-            //j = r;
+            r = len + (ft_strnchrn(cmd + i + 1 + len, "><") ? ft_count_space(cmd + i + 1 + len) : 0);
+            i = i + r - 1;
+            j = j + r;
         }
         r = 0;
         i++;

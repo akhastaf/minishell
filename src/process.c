@@ -74,11 +74,21 @@ char    *ft_refactor_line(char *s)
     char *var;
     char *line;
     int i;
+    int j;
 
     line = NULL;
     i = 0;
     while (s[i])
     {
+        if (s[i] == '\'')
+        {
+            i++;
+            while (s[i] != '\'')
+            {
+                line = ft_strappend(line, s[i]);
+                i++;
+            }
+        }
         if (s[i] == '$' && !ft_is_space(s[i + 1]) && s[i - 1] != '\\')
         {
             if (s[i + 1] == '?')
@@ -98,7 +108,7 @@ char    *ft_refactor_line(char *s)
             line = ft_tilde(line, i);
             i = (s[i + 1] == '+' ? i + 1 : i);
         }
-        else
+        else if (s[i] != '\'' && s[i] != '"')
             line = ft_strappend(line, s[i]);
         i++;
     }

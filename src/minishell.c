@@ -92,7 +92,7 @@ void        minishell_loop(char **env)
         g_sh.line = ft_strjoin(tmp, g_sh.line);
         process_line();
         open_pipe();
-        //print_cmd(g_sh.cmdlist);
+        // print_cmd(g_sh.cmdlist);
         g_sh.status = excute(g_sh.cmdlist);
         close_pipe();
         ft_cmd_list_remove(&g_sh.cmdlist);

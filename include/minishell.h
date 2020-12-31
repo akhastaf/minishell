@@ -25,6 +25,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <signal.h>
 
 # define BUFFER_SIZE 1
 # define ULIMIT 1
