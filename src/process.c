@@ -5,9 +5,9 @@ char    *ft_getopr(char *cmd)
     int len;
 
     len = ft_strlen(cmd);
-    if (cmd[len-1] == '|')
+    if (cmd[len-1] == '|' && cmd[len-2] != '\\')
         return (ft_strdup("|"));
-    else if (cmd[len-1] == ';')
+    else if (cmd[len-1] == ';'  && cmd[len-2] != '\\')
         return (ft_strdup(";"));
     return NULL;
 }
@@ -59,7 +59,7 @@ void    process_line()
             arg =  ft_split(cmd[i], " ");
             if (opr)
                 arg = ft_remove_arg(arg, opr);
-            arg = ft_argtrim(arg, "'\"");
+            // arg = ft_argtrim(arg, "'\"");
             new = ft_cmd_new(ft_strtrim(ft_getpath(arg[0]), " "), arg, opr, red);
             ft_cmd_add_back(&g_sh.cmdlist, new);
             if (!opr && cmd[i + 1])
@@ -80,7 +80,7 @@ char    *ft_refactor_line(char *s)
     i = 0;
     while (s[i])
     {
-        if (s[i] == '\'')
+        if (s[i] == '\'' && s[i - 1] != '\\')
         {
             i++;
             while (s[i] != '\'')
@@ -98,7 +98,7 @@ char    *ft_refactor_line(char *s)
             }
             else
             {
-                var = ft_getword(s + i + 1, " ");
+                var = ft_getword(s + i + 1, "\" '\\");
                 line = ft_strjoin(line, ft_getenv(var));
                 i = i + ft_strlen(var);
             }
@@ -108,7 +108,7 @@ char    *ft_refactor_line(char *s)
             line = ft_tilde(line, i);
             i = (s[i + 1] == '+' ? i + 1 : i);
         }
-        else if (s[i] != '\'' && s[i] != '"')
+        else
             line = ft_strappend(line, s[i]);
         i++;
     }
