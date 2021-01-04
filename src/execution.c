@@ -13,7 +13,7 @@ int     excute(t_cmd *cmdlist)
         setup_pipe(cmd);
         setup_redirection(cmd);
         i = 0;
-        if (!g_sh.error)
+        if (!g_sh.error && cmd->path)
         {
             while (i < BUILTINS_NUM)
             {
@@ -87,7 +87,9 @@ void    ft_warp_ref(t_cmd **cmd)
     while ((*cmd)->arg[i])
     {
         (*cmd)->arg[i] = ft_refactor_line((*cmd)->arg[i]);
-        (*cmd)->arg[i] = ft_strtrim((*cmd)->arg[i], "'\"");
+        //(*cmd)->arg[i] = ft_strtrim((*cmd)->arg[i], "'\"");
+        (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '"');
+        (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\'');
         if ((*cmd)->arg[i])
             (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\\');
         i++;
