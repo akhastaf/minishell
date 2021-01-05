@@ -34,6 +34,7 @@ int     main(int ac, char **av, char **env)
     // char *cmd1;
     signal(SIGINT, sig_c);
     init_sh(env);
+    g_sh.home = ft_getenv("HOME");
     builtins_init();
     g_sh.cmdlist = NULL;
     g_sh.pid = 0;

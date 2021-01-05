@@ -69,6 +69,7 @@ typedef struct s_sh
     int     is_b;
     int     ret;
     int     error;
+    char    *home;
 }       t_sh;
 t_sh    g_sh;
 
@@ -78,7 +79,7 @@ void    ft_printf_prompt();
 void    init_sh(char **env);
 void    ft_envadd(char *var);
 int        readline();
-char    *ft_tilde(char *line, int i);
+char    *ft_tilde(char *s, char *line, int i);
 void    increment_shlvl();
 
 // Parser

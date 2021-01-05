@@ -105,8 +105,8 @@ char    *ft_refactor_line(char *s)
         }
         else if (s[i] == '~'  && s[i - 1] != '\\')
         {
-            line = ft_tilde(line, i);
-            i = (s[i + 1] == '+' ? i + 1 : i);
+            line = ft_tilde(s, line, i);
+            i = (s[i + 1] == '+' ? i + 1 : i) + (s[i + 1] == '-' ? i + 1 : i);
         }
         else
             line = ft_strappend(line, s[i]);
@@ -116,10 +116,21 @@ char    *ft_refactor_line(char *s)
     return line;
 }
 
-char    *ft_tilde(char *line, int i)
+char    *ft_tilde(char *s, char *line, int i)
 {
-    if (g_sh.line[i + 1] == '+')
+    if (s[i + 1] == '+' && ft_getenv("PWD") && (ft_is_space(s[i+ 2]) || s[i+2]==0))
         return ft_strjoin(line, ft_getenv("PWD"));
+    else if (s[i + 1] == '-' && ft_getenv("OLDPWD")  && (ft_is_space(s[i+ 2]) || s[i+2]==0))
+        return ft_strjoin(line, ft_getenv("OLDPWD"));
+    else if (s[i + 1] == '+' || s[i + 1] == '-')
+            line = ft_strappend(line, s[i+1]);
     else
-        return ft_strjoin(line, ft_getenv("HOME"));
+    {
+        if (ft_getenv("HOME"))
+            return ft_strjoin(line, ft_getenv("HOME"));
+        else
+            return ft_strjoin(line, g_sh.home);
+    }
+    
+    return line;
 }
