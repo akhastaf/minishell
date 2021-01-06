@@ -17,15 +17,11 @@
 
 void sig_c(int signum)
 {
-    if (!g_sh.pid)
+    if (!g_sh.pid && signum == SIGINT)
     {
         write(1, "\n", 1);
         ft_printf_prompt();
     }
-    // else
-    // {
-    //     write(1)
-    // }
 }
 
 int     main(int ac, char **av, char **env)
@@ -33,24 +29,16 @@ int     main(int ac, char **av, char **env)
     // char *cmd;
     // char *cmd1;
     signal(SIGINT, sig_c);
+    signal(SIGQUIT, sig_c);
     init_sh(env);
     g_sh.home = ft_getenv("HOME");
     builtins_init();
     g_sh.cmdlist = NULL;
     g_sh.pid = 0;
     g_sh.ret = 0;
-    g_sh.in = dup(0); // 5
-    g_sh.out = dup(1); // 6
+    g_sh.in = dup(0);
+    g_sh.out = dup(1);
     increment_shlvl();
-    // cmd = ft_strdup("echo test >f1<f2>>f3");
-    // printf("%d %s\n", (int)ft_strlen(cmd), cmd);
-    // int c = ft_redcount(cmd, (int)ft_strlen(cmd));
-    // int c1 = ft_strnchrn(cmd, "><");
-    // printf("%d %d\n", c, c1);
-    // cmd1 = ft_strndup(cmd, c1);
-    // printf("|%s|\n", cmd1);
-    // cmd1 = ft_strjoin(cmd1, cmd + c + c1);
-    // printf("|%s|\n", cmd1);
     minishell_loop(env);
     return g_sh.ret;
 }

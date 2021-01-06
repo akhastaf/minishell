@@ -19,7 +19,12 @@ int     excute(t_cmd *cmdlist)
             {
                 if (!ft_strcmp(cmd->path, g_sh.builtins_str[i]))
                 {
-                    g_sh.status = g_sh.builtins_fun[i](cmd->arg);
+                    if (!ft_strcmp(cmd->path, "exit") && cmd->prev && cmd->prev->opr &&  cmd->prev->opr[0] == '|')
+                        reset_std();
+                    else if (!ft_strcmp(cmd->path, "exit") || (!cmd->prev || cmd->prev->opr || cmd->prev->opr[0] != '|'))
+                        g_sh.status = g_sh.builtins_fun[i](cmd->arg);
+                     else if (ft_strcmp(cmd->path, "exit"))
+                        g_sh.status = g_sh.builtins_fun[i](cmd->arg);
                     close(cmd->pipe[1]);
                     g_sh.is_b++;
                     break;

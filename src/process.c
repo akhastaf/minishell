@@ -123,14 +123,19 @@ char    *ft_tilde(char *s, char *line, int i)
     else if (s[i + 1] == '-' && ft_getenv("OLDPWD")  && (ft_is_space(s[i+ 2]) || s[i+2]==0))
         return ft_strjoin(line, ft_getenv("OLDPWD"));
     else if (s[i + 1] == '+' || s[i + 1] == '-')
+    {
+            line = ft_strappend(line, '~');
             line = ft_strappend(line, s[i+1]);
+    }
     else
     {
         if (ft_getenv("HOME"))
             return ft_strjoin(line, ft_getenv("HOME"));
         else
+        {
+            printf("%s\n", g_sh.home);
             return ft_strjoin(line, g_sh.home);
+        }
     }
-    
     return line;
 }
