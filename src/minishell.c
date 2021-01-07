@@ -123,9 +123,20 @@ void    init_sh(char **env)
 
 int    check_syntax()
 {
-    int i;
+    if (check_pipe())
+        return 1;
+    return 0;
+}
+
+int     check_pipe()
+{
     int l;
 
+    l = 0;
+    while (g_sh.line[l] == ' ' || g_sh.line[l] == '\t')
+        l++;
+    if (g_sh.line[l] == '|')
+        return 1;
     l = ft_strlen(g_sh.line);
     l--;
     while (g_sh.line[l])
@@ -139,3 +150,8 @@ int    check_syntax()
     }
     return 0;
 }
+
+// int     check_semicolon()
+// {}
+
+// int     check_

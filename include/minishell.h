@@ -89,6 +89,7 @@ void    process_line();
 char    *ft_refactor_line(char *s);
 void    ft_warp_ref(t_cmd **cmd);
 int    check_syntax();
+int     check_pipe();
 
 // ENV
 char    *ft_getenv(char *var);
