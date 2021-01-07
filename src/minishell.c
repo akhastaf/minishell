@@ -86,18 +86,20 @@ void        minishell_loop(char **env)
         tmp = NULL;
         ft_printf_prompt();
         while ((r = readline()) == 0)
-        {
             tmp = ft_strjoin(tmp, g_sh.line);
-        }
         g_sh.line = ft_strjoin(tmp, g_sh.line);
-        process_line();
-        open_pipe();
-        // print_cmd(g_sh.cmdlist);
-        g_sh.status = excute(g_sh.cmdlist);
-        close_pipe();
-        ft_cmd_list_remove(&g_sh.cmdlist);
-        reset_std();
-        g_sh.cmdlist = NULL;
+        if (!check_syntax())
+        {
+            process_line();
+            open_pipes();
+            // print_cmd(g_sh.cmdlist);
+            g_sh.status = excute(g_sh.cmdlist);
+            close_pipe();
+            ft_cmd_list_remove(&g_sh.cmdlist);
+            reset_std();
+            g_sh.cmdlist = NULL;
+        }else
+            ft_putendl_fd("syntax error", 2);
         free(g_sh.line);
         g_sh.pid = 0;
     }
@@ -117,4 +119,23 @@ void    init_sh(char **env)
         i++;
     }
     g_sh.env[i] = NULL;
+}
+
+int    check_syntax()
+{
+    int i;
+    int l;
+
+    l = ft_strlen(g_sh.line);
+    l--;
+    while (g_sh.line[l])
+    {
+        if (g_sh.line[l] == ' ' || g_sh.line[l] == '\t')
+            l--;
+        if (g_sh.line[l] == '|')
+            return 1;
+        else
+            break ;
+    }
+    return 0;
 }

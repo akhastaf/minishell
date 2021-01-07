@@ -88,6 +88,7 @@ int		ft_readline(int fd, char **gard);
 void    process_line();
 char    *ft_refactor_line(char *s);
 void    ft_warp_ref(t_cmd **cmd);
+int    check_syntax();
 
 // ENV
 char    *ft_getenv(char *var);
@@ -127,7 +128,7 @@ int     ft_redcount(char *cmd, int l);
 void    setup_pipe(t_cmd *cmd);
 void    reset_std();
 void    close_pipe();
-void    open_pipe();
+void    open_pipes();
 
 // UTILS
 char		*ft_strjoin(char  *s1, char  *s2);

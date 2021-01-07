@@ -35,7 +35,7 @@ void    close_pipe()
     }
 }
 
-void    open_pipe()
+void    open_pipes()
 {
     t_cmd *cmd;
     cmd = g_sh.cmdlist;
@@ -46,8 +46,3 @@ void    open_pipe()
         cmd =  cmd->next;
     }
 }
-
-// void    reset_fd()
-// {
-//     g_sh.
-// }
