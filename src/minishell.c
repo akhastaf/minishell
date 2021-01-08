@@ -150,6 +150,8 @@ int     check_pipe()
         else
             break ;
     }
+    if (ft_strnchr(g_sh.line, "||") || ft_strnchr(g_sh.line, ";;"))
+        return 1;
     return 0;
 }
 
