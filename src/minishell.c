@@ -125,6 +125,8 @@ int    check_syntax()
 {
     if (check_pipe())
         return 1;
+    if (check_red())
+        return 1;
     return 0;
 }
 
@@ -135,7 +137,7 @@ int     check_pipe()
     l = 0;
     while (g_sh.line[l] == ' ' || g_sh.line[l] == '\t')
         l++;
-    if (g_sh.line[l] == '|')
+    if (g_sh.line[l] == '|' || g_sh.line[l] == ';')
         return 1;
     l = ft_strlen(g_sh.line);
     l--;
@@ -151,7 +153,11 @@ int     check_pipe()
     return 0;
 }
 
-// int     check_semicolon()
-// {}
+int     check_red()
+{
+    if (ft_strnchr(g_sh.line, "<<") || ft_strnchr(g_sh.line, ">>>"))
+        return 1;
+    return 0;
+}
 
 // int     check_

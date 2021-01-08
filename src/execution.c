@@ -21,6 +21,8 @@ int     excute(t_cmd *cmdlist)
                 {
                     if (!ft_strcmp(cmd->path, "exit") && cmd->prev && cmd->prev->opr &&  cmd->prev->opr[0] == '|')
                         reset_std();
+                    else if (!ft_strcmp(cmd->path, "exit") && cmd->opr && cmd->opr[0] == '|')
+                        reset_std();
                     else if (!ft_strcmp(cmd->path, "exit") || (!cmd->prev || cmd->prev->opr || cmd->prev->opr[0] != '|'))
                         g_sh.status = g_sh.builtins_fun[i](cmd->arg);
                      else if (ft_strcmp(cmd->path, "exit"))

@@ -88,8 +88,11 @@ int		ft_readline(int fd, char **gard);
 void    process_line();
 char    *ft_refactor_line(char *s);
 void    ft_warp_ref(t_cmd **cmd);
+
+// Error
 int    check_syntax();
 int     check_pipe();
+int     check_red();
 
 // ENV
 char    *ft_getenv(char *var);
@@ -175,4 +178,5 @@ int		ft_atoi(const char *str);
 int		ft_isdigit(int c);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
+char     *ft_strnchr(char *s, char *set);
 #endif
