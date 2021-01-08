@@ -9,7 +9,7 @@ static size_t	ft_strstart(char *s, char *set)
 	j = 0;
 	while (s[i])
 	{
-		if (s[i] == set[j] && set[j])
+		if (s[i] == set[j] && s[i - 1] != '\\' && set[j])
 		{
 			j = 0;
 			i++;
@@ -31,7 +31,7 @@ static size_t	ft_strend(char *s, char *set)
 	j = 0;
 	while (i)
 	{
-		if (s[i] == set[j] && set[j])
+		if (s[i] == set[j] && s[i - 1] != '\\' && set[j])
 		{
 			j = 0;
 			i--;

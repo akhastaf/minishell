@@ -6,15 +6,24 @@
 /*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:48 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/11/24 14:01:57 by akhastaf         ###   ########.fr       */
+/*   Updated: 2020/12/26 10:02:43 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 #include <fcntl.h>
-void    readline()
+int    readline()
 {   
-    get_next_line(0, &g_line);
+	int r;
+	// printf("|%s\n", g_sh.line);
+    r = get_next_line(0, &g_sh.line);
+	// printf("|%s| %d\n", g_sh.line, r);
+	if ((r == -2 && !g_sh.line) || (!r && !g_sh.line[0]))
+	{
+		ft_putendl_fd("\nexit", 1);
+		exit(0);
+	}
+	return r;
 }
 char	*ft_checkerror(int fd, char **buff)
 {
@@ -43,7 +52,10 @@ int		ft_readline(int fd, char **str)
 		if (ft_strchr(*str, '\n'))
 			break ;
 	}
+	if (buff[0] == 0)
+		return -2;
 	free(buff);
+	buff = NULL;
 	return (n);
 }
 
@@ -53,9 +65,11 @@ int		get_next_line(int fd, char **line)
 	char		*tmp;
 	char		*s;
 	int			n;
-
-	if ((n = ft_readline(fd, &str[fd]) < 0 || !line))
+	n = 0;
+	if ((n = ft_readline(fd, &str[fd])) == -1 || !line)
 		return (-1);
+	if (n == -2 && !str[fd])
+		return -2;
 	if ((s = ft_strchr(str[fd], '\n')))
 	{
 		*line = ft_strndup(str[fd], s - str[fd]);

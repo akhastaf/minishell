@@ -6,7 +6,7 @@
 #    By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/22 10:55:58 by akhastaf          #+#    #+#              #
-#    Updated: 2020/11/24 12:09:42 by akhastaf         ###   ########.fr        #
+#    Updated: 2020/12/16 11:29:15 by akhastaf         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ $(NAME):
 	@$(C) -g -o $(NAME) main.c $(SRC)
 
 debug:
-	@$(C) $(FLAGS) -o $(NAME) main.c $(SRC) -fsanitize=address
+	@$(C) -g -o $(NAME) main.c $(SRC) -fsanitize=address
 
 clean:
 	@rm -f $(NAME)
