@@ -30,5 +30,10 @@ char	*ft_strremove(char *s, char c)
 		l++;
 	}
 	new[i] = 0;
+	if (s)
+	{
+		free(s);
+		s = NULL;
+	}
 	return new;
 }

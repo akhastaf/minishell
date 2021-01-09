@@ -180,4 +180,5 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
 char     *ft_strnchr(char *s, char *set);
 int     ft_is_empty(char *s);
+void	*ft_memdel(void *ptr);
 #endif

@@ -46,11 +46,14 @@ int     main(int ac, char **av, char **env)
 void    increment_shlvl()
 {
     char *shlvl;
+    char *tmp;
     int value;
     
     value = atoi(ft_getenv("SHLVL"));
     ft_envremove("SHLVL");
     shlvl = ft_strdup("SHLVL=");
+    tmp = shlvl;
     shlvl =  ft_strjoin(shlvl, ft_itoa(value + 1));
+    ft_memdel(tmp);
     ft_envadd(shlvl);
 }
