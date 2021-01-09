@@ -89,17 +89,18 @@ void    ft_launch(t_cmd *cmd)
 void    ft_warp_ref(t_cmd **cmd)
 {
     int i;
+    char **ar;
 
     i = 0;
     while ((*cmd)->arg[i])
     {
         (*cmd)->arg[i] = ft_refactor_line((*cmd)->arg[i]);
-        //(*cmd)->arg[i] = ft_strtrim((*cmd)->arg[i], "'\"");
         if ((*cmd)->arg[i])
         {
             (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '"');
             (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\'');
             (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\\');
+            //printf("arg : %s\n", (*cmd)->arg[i]);
         }
         i++;
     }
