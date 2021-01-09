@@ -76,8 +76,8 @@ t_sh    g_sh;
 // MINISHELLL
 void        minishell_loop(char **env);
 void    ft_printf_prompt();
-void    init_sh(char **env);
-void    ft_envadd(char *var);
+int    init_sh(char **env);
+int    ft_envadd(char *var);
 int        readline();
 char    *ft_tilde(char *s, char *line, int i);
 void    increment_shlvl();

@@ -60,7 +60,8 @@ char			*ft_strtrim(char const *s1, char const *set)
 	end = ft_strend(s, c);
 	if (start == ft_strlen(s1))
 	{
-		str = malloc(1);
+		if (!(str = malloc(1)))
+			return NULL;
 		str[0] = '\0';
 		return (str);
 	}

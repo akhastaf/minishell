@@ -11,7 +11,8 @@ char	*ft_strremove(char *s, char c)
 	l = ft_countcahr(s, c);
 	if (!l)
 		return ft_strdup(s);
-	new = malloc(sizeof(char) * (ft_strlen(s) - l + 1));
+	if (!(new = malloc(sizeof(char) * (ft_strlen(s) - l + 1))))
+		return NULL;
 	l = 0;
 	i = 0;
 	while (s[l])

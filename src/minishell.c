@@ -32,7 +32,8 @@ char    **ft_argadd(char **arg, char *var)
     char **new;
     
     l = ft_size_arg(arg);
-    new = malloc(sizeof(char*) * (l + 2));
+    if (!(new = malloc(sizeof(char*) * (l + 2))))
+        return NULL;
     ft_memcpy(new, arg, sizeof(char *) * l);
     new[l] = ft_strdup(var);
     new[l+1] = NULL;
@@ -105,13 +106,14 @@ void        minishell_loop(char **env)
     }
 }
 
-void    init_sh(char **env)
+int    init_sh(char **env)
 {
     int l;
     int i;
     
     l = ft_size_arg(env);
-    g_sh.env = malloc((l + 1) * sizeof(char*));
+    if (!(g_sh.env = malloc((l + 1) * sizeof(char*))))
+        return 0;
     i = 0;
     while (env[i])
     {
@@ -119,6 +121,7 @@ void    init_sh(char **env)
         i++;
     }
     g_sh.env[i] = NULL;
+    return 1;
 }
 
 int    check_syntax()

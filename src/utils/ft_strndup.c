@@ -7,9 +7,15 @@ char		*ft_strndup(const char *s1, size_t n)
 
 	i = ft_strlen(s1);
 	if (n > i)
-		ptr = (char *)malloc((i + 1) * sizeof(char));
+	{
+		if (!(ptr = (char *)malloc((i + 1) * sizeof(char))))
+			return NULL;
+	}
 	else
-		ptr = (char *)malloc((n + 1) * sizeof(char));
+	{
+		if (!(ptr = (char *)malloc((n + 1) * sizeof(char))))
+			return NULL;
+	}
 	if (!ptr)
 		return (NULL);
 	i = 0;

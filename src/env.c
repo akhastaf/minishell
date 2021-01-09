@@ -29,8 +29,8 @@ int    ft_setenv(char *var, char *val)
     int j;
     char *new;
 
-    new = malloc(sizeof(char) * (int)ft_strlen(val) + (int)ft_strlen(var) + 2);
-
+    if (!(new = malloc(sizeof(char) * (int)ft_strlen(val) + (int)ft_strlen(var) + 2)))
+        return 0;
     i = 0;
     while (var[i])
     {
@@ -85,7 +85,8 @@ char    **ft_envcount(char *line)
             j++;
         i++;
     }
-    evar = malloc(sizeof(char*) * j + 1);
+    if (!(evar = malloc(sizeof(char*) * j + 1)))
+        return NULL;
     j = 0;
     while (line[i])
     {
@@ -119,19 +120,21 @@ char    *ft_getword(char *word, char *set)
     return (w);
 }
 
-void    ft_envadd(char *var)
+int    ft_envadd(char *var)
 {
     int l;
     int i;
     char **env;
     
     l = ft_size_arg(g_sh.env);
-    env = malloc((l + 2 ) * sizeof(char*));
+    if (!(env = malloc((l + 2 ) * sizeof(char*))))
+        return 0;
     ft_memcpy(env, g_sh.env, sizeof(char*) * l);
     env[l] = ft_strdup(var);
     env[l + 1] = NULL;
     g_sh.env = env;
     l = ft_size_arg(g_sh.env);
+    return 1;
 }
 
 int    ft_envremove(char *var)
