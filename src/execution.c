@@ -33,7 +33,7 @@ int     excute(t_cmd *cmdlist)
                 }
                 i++;
             }
-            if (!g_sh.is_b)
+            if (!g_sh.is_b && !ft_is_empty(cmd->path))
                 ft_launch(cmd);
         }
         g_sh.is_b = 0;
@@ -59,16 +59,12 @@ void    ft_launch(t_cmd *cmd)
             ft_putstr_fd("-bash ", 2);
             if (dir)
             {
-                ft_putstr_fd("|", 2);
                 ft_putstr_fd(cmd->path, 2);
-                ft_putstr_fd("|", 2);
                 ft_putendl_fd(": is a directory", 2);
             }
             else if (err == 2)
             {
-                ft_putstr_fd("|", 2);
                 ft_putstr_fd(cmd->path, 2);
-                ft_putstr_fd("|", 2);
                 ft_putendl_fd(": command not found", 2);
                 exit(127);
             }
