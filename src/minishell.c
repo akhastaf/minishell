@@ -150,7 +150,7 @@ int     check_pipe()
         else
             break ;
     }
-    if (ft_strnchr(g_sh.line, "||") || ft_strnchr(g_sh.line, ";;") || ft_strnchr(g_sh.line, "|;" || ft_strnchr(g_sh.line, ";|")))
+    if (ft_strnchr(g_sh.line, "||") || ft_strnchr(g_sh.line, ";;") || ft_strnchr(g_sh.line, "|;") || ft_strnchr(g_sh.line, ";|"))
         return 1;
     return 0;
 }
@@ -161,5 +161,3 @@ int     check_red()
         return 1;
     return 0;
 }
-
-// int     check_

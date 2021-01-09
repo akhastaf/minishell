@@ -6,14 +6,22 @@
 #include <errno.h>
 #include "include/minishell.h"
 
-int main()
+int main(int ac, char **av)
 {
-    int fd;
-    int fd1;
-    fd = open("file", O_RDONLY);
-    close(fd);
-    fd1 = open("file", O_WRONLY);
-    printf("fd %d fd1 %d\n", fd, fd1);
+    int i;
+    
+    i = 0;
+    while(av[i])
+    {
+        printf("av[%d]=%s\n", i, av[i]);
+        i++;
+    }
+    // int fd;
+    // int fd1;
+    // fd = open("file", O_RDONLY);
+    // close(fd);
+    // fd1 = open("file", O_WRONLY);
+    // printf("fd %d fd1 %d\n", fd, fd1);
     // int fd[2];
     // pid_t pid;
     // pid_t pid1;

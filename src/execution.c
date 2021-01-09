@@ -97,7 +97,7 @@ void    ft_warp_ref(t_cmd **cmd)
         //(*cmd)->arg[i] = ft_strtrim((*cmd)->arg[i], "'\"");
         if ((*cmd)->arg[i])
         {
-             (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '"');
+            (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '"');
             (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\'');
             (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\\');
         }

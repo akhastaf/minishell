@@ -36,7 +36,7 @@ static		int		ft_wordscount(const char *str, char *set)
 		if (s[i] == 34 || s[i] == 39)
         {
             i++;
-            while (s[i] != 34 && s[i] != 39)
+            while (s[i] != 34 && s[i] != 39 && s[i] != 0)
                 i++;
         }
 		if (is_seperator(s, i, set) && !is_seperator(s, i + 1, set) && s[i + 1])
@@ -57,7 +57,7 @@ static	size_t		ft_wordlen(char *s, char *set, int i)
         {
             i++;
 			j++;
-            while (s[i] != 34 && s[i] != 39)
+            while (s[i] != 34 && s[i] != 39  && s[i] != 0)
 			{
                 i++;
 				j++;
