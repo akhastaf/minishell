@@ -17,6 +17,7 @@ int     builtins_env(char **arg)
 int     builtins_exit(char **arg)
 {
     int i;
+    int j;
 
     i = 0;
     if (ft_size_arg(arg) > 2)
@@ -26,10 +27,22 @@ int     builtins_exit(char **arg)
     }
     if (arg[1])
     {
+        j = 0;
         while (arg[1][i] && ft_isdigit(arg[1][i]))
+        {
+            j++;
             i++;
-        if (arg[1][i] == 0)
+        }
+        if (arg[1][i] == 0 && j <= 10)
             g_sh.ret = ft_atoi(arg[1]);
+        else
+        {
+            ft_putendl_fd("exit", 2);
+            ft_putstr_fd("bash: exit: ", 2);
+            ft_putstr_fd(arg[1],2);
+            ft_putendl_fd(": numeric argument required", 2);
+            exit(255);
+        }
         if (g_sh.ret > 255)
             g_sh.ret = g_sh.ret % 256;
         ft_putendl_fd("exit", 2);
@@ -132,9 +145,14 @@ int     builtins_export(char **arg)
         {
             if (ft_strncmp(g_sh.env[i], "_=", 2))
             {
-                write(1, "declare -x ", 11);
-                write(1, g_sh.env[i], ft_strlen(g_sh.env[i]));
-                write(1, "\n", 1);
+                n = ft_strchrn(g_sh.env[i], '=');
+                var = ft_strndup(g_sh.env[i], n + 1);
+                ft_putstr_fd("declare -x ", 1);
+                ft_putstr_fd(var , 1);
+                ft_putstr_fd("\"", 1);
+                ft_putstr_fd(g_sh.env[i] + n + 1, 1);
+                ft_putendl_fd("\"", 1);
+                free(var);
             }
             i++;
         }

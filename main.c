@@ -26,6 +26,7 @@ void sig_c(int signum)
 
 int     main(int ac, char **av, char **env)
 {
+    int c;
     // char *cmd;
     // char *cmd1;
     signal(SIGINT, sig_c);
@@ -39,7 +40,15 @@ int     main(int ac, char **av, char **env)
     g_sh.in = dup(0);
     g_sh.out = dup(1);
     increment_shlvl();
-    minishell_loop(env);
+    ft_envremove("OLDPWD");
+    if (ac == 3 && !ft_strcmp(av[1], "-c"))
+    {
+        g_sh.line = ft_strdup(av[2]);
+        c = 1;
+    }
+    else
+     c = 0;
+    minishell_loop(env, c);
     return g_sh.ret;
 }
 

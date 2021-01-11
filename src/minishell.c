@@ -72,7 +72,7 @@ void    ft_print_prompt()
     ft_putstr_fd(pwd, 2);
     ft_putstr_fd("$>\033[0m", 2);
 }
-void        minishell_loop(char **env)
+void        minishell_loop(char **env, int c)
 {
     int status;
     int r;
@@ -82,12 +82,15 @@ void        minishell_loop(char **env)
     while(status)
     {
         g_sh.error = 0;
-        g_sh.line = NULL;
-        tmp = NULL;
-        ft_print_prompt();
-        while ((r = readline()) == 0)
-            tmp = ft_strjoin(tmp, g_sh.line);
-        g_sh.line = ft_strjoin(tmp, g_sh.line);
+        if (!c)
+        {
+            g_sh.line = NULL;
+            tmp = NULL;
+            ft_print_prompt();
+            while ((r = readline()) == 0)
+                tmp = ft_strjoin(tmp, g_sh.line);
+            g_sh.line = ft_strjoin(tmp, g_sh.line);
+        }
         if (!check_syntax())
         {
             process_line();
@@ -99,8 +102,13 @@ void        minishell_loop(char **env)
             reset_std();
             g_sh.cmdlist = NULL;
         }else
+        {
             ft_putendl_fd("syntax error", 2);
+            g_sh.status = 258;
+        }
         free(g_sh.line);
+        if (c)
+            break ;
         g_sh.pid = 0;
     }
 }
@@ -166,25 +174,26 @@ int     check_red()
     if (ft_strnchr(g_sh.line, "<<") || ft_strnchr(g_sh.line, ">>>"))
         return 1;
     i = 0;
-    // while (g_sh.line[i])
-    // {
-    //     if (g_sh.line[i] == '>' && g_sh.line[i + 1] == '>')
-    //     {
-    //         i++;
-    //         while (g_sh.line[i] == ' ' || g_sh.line[i] == '\t')
-    //             i++;
-    //         if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
-    //             return 1;
-    //     }
-    //     else if (g_sh.line[i] == '>' || g_sh.line[i] == '<')
-    //     {
-    //         while (g_sh.line[i] == ' ' || g_sh.line[i] == '\t')
-    //                 i++;
-    //         if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
-    //             return 1;
-    //     }
-    //     i++;
-    // }
+    while (g_sh.line[i])
+    {
+        if (g_sh.line[i] == '>' && g_sh.line[i + 1] == '>')
+        {
+            i+= 2;
+            while (g_sh.line[i] == ' ' || g_sh.line[i] == '\t')
+                i++;
+            if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
+                return 1;
+        }
+        else if (g_sh.line[i] == '>' || g_sh.line[i] == '<')
+        {
+            i++;
+            while (g_sh.line[i] == ' ' || g_sh.line[i] == '\t')
+                    i++;
+            if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
+                return 1;
+        }
+        i++;
+    }
     return 0;
 }
 

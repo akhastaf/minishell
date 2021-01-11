@@ -78,7 +78,8 @@ void    ft_launch(t_cmd *cmd)
         }
     }
     close(cmd->pipe[1]);
-    waitpid(g_sh.pid, &g_sh.status, 0);
+    if (!cmd->opr || (cmd->opr && cmd->opr[0] != '|'))
+        waitpid(g_sh.pid, &g_sh.status, 0);
     g_sh.status = WEXITSTATUS(g_sh.status);
 }
 

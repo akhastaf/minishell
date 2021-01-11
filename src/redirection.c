@@ -90,9 +90,9 @@ int    get_option(t_red *red)
     if (red->type && red->type[0] == '>' && red->type[1] != '>')
         option = O_CREAT | O_WRONLY | O_TRUNC;
     else if (red->type && red->type[0] == '<')
-        option = O_RDONLY | O_TRUNC;
+        option = O_RDONLY;
     else if (red->type && !ft_strcmp(red->type, ">>"))
-        option = O_CREAT | O_WRONLY | O_APPEND | O_TRUNC;
+        option = O_CREAT | O_WRONLY | O_APPEND;
     return option;
 }
 

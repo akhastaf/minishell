@@ -74,7 +74,7 @@ typedef struct s_sh
 t_sh    g_sh;
 
 // MINISHELLL
-void        minishell_loop(char **env);
+void        minishell_loop(char **env, int c);
 void    ft_print_prompt();
 int    init_sh(char **env);
 int    ft_envadd(char *var);
