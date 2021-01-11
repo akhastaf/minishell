@@ -20,7 +20,7 @@ void sig_c(int signum)
     if (!g_sh.pid && signum == SIGINT)
     {
         write(1, "\n", 1);
-        ft_printf_prompt();
+        ft_print_prompt();
     }
 }
 

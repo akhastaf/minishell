@@ -63,15 +63,14 @@ void	print_cmd(t_cmd *l)
 		tmp = tmp->next;
 	}
 }
-void    ft_printf_prompt()
+void    ft_print_prompt()
 {
     char *pwd;
 
     pwd = getcwd(NULL, 0);
-    write(1, "\033[0;32m", 8);
-    write(1, pwd, ft_strlen(pwd));
-    write(1, "$> ", 3);
-    write(1, "\033[0m", 5);
+    ft_putstr_fd("\033[0;32m", 2);
+    ft_putstr_fd(pwd, 2);
+    ft_putstr_fd("$>\033[0m", 2);
 }
 void        minishell_loop(char **env)
 {
@@ -85,7 +84,7 @@ void        minishell_loop(char **env)
         g_sh.error = 0;
         g_sh.line = NULL;
         tmp = NULL;
-        ft_printf_prompt();
+        ft_print_prompt();
         while ((r = readline()) == 0)
             tmp = ft_strjoin(tmp, g_sh.line);
         g_sh.line = ft_strjoin(tmp, g_sh.line);
@@ -130,6 +129,8 @@ int    check_syntax()
         return 1;
     if (check_red())
         return 1;
+    // if (check_quote())
+    //     return 1;
     return 0;
 }
 
@@ -160,7 +161,49 @@ int     check_pipe()
 
 int     check_red()
 {
+    int i;
+
     if (ft_strnchr(g_sh.line, "<<") || ft_strnchr(g_sh.line, ">>>"))
         return 1;
+    i = 0;
+    // while (g_sh.line[i])
+    // {
+    //     if (g_sh.line[i] == '>' && g_sh.line[i + 1] == '>')
+    //     {
+    //         i++;
+    //         while (g_sh.line[i] == ' ' || g_sh.line[i] == '\t')
+    //             i++;
+    //         if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
+    //             return 1;
+    //     }
+    //     else if (g_sh.line[i] == '>' || g_sh.line[i] == '<')
+    //     {
+    //         while (g_sh.line[i] == ' ' || g_sh.line[i] == '\t')
+    //                 i++;
+    //         if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
+    //             return 1;
+    //     }
+    //     i++;
+    // }
     return 0;
+}
+
+int     check_quote()
+{
+    int i;
+    int d;
+    int s;
+    int error;
+
+    i = 0;
+    error = 0;
+    while (g_sh.line[i])
+    {
+        if (g_sh.line[i] == '"' && g_sh.line[i - 1] != '\\')
+            error = (ft_strchr(g_sh.line + i + 1, '"')) ? 0 : 1;
+        if (g_sh.line[i] == '\'' && g_sh.line[i - 1] != '\\' && !d)
+            error = (ft_strchr(g_sh.line + i + 1, '\'')) ? 0 : 1;
+        i++;
+    }
+    return error;
 }

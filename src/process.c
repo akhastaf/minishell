@@ -59,7 +59,6 @@ void    process_line()
             arg =  ft_split(cmd[i], " ");
             if (opr)
                 arg = ft_remove_arg(arg, opr);
-            // arg = ft_argtrim(arg, "'\"");
             new = ft_cmd_new(ft_strtrim(ft_getpath(ft_strtrim(arg[0], " ")), " "), arg, opr, red);
             ft_cmd_add_back(&g_sh.cmdlist, new);
             if (!opr && cmd[i + 1])

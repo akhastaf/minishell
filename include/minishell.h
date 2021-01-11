@@ -44,8 +44,8 @@ typedef struct s_red
 typedef struct  s_cmd
 {
     char    *path; // /usr/bin/grep 
-    char    **arg;
-    char    *opr;
+    char    **arg;  // ["grep", "hdjh", NULL]
+    char    *opr; // "|" ";" NULL
     int     pipe[2];
     int     fdin;
     int     fdout;
@@ -75,7 +75,7 @@ t_sh    g_sh;
 
 // MINISHELLL
 void        minishell_loop(char **env);
-void    ft_printf_prompt();
+void    ft_print_prompt();
 int    init_sh(char **env);
 int    ft_envadd(char *var);
 int        readline();
@@ -93,6 +93,7 @@ void    ft_warp_ref(t_cmd **cmd);
 int    check_syntax();
 int     check_pipe();
 int     check_red();
+int     check_quote();
 
 // ENV
 char    *ft_getenv(char *var);
@@ -118,7 +119,6 @@ int     builtins_echo(char **arg);
 int     builtins_unset(char **arg);
 int     ft_isbuiltins(char *path);
 void    builtins_init();
-int     builtins_nothing(char **arg);
 
 // REDIRECTION
 t_red   *get_redirection(char *cmd);

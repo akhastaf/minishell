@@ -30,11 +30,13 @@ int     builtins_exit(char **arg)
             i++;
         if (arg[1][i] == 0)
             g_sh.ret = ft_atoi(arg[1]);
+        if (g_sh.ret > 255)
+            g_sh.ret = g_sh.ret % 256;
+        ft_putendl_fd("exit", 2);
+        exit(g_sh.ret);
     }
-    else
-        g_sh.ret = 0;
-    ft_putendl_fd("exit", 1);
-    exit(g_sh.ret);
+    ft_putendl_fd("exit", 2);
+    exit(g_sh.status);
     return g_sh.ret;
 }
 
@@ -43,8 +45,7 @@ int     builtins_pwd(char **arg)
     char    *pwd;
 
     pwd = getcwd(NULL, 0);
-    write(1, pwd, ft_strlen(pwd));
-    write(1, "\n", 1);
+    ft_putendl_fd(pwd, 1);
     return 0;
 }
 
@@ -123,6 +124,7 @@ int     builtins_export(char **arg)
     char *var;
     char *val;
 
+    val = NULL;
     if (ft_size_arg(arg) == 1)
     {
         i = 0;
@@ -141,8 +143,15 @@ int     builtins_export(char **arg)
     while (arg[i])
     {
         n = ft_strchrn(arg[i], '=');
-        var = ft_strndup(arg[i], n);
-        val = ft_strtrim(arg[i] + n + 1, "'\"");
+        if (arg[i][n - 1] == '+')
+        {
+            var = ft_strndup(arg[i], n - 1);
+            val = ft_getenv(var);
+        }
+        else
+            var = ft_strndup(arg[i], n);
+        val = ft_strjoin(val, arg[i] + n + 1);
+        val = ft_strtrim(val, "'\"");
         arg[i] = ft_strjoin(var, "=");
         arg[i] = ft_strjoin(arg[i], val);
         if (ft_getenv(var))
@@ -170,7 +179,6 @@ int     builtins_unset(char **arg)
     return 0;
 }
 
-
 void    builtins_init()
 {
     g_sh.builtins_fun[0] = &builtins_pwd;
@@ -187,6 +195,7 @@ void    builtins_init()
     g_sh.builtins_str[4] = "unset";
     g_sh.builtins_str[5] = "export";
     g_sh.builtins_str[6] = "exit";
+    
 }
 
 int    builtins(t_cmd cmd)
