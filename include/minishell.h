@@ -41,6 +41,7 @@ typedef struct s_red
     struct s_red *next;
 }   t_red;
 
+
 typedef struct  s_cmd
 {
     char    *path; // /usr/bin/grep 
@@ -69,6 +70,7 @@ typedef struct s_sh
     int     is_b;
     int     ret;
     int     error;
+    char    *errors[10];
     char    *home;
 }       t_sh;
 t_sh    g_sh;
@@ -90,7 +92,7 @@ char    *ft_refactor_line(char *s);
 void    ft_warp_ref(t_cmd **cmd);
 
 // Error
-int    check_syntax();
+char    *check_syntax();
 int     check_pipe();
 int     check_red();
 int     check_quote();

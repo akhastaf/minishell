@@ -11,6 +11,12 @@ char     *ft_strnchr(char *s, char *set)
 	j = 0;
 	while (s[i + j])
 	{
+		if (s[i + j] == '"')
+		{
+			i++;
+			while (s[i + j] && s[i + j] != '"')
+				i++;
+		}
 		while (s[i + j] == set[j])
 		{
 			j++;

@@ -47,6 +47,13 @@ t_red   *get_redirection(char *cmd)
     redlist = NULL;
     while (cmd[i])
     {
+        if (cmd[i] == '"')
+        {
+            i++;
+            while (cmd[i] != '"')
+                i++;
+            i++;
+        }
         if (cmd[i] == '>' && cmd[i + 1] == '>')
         {
             type = ft_strdup(">>");

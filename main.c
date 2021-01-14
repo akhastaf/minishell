@@ -48,6 +48,7 @@ int     main(int ac, char **av, char **env)
     }
     else
      c = 0;
+    //printf("%s\n", ft_strnchr(g_sh.line, ";|"));
     minishell_loop(env, c);
     return g_sh.ret;
 }

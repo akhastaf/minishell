@@ -7,8 +7,8 @@ int     builtins_env(char **arg)
     i = 0;
     while (g_sh.env[i])
     {
-        write(1, g_sh.env[i], ft_strlen(g_sh.env[i]));
-        write(1, "\n", 1);
+        if (ft_strchr(g_sh.env[i], '='))
+            ft_putendl_fd(g_sh.env[i], 1); 
         i++;
     }
     return 0;
@@ -113,20 +113,34 @@ int     builtins_echo(char **arg)
     int l;
 
     n = 0;
-    if (arg[1])
-        if (!ft_strcmp(arg[1], "-n"))
-            n = 1;
     i = 1;
-    while (arg[i + n])
+    while (arg[i])
     {
-        l = ft_strlen(arg[i + n]);
-        write(1, arg[i + n], l);
-        if (arg[i + n + 1])
-            write(1, " ", 1);
+        if (!ft_strcmp(arg[i], "-n"))
+            n = 1;
+        else if (!ft_strncmp(arg[i], "-n", 2))
+        {
+            l = 1;
+            while (arg[i][l] == 'n')
+                l++;
+            if (!arg[i][l])
+                n = 1;
+            else
+                break ;
+        }
+        else
+            break ;
+        i++;
+    }
+    while (arg[i])
+    {
+        ft_putstr_fd(arg[i], 1);
+        if (arg[i + 1])
+            ft_putstr_fd(" ", 1);
         i++;
     }
     if (!n)
-        write(1, "\n", 1);
+        ft_putstr_fd("\n", 1);
     return 0;
 }
 
@@ -138,6 +152,7 @@ int     builtins_export(char **arg)
     char *val;
 
     val = NULL;
+    n = 0;
     if (ft_size_arg(arg) == 1)
     {
         i = 0;
@@ -146,28 +161,62 @@ int     builtins_export(char **arg)
             if (ft_strncmp(g_sh.env[i], "_=", 2))
             {
                 n = ft_strchrn(g_sh.env[i], '=');
-                var = ft_strndup(g_sh.env[i], n + 1);
                 ft_putstr_fd("declare -x ", 1);
-                ft_putstr_fd(var , 1);
-                ft_putstr_fd("\"", 1);
-                ft_putstr_fd(g_sh.env[i] + n + 1, 1);
-                ft_putendl_fd("\"", 1);
+                if (n)
+                {
+                    var = ft_strndup(g_sh.env[i], n + 1);
+                    ft_putstr_fd(var , 1);
+                    ft_putstr_fd("\"", 1);
+                    ft_putstr_fd(g_sh.env[i] + n + 1, 1);
+                    ft_putendl_fd("\"", 1);
+                }
+                else
+                {
+                    var = ft_strdup(g_sh.env[i]);
+                    ft_putendl_fd(var , 1);
+                }
                 free(var);
             }
             i++;
         }
     }
     i = 1;
+    n = 0;
     while (arg[i])
     {
+        n = ft_strchrn(arg[i], '+');
+        if (arg[i][0] == '=')
+        {
+            ft_putendl_fd("bash: export: `=': not a valid identifier", 2);
+            return 1;
+        }
+        else if (n && arg[i][n + 1]  != '=')
+        {
+             ft_putstr_fd("bash: export: `",2);
+             ft_putstr_fd(arg[i], 2);
+             ft_putendl_fd("': not a valid identifier", 2);
+             return 1;
+        }
         n = ft_strchrn(arg[i], '=');
+        if (!n)
+        {
+            ft_envadd(arg[i]);
+            return 0;
+        }
         if (arg[i][n - 1] == '+')
         {
             var = ft_strndup(arg[i], n - 1);
             val = ft_getenv(var);
         }
-        else
+        else if (n)
             var = ft_strndup(arg[i], n);
+        if (ft_isdigit(var[0]))
+        {
+            ft_putstr_fd("bash: export: `", 2);
+            ft_putstr_fd(var, 2);
+            ft_putendl_fd("': not a valid identifier", 2);
+            return 1;
+        }
         val = ft_strjoin(val, arg[i] + n + 1);
         val = ft_strtrim(val, "'\"");
         arg[i] = ft_strjoin(var, "=");

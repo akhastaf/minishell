@@ -7,7 +7,7 @@ int     excute(t_cmd *cmdlist)
 
     g_sh.is_b = 0;
     cmd = cmdlist;
-    while (cmd )
+    while (cmd)
     {
         ft_warp_ref(&cmd);
         setup_pipe(cmd);
@@ -57,13 +57,9 @@ void    ft_launch(t_cmd *cmd)
             err = errno; 
             dir = opendir(cmd->path);
             ft_putstr_fd("-bash ", 2);
-            if (dir)
+            if (err == 2 || dir)
             {
-                ft_putstr_fd(cmd->path, 2);
-                ft_putendl_fd(": is a directory", 2);
-            }
-            else if (err == 2)
-            {
+                //closedir(dir);
                 ft_putstr_fd(cmd->path, 2);
                 ft_putendl_fd(": command not found", 2);
                 exit(127);
@@ -78,27 +74,39 @@ void    ft_launch(t_cmd *cmd)
         }
     }
     close(cmd->pipe[1]);
-    if (!cmd->opr || (cmd->opr && cmd->opr[0] != '|'))
-        waitpid(g_sh.pid, &g_sh.status, 0);
+    //if (!cmd->opr || (cmd->opr && cmd->opr[0] != '|'))
+    waitpid(g_sh.pid, &g_sh.status, 0);
     g_sh.status = WEXITSTATUS(g_sh.status);
 }
 
 void    ft_warp_ref(t_cmd **cmd)
 {
     int i;
-    char **ar;
+    int j;
+    char **arg;
+    char *tmp;
 
+    (*cmd)->path = ft_refactor_line((*cmd)->path);
+    arg = malloc((ft_size_arg((*cmd)->arg) + 1) * sizeof(char*));
     i = 0;
+    j = 0;
     while ((*cmd)->arg[i])
     {
-        (*cmd)->arg[i] = ft_refactor_line((*cmd)->arg[i]);
-        if ((*cmd)->arg[i])
+        tmp = ft_refactor_line((*cmd)->arg[i]);
+        if (tmp)
         {
-            (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '"');
-            (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\'');
-            (*cmd)->arg[i] = ft_strremove((*cmd)->arg[i], '\\');
-            //printf("arg : %s\n", (*cmd)->arg[i]);
+            arg[j] = tmp;
+            if (arg[j])
+            {
+                arg[j] = ft_strremove(arg[j], '"');
+                arg[j] = ft_strremove(arg[j], '\'');
+                arg[j] = ft_strremove(arg[j], '\\');
+                //printf("arg : %s\n", (*cmd)->arg[i]);
+            }
+            j++;
         }
         i++;
     }
+    arg[j] = NULL;
+    (*cmd)->arg = arg;
 }

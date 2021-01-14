@@ -77,6 +77,7 @@ void        minishell_loop(char **env, int c)
     int status;
     int r;
     char *tmp;
+    char *err;
 
     status = 1;
     while(status)
@@ -91,7 +92,7 @@ void        minishell_loop(char **env, int c)
                 tmp = ft_strjoin(tmp, g_sh.line);
             g_sh.line = ft_strjoin(tmp, g_sh.line);
         }
-        if (!check_syntax())
+        if (!(err = check_syntax()))
         {
             process_line();
             open_pipes();
@@ -103,7 +104,7 @@ void        minishell_loop(char **env, int c)
             g_sh.cmdlist = NULL;
         }else
         {
-            ft_putendl_fd("syntax error", 2);
+            ft_putendl_fd(err, 2);
             g_sh.status = 258;
         }
         free(g_sh.line);
@@ -131,15 +132,26 @@ int    init_sh(char **env)
     return 1;
 }
 
-int    check_syntax()
+char    *check_syntax()
 {
-    if (check_pipe())
-        return 1;
-    if (check_red())
-        return 1;
-    // if (check_quote())
-    //     return 1;
-    return 0;
+    int r;
+    g_sh.errors[1] = ft_strdup("bash: syntax error near unexpected token `|'");
+    g_sh.errors[2] = ft_strdup("bash: syntax error near unexpected token `;'");
+    g_sh.errors[3] = ft_strdup("bash: syntax error near unexpected token `||'");
+    g_sh.errors[4] = ft_strdup("bash: syntax error near unexpected token `;;'");
+    g_sh.errors[5] = ft_strdup("bash: syntax error near unexpected token `|;'");
+    g_sh.errors[6] = ft_strdup("bash: syntax error near unexpected token `;|'");
+    g_sh.errors[7] = ft_strdup("bash: syntax error near unexpected token `<<'");
+    g_sh.errors[8] = ft_strdup("bash: syntax error near unexpected token `>>>'");
+    g_sh.errors[9] = ft_strdup("bash: syntax error near unexpected token");
+
+    if ((r = check_pipe()))
+        return g_sh.errors[r];
+    if ((r = check_red()))
+        return g_sh.errors[r];
+    // if ((r = check_quote()))
+    //     return g_sh.errors[r];
+    return NULL;
 }
 
 int     check_pipe()
@@ -147,23 +159,31 @@ int     check_pipe()
     int l;
 
     l = 0;
-    while (g_sh.line[l] == ' ' || g_sh.line[l] == '\t')
+    while (g_sh.line[l] == ' ')
         l++;
-    if (g_sh.line[l] == '|' || g_sh.line[l] == ';')
+    if (g_sh.line[l] == '|')
         return 1;
+    else if (g_sh.line[l] == ';')
+        return 2;
     l = ft_strlen(g_sh.line);
     l--;
     while (g_sh.line[l])
     {
-        if (g_sh.line[l] == ' ' || g_sh.line[l] == '\t')
+        if (g_sh.line[l] == ' ')
             l--;
         if (g_sh.line[l] == '|')
             return 1;
         else
             break ;
     }
-    if (ft_strnchr(g_sh.line, "||") || ft_strnchr(g_sh.line, ";;") || ft_strnchr(g_sh.line, "|;") || ft_strnchr(g_sh.line, ";|"))
-        return 1;
+    if (ft_strnchr(g_sh.line, "||"))
+        return 3;
+    if (ft_strnchr(g_sh.line, ";;"))
+        return 4; 
+    if (ft_strnchr(g_sh.line, "|;"))
+        return 5;
+    if (ft_strnchr(g_sh.line, ";|"))
+        return 6;
     return 0;
 }
 
@@ -171,26 +191,28 @@ int     check_red()
 {
     int i;
 
-    if (ft_strnchr(g_sh.line, "<<") || ft_strnchr(g_sh.line, ">>>"))
-        return 1;
+    if (ft_strnchr(g_sh.line, "<<"))
+        return 7;
+    if (ft_strnchr(g_sh.line, ">>>"))
+        return 8;
     i = 0;
     while (g_sh.line[i])
     {
         if (g_sh.line[i] == '>' && g_sh.line[i + 1] == '>')
         {
             i+= 2;
-            while (g_sh.line[i] == ' ' || g_sh.line[i] == '\t')
+            while (g_sh.line[i] == ' ')
                 i++;
             if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
-                return 1;
+                return 9;
         }
         else if (g_sh.line[i] == '>' || g_sh.line[i] == '<')
         {
             i++;
-            while (g_sh.line[i] == ' ' || g_sh.line[i] == '\t')
+            while (g_sh.line[i] == ' ')
                     i++;
             if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
-                return 1;
+                return 9;
         }
         i++;
     }
@@ -205,13 +227,13 @@ int     check_quote()
     int error;
 
     i = 0;
-    error = 0;
+    error = 9;
     while (g_sh.line[i])
     {
         if (g_sh.line[i] == '"' && g_sh.line[i - 1] != '\\')
-            error = (ft_strchr(g_sh.line + i + 1, '"')) ? 0 : 1;
+            error += (ft_strchr(g_sh.line + i + 1, '"')) ? 0 : 1;
         if (g_sh.line[i] == '\'' && g_sh.line[i - 1] != '\\' && !d)
-            error = (ft_strchr(g_sh.line + i + 1, '\'')) ? 0 : 1;
+            error += (ft_strchr(g_sh.line + i + 1, '\'')) ? 0 : 1;
         i++;
     }
     return error;

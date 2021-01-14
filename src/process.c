@@ -90,17 +90,19 @@ char    *ft_refactor_line(char *s)
         }
         if (s[i] == '$' && !ft_is_space(s[i + 1]) && s[i - 1] != '\\')
         {
+            var = ft_getword(s + i + 1, "\" '\\$=");
             if (s[i + 1] == '?')
             {
                 line = ft_strjoin(line, ft_itoa(g_sh.status));
                 i++;
             }
-            else
+            else if (var[0])
             {
-                var = ft_getword(s + i + 1, "\" '\\");
                 line = ft_strjoin(line, ft_getenv(var));
                 i = i + ft_strlen(var);
             }
+            else
+                line = ft_strappend(line, s[i]);
         }
         else if (s[i] == '~'  && s[i - 1] != '\\')
         {
