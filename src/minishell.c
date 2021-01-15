@@ -30,17 +30,17 @@ void        minishell_loop(char **env)
     // }
     while(status)
     {
-        pwd = ft_getenv(env, "PWD");
-        while (path[i])
-        {
-            printf("%s\n", path[i]);
-            i++;
-        }
+        // pwd = ft_getenv(env, "PWD");
+        // while (path[i])
+        // {
+        //     printf("%s\n", path[i]);
+        //     i++;
+        // }
         //read(0, l, 10);
-        write(1, "\033[0;32m", 8);
-        write(1, pwd, strlen(pwd));
+        // write(1, "\033[0;32m", 8);
+        // write(1, pwd, strlen(pwd));
         write(1, "$> ", 3);
-        write(1, "\033[0m", 5);
+        // write(1, "\033[0m", 5);
         readline();
         printf("%s\n", g_line);
         free(g_line);
