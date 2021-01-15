@@ -38,31 +38,43 @@ void    my_execute(t_cmd cmdlist)
 
 int     main()
 {
-    t_cmd *cmdlist;
-    pid_t pid;
-    t_cmd *cmd;
-    char *a[] = { "/sbin/ping", "-c", "2", "google.com", NULL };
-    char *b[] = { "/bin/ls", "-all", NULL };
-    
-    cmdlist = malloc(sizeof(t_cmd));
-    cmd = malloc(sizeof(t_cmd));
-
-    cmdlist->path = "/sbin/ping";
-    cmdlist->arg = a;
-    cmdlist->opr = "|";
-    cmdlist->next = cmd;
-
-    cmd->path = "/bin/ls";
-    cmd->arg = b;
-    cmd->opr = NULL;
-    cmd->next = NULL;
-
-
-
-    while (cmdlist)
+    char *buff;
+    int r;
+    char *buf;
+    buff = malloc(2048);
+    buf = NULL;
+    while ((r = read(0, buff, 1024)) > 0)
     {
-        printf("%s\n", cmdlist->path);
-        my_execute(*cmdlist);   
-        cmdlist = cmdlist->next;
+        buff[1024] = 0;
+        buf = strjoin(buf, buff);
     }
+    printf("%d\n", (int)strlen(buff)); 
+    printf("|%s|\n", buff);
+    // t_cmd *cmdlist;
+    // pid_t pid;
+    // t_cmd *cmd;
+    // char *a[] = { "/sbin/ping", "-c", "2", "google.com", NULL };
+    // char *b[] = { "/bin/ls", "-all", NULL };
+    
+    // cmdlist = malloc(sizeof(t_cmd));
+    // cmd = malloc(sizeof(t_cmd));
+
+    // cmdlist->path = "/sbin/ping";
+    // cmdlist->arg = a;
+    // cmdlist->opr = "|";
+    // cmdlist->next = cmd;
+
+    // cmd->path = "/bin/ls";
+    // cmd->arg = b;
+    // cmd->opr = NULL;
+    // cmd->next = NULL;
+
+
+
+    // while (cmdlist)
+    // {
+    //     printf("%s\n", cmdlist->path);
+    //     my_execute(*cmdlist);   
+    //     cmdlist = cmdlist->next;
+    // }
 }

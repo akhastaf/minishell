@@ -20,7 +20,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 1024
 # define ULIMIT 1
 
 typedef struct  s_cmd
