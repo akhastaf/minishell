@@ -58,6 +58,8 @@ int     builtins_pwd(char **arg)
     char    *pwd;
 
     pwd = getcwd(NULL, 0);
+    if (!pwd)
+        pwd = ft_getenv("PWD");
     ft_putendl_fd(pwd, 1);
     return 0;
 }
@@ -89,9 +91,17 @@ int     builtins_cd(char **arg)
     }
     if (!chdir(arg[1]))
     {
-        pwd = getcwd(NULL, 0);
+        if (!(pwd = getcwd(NULL, 0)))
+        {
+            ft_putstr_fd("cd: error retrieving current directory: getcwd: cannot access parent directories: ", 2);
+            ft_putendl_fd(strerror(errno), 2);
+            pwd = ft_strdup(ft_getenv("PWD"));
+            pwd = ft_strappend(pwd, '/');
+            pwd = ft_strjoin(pwd, arg[1]);
+        }
         ft_setenv("PWD", pwd);
-        ft_setenv("OLDPWD", oldpwd);
+        if (oldpwd)
+            ft_setenv("OLDPWD", oldpwd);
         free(pwd);
     }
     else
