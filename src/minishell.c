@@ -230,9 +230,9 @@ int     check_quote()
     error = 9;
     while (g_sh.line[i])
     {
-        if (g_sh.line[i] == '"' && g_sh.line[i - 1] != '\\')
+        if (g_sh.line[i] == '"' && g_sh.line[(i - 1 < 0 ? 0 : i - 1)] != '\\')
             error += (ft_strchr(g_sh.line + i + 1, '"')) ? 0 : 1;
-        if (g_sh.line[i] == '\'' && g_sh.line[i - 1] != '\\' && !d)
+        if (g_sh.line[i] == '\'' && g_sh.line[(i - 1 < 0 ? 0 : i - 1)] != '\\' && !d)
             error += (ft_strchr(g_sh.line + i + 1, '\'')) ? 0 : 1;
         i++;
     }

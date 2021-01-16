@@ -20,7 +20,7 @@ char    *ft_getenv(char *var)
         
         i++;
     }
-    return NULL;
+    return (NULL);
 }
 
 int    ft_setenv(char *var, char *val)

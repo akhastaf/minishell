@@ -28,10 +28,10 @@ char    **ft_remove_arg(char **arg, char *str)
         }
         i++;
     }
-    if (ft_strchr(arg[i - 1], '|') || ft_strchr(arg[i - 1], ';'))
+    if (ft_strchr(arg[(i - 1 < 0 ? 0 : i - 1)], '|') || ft_strchr(arg[(i - 1 < 0 ? 0 : i - 1)], ';'))
     {
-        l = ft_strlen(arg[i - 1]);
-        arg[i - 1][l - 1] = 0;
+        l = ft_strlen(arg[(i - 1 < 0 ? 0 : i - 1)]);
+        arg[(i - 1 < 0 ? 0 : i - 1)][l - 1] = 0;
     }
     return arg;
 }
@@ -79,7 +79,7 @@ char    *ft_refactor_line(char *s)
     i = 0;
     while (s[i])
     {
-        if (s[i] == '\'' && s[i - 1] != '\\')
+        if (s[i] == '\'' && s[(i - 1 < 0 ? 0 : i - 1)] != '\\')
         {
             i++;
             while (s[i] != '\'')
@@ -88,7 +88,7 @@ char    *ft_refactor_line(char *s)
                 i++;
             }
         }
-        if (s[i] == '$' && !ft_is_space(s[i + 1]) && s[i - 1] != '\\')
+        if (s[i] == '$' && !ft_is_space(s[i + 1]) && s[(i - 1 < 0 ? 0 : i - 1)] != '\\')
         {
             var = ft_getword(s + i + 1, "\" '\\$=");
             if (s[i + 1] == '?')
@@ -104,7 +104,7 @@ char    *ft_refactor_line(char *s)
             else
                 line = ft_strappend(line, s[i]);
         }
-        else if (s[i] == '~'  && s[i - 1] != '\\')
+        else if (s[i] == '~'  && s[(i - 1 < 0 ? 0 : i - 1)] != '\\')
         {
             line = ft_tilde(s, line, i);
             i = (s[i + 1] == '+' ? i + 1 : i) + (s[i + 1] == '-' ? i + 1 : i);

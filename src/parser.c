@@ -20,8 +20,8 @@ int    readline()
 	// printf("|%s| %d\n", g_sh.line, r);
 	if ((r == -2 && !g_sh.line) || (!r && !g_sh.line[0]))
 	{
-		ft_putendl_fd("\nexit", 1);
-		exit(0);
+		ft_putendl_fd("\nexit", 2);
+		exit(g_sh.status);
 	}
 	return r;
 }

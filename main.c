@@ -58,8 +58,10 @@ void    increment_shlvl()
     char *shlvl;
     char *tmp;
     int value;
-    
-    value = atoi(ft_getenv("SHLVL"));
+    char *env;
+
+    env = ft_getenv("SHLVL");
+    value = ft_atoi(env ? env : "");
     ft_envremove("SHLVL");
     shlvl = ft_strdup("SHLVL=");
     tmp = shlvl;
