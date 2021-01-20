@@ -83,6 +83,8 @@ int    ft_envadd(char *var);
 int        readline();
 char    *ft_tilde(char *s, char *line, int i);
 void    increment_shlvl();
+void    ft_set_pwd();
+void    ft_set_lstcmd();
 
 // Parser
 int get_next_line(int fd, char **line);
@@ -183,4 +185,6 @@ void	ft_putstr_fd(char *s, int fd);
 char     *ft_strnchr(char *s, char *set);
 int     ft_is_empty(char *s);
 void	*ft_memdel(void *ptr);
+int		ft_tolower(int c);
+char *ft_strtolower(char *str);
 #endif

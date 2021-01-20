@@ -22,7 +22,7 @@ int     builtins_exit(char **arg)
     i = 0;
     if (ft_size_arg(arg) > 2)
     {
-        write(2, "-bash: exit: too many arguments\n", 33);
+        write(2, "minishell: exit: too many arguments\n", 33);
         return 1;
     }
     if (arg[1])
@@ -38,7 +38,7 @@ int     builtins_exit(char **arg)
         else
         {
             ft_putendl_fd("exit", 2);
-            ft_putstr_fd("bash: exit: ", 2);
+            ft_putstr_fd("minishell: exit: ", 2);
             ft_putstr_fd(arg[1],2);
             ft_putendl_fd(": numeric argument required", 2);
             exit(255);
@@ -71,12 +71,24 @@ int     builtins_cd(char **arg)
     char *pwd;
     char *s;
 
+
+
+    oldpwd = ft_strdup(ft_getenv("PWD") ? ft_getenv("PWD") : "");
     if (!arg[1])
     {
-        s = ft_getenv("HOME");
-        arg = ft_argadd(arg, s);
+        if (!(s = ft_getenv("HOME")))
+        {
+            ft_putendl_fd("minishell: cd: HOME not set", 2);
+            return 1;
+        }
+        arg[1] = ft_strdup(s);
     }
-    oldpwd = getcwd(NULL, 0);
+    else if (ft_is_empty(arg[1]) && oldpwd)
+    {
+        ft_setenv("OLDPWD", oldpwd);
+        return 1;
+    }
+    
     if (!ft_strcmp(arg[1], "-"))
     {
         opwd = ft_getenv("OLDPWD");
@@ -84,7 +96,7 @@ int     builtins_cd(char **arg)
             ft_putendl_fd(opwd, 1);
         else
         {
-            ft_putendl_fd("-bash: cd: OLDPWD not set", 2);
+            ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
             return 1;
         }
             arg[1] = ft_strdup(opwd);
@@ -106,7 +118,7 @@ int     builtins_cd(char **arg)
     }
     else
     {
-        ft_putstr_fd("-bash: cd: ", 2);
+        ft_putstr_fd("minishell: cd: ", 2);
         ft_putstr_fd(arg[1], 2);
         ft_putstr_fd(": ", 2);
         ft_putendl_fd(strerror(errno), 2);
@@ -144,7 +156,7 @@ int     builtins_echo(char **arg)
     }
     while (arg[i])
     {
-        ft_putstr_fd(arg[i], 1);
+        ft_putstr_fd(ft_strtrim(arg[i], " "), 1);
         if (arg[i + 1])
             ft_putstr_fd(" ", 1);
         i++;
@@ -197,12 +209,12 @@ int     builtins_export(char **arg)
         n = ft_strchrn(arg[i], '+');
         if (arg[i][0] == '=')
         {
-            ft_putendl_fd("bash: export: `=': not a valid identifier", 2);
+            ft_putendl_fd("minishell: export: `=': not a valid identifier", 2);
             return 1;
         }
         else if (n && arg[i][n + 1]  != '=')
         {
-             ft_putstr_fd("bash: export: `",2);
+             ft_putstr_fd("minishell: export: `",2);
              ft_putstr_fd(arg[i], 2);
              ft_putendl_fd("': not a valid identifier", 2);
              return 1;
@@ -222,7 +234,7 @@ int     builtins_export(char **arg)
             var = ft_strndup(arg[i], n);
         if (ft_isdigit(var[0]))
         {
-            ft_putstr_fd("bash: export: `", 2);
+            ft_putstr_fd("minishell: export: `", 2);
             ft_putstr_fd(var, 2);
             ft_putendl_fd("': not a valid identifier", 2);
             return 1;
@@ -250,6 +262,13 @@ int     builtins_unset(char **arg)
     i = 1;
     while (arg[i])
     {
+        if (ft_strchr(arg[i], ' ') || ft_strchr(arg[i], '='))
+        {
+            ft_putstr_fd("minishell: unset: `", 2);
+            ft_putstr_fd(arg[i], 2);
+            ft_putendl_fd("': not a valid identifier", 2);
+            return 1;
+        }
         ft_envremove(arg[i]);
         i++;
     }

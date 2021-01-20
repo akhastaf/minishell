@@ -15,6 +15,8 @@ int     excute(t_cmd *cmdlist)
         i = 0;
         if (!g_sh.error && cmd->path)
         {
+            if (!cmd->next)
+                ft_set_lstcmd();
             while (i < BUILTINS_NUM)
             {
                 if (!ft_strcmp(cmd->path, g_sh.builtins_str[i]))
@@ -47,6 +49,7 @@ int     excute(t_cmd *cmdlist)
 void    ft_launch(t_cmd *cmd)
 {
     DIR *dir;
+    char *path;
     int err;
 
     g_sh.pid = fork();
@@ -54,21 +57,34 @@ void    ft_launch(t_cmd *cmd)
     {
         if (execve(cmd->path, cmd->arg, g_sh.env))
         {
-            err = errno; 
-            dir = opendir(cmd->path);
-            ft_putstr_fd("-bash ", 2);
+            err = errno;
+            path = cmd->path;
+            if (!ft_strchr(cmd->path, '/') && (!ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH"))))
+                path = ft_strjoin("./", cmd->path);
+            printf("%s\n", path);
+            dir = opendir(path);
+            ft_putstr_fd("minishell: ", 2);
             if (err == 2 || dir)
             {
-                //closedir(dir);
                 ft_putstr_fd(cmd->path, 2);
-                ft_putendl_fd(": command not found", 2);
+                if (!ft_strchr(cmd->path, '/'))
+                {
+                    ft_putstr_fd(": ", 2);
+                    ft_putendl_fd(strerror(errno), 2);
+                }
+                else if (dir)
+                {
+                    ft_putendl_fd(": is a directory", 2);
+                    closedir(dir);
+                }
+                else
+                    ft_putendl_fd(": command not found", 2);
                 exit(127);
             }
             else
             {
                 ft_putstr_fd(cmd->path, 2);
-                ft_putstr_fd(": ", 2);
-                ft_putendl_fd(strerror(err), 2);
+                ft_putendl_fd(": Permission denied", 2);
             }
             exit(126);
         }
@@ -96,13 +112,10 @@ void    ft_warp_ref(t_cmd **cmd)
         if (tmp)
         {
             arg[j] = tmp;
-            if (arg[j])
-            {
-                arg[j] = ft_strremove(arg[j], '"');
-                arg[j] = ft_strremove(arg[j], '\'');
-                arg[j] = ft_strremove(arg[j], '\\');
-                //printf("arg : %s\n", (*cmd)->arg[i]);
-            }
+            arg[j] = ft_strremove(arg[j], '"');
+            arg[j] = ft_strremove(arg[j], '\'');
+            arg[j] = ft_strremove(arg[j], '\\');
+            //arg[j] = ft_strtrim(arg[j], " ");
             j++;
         }
         i++;

@@ -8,7 +8,7 @@ int main()
 
 	av[0] = strdup("./minishell");
 	av[1] = strdup("-c");
-	av[2] = strdup("echo $PWD; echo $OLDPWD; cd .; pwd; echo $PWD; echo $OLDPWD");
+	av[2] = strdup("echo ");
 	av[3] = NULL;
 
 	char **envp = malloc(sizeof(*envp) * (3));

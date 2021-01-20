@@ -11,6 +11,8 @@ char	*ft_strremove(char *s, char c)
 	l = ft_countcahr(s, c);
 	if (!l)
 		return ft_strdup(s);
+	if (ft_strlen(s) ==  l)
+		return ft_strdup("");
 	if (!(new = malloc(sizeof(char) * (ft_strlen(s) - l + 1))))
 		return NULL;
 	l = 0;
@@ -22,11 +24,11 @@ char	*ft_strremove(char *s, char c)
 			new[i] = s[l];
 			i++;
 		}
-		// else if (s[l + 1] == c)
-		// {
-		// 	new[i] = s[l];
-		// 	i++;
-		// }
+		else if (s[l + 1] == c)
+		{
+			new[i] = s[l];
+			i++;
+		}
 		l++;
 	}
 	new[i] = 0;

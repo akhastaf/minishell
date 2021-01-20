@@ -41,6 +41,7 @@ int     main(int ac, char **av, char **env)
     g_sh.out = dup(1);
     increment_shlvl();
     ft_envremove("OLDPWD");
+    ft_set_pwd();
     if (ac == 3 && !ft_strcmp(av[1], "-c"))
     {
         g_sh.line = ft_strdup(av[2]);
@@ -48,24 +49,47 @@ int     main(int ac, char **av, char **env)
     }
     else
      c = 0;
-    //printf("%s\n", ft_strnchr(g_sh.line, ";|"));
     minishell_loop(env, c);
     return g_sh.ret;
 }
 
 void    increment_shlvl()
 {
-    char *shlvl;
-    char *tmp;
     int value;
     char *env;
 
     env = ft_getenv("SHLVL");
     value = ft_atoi(env ? env : "");
+    if (value >= 200000)
+    {
+        ft_putstr_fd("minishell: warning: shell level (", 2);
+        ft_putstr_fd(ft_itoa(value + 1), 2);
+        ft_putendl_fd(") too high, resetting to 1", 2);
+        value = 0;
+    }
     ft_envremove("SHLVL");
-    shlvl = ft_strdup("SHLVL=");
-    tmp = shlvl;
-    shlvl =  ft_strjoin(shlvl, ft_itoa(value + 1));
-    ft_memdel(tmp);
-    ft_envadd(shlvl);
+    ft_setenv("SHLVL", ft_itoa(value + 1));
+}
+
+void    ft_set_pwd()
+{
+    char *pwd;
+
+    if (!(pwd = ft_getenv("PWD")))
+    {
+        if (!(pwd = getcwd(NULL, 0)))
+            pwd = ft_strdup("");
+        ft_setenv("PWD", pwd);
+        //ft_envadd(pwd);
+    }
+}
+
+void    ft_set_lstcmd()
+{
+    char *lstcmd;
+
+    lstcmd = ft_strdup(ft_cmd_last(g_sh.cmdlist)->path);
+    if (ft_getenv("_"))
+        ft_envremove("_");
+    ft_setenv("_", lstcmd);
 }

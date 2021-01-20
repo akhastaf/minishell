@@ -67,9 +67,11 @@ void    ft_print_prompt()
 {
     char *pwd;
 
-    pwd = getcwd(NULL, 0);
+    if (!(pwd = getcwd(NULL, 0)))
+        pwd = ft_getenv("PWD");
     ft_putstr_fd("\033[0;32m", 2);
-    ft_putstr_fd(pwd, 2);
+    if (pwd)
+        ft_putstr_fd(pwd, 2);
     ft_putstr_fd("$>\033[0m", 2);
 }
 void        minishell_loop(char **env, int c)
@@ -109,7 +111,7 @@ void        minishell_loop(char **env, int c)
         }
         free(g_sh.line);
         if (c)
-            break ;
+            exit(g_sh.status);
         g_sh.pid = 0;
     }
 }
@@ -135,15 +137,15 @@ int    init_sh(char **env)
 char    *check_syntax()
 {
     int r;
-    g_sh.errors[1] = ft_strdup("bash: syntax error near unexpected token `|'");
-    g_sh.errors[2] = ft_strdup("bash: syntax error near unexpected token `;'");
-    g_sh.errors[3] = ft_strdup("bash: syntax error near unexpected token `||'");
-    g_sh.errors[4] = ft_strdup("bash: syntax error near unexpected token `;;'");
-    g_sh.errors[5] = ft_strdup("bash: syntax error near unexpected token `|;'");
-    g_sh.errors[6] = ft_strdup("bash: syntax error near unexpected token `;|'");
-    g_sh.errors[7] = ft_strdup("bash: syntax error near unexpected token `<<'");
-    g_sh.errors[8] = ft_strdup("bash: syntax error near unexpected token `>>>'");
-    g_sh.errors[9] = ft_strdup("bash: syntax error near unexpected token");
+    g_sh.errors[1] = ft_strdup("minishell: syntax error near unexpected token `|'");
+    g_sh.errors[2] = ft_strdup("minishell: syntax error near unexpected token `;'");
+    g_sh.errors[3] = ft_strdup("minishell: syntax error near unexpected token `||'");
+    g_sh.errors[4] = ft_strdup("minishell: syntax error near unexpected token `;;'");
+    g_sh.errors[5] = ft_strdup("minishell: syntax error near unexpected token `|;'");
+    g_sh.errors[6] = ft_strdup("minishell: syntax error near unexpected token `;|'");
+    g_sh.errors[7] = ft_strdup("minishell: syntax error near unexpected token `<<'");
+    g_sh.errors[8] = ft_strdup("minishell: syntax error near unexpected token `>>>'");
+    g_sh.errors[9] = ft_strdup("minishell: syntax error near unexpected token");
 
     if ((r = check_pipe()))
         return g_sh.errors[r];
@@ -230,9 +232,9 @@ int     check_quote()
     error = 9;
     while (g_sh.line[i])
     {
-        if (g_sh.line[i] == '"' && g_sh.line[(i - 1 < 0 ? 0 : i - 1)] != '\\')
+        if (g_sh.line[i] == '"' && g_sh.line[(i - 1 < 0 ? 1 : i - 1)] != '\\')
             error += (ft_strchr(g_sh.line + i + 1, '"')) ? 0 : 1;
-        if (g_sh.line[i] == '\'' && g_sh.line[(i - 1 < 0 ? 0 : i - 1)] != '\\' && !d)
+        if (g_sh.line[i] == '\'' && g_sh.line[(i - 1 < 0 ? 1 : i - 1)] != '\\' && !d)
             error += (ft_strchr(g_sh.line + i + 1, '\'')) ? 0 : 1;
         i++;
     }

@@ -9,7 +9,7 @@ int     ft_countcahr(char *s, char c)
     j = 0;
     while (s[i])
     {
-        if (s[i] == c && s[(i - 1 < 0 ? 0 : i - 1)] != '\\')
+        if (s[i] == c && s[(i - 1 < 0 ? 1 : i - 1)] != '\\')
             j++;
         i++;
     }

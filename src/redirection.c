@@ -16,10 +16,11 @@ void    setup_redirection(t_cmd *cmd)
         if (cmd->fdin < 0 || cmd->fdout< 0)
         {
             g_sh.error = 1;
-            ft_putstr_fd("-bash ", 2);
+            ft_putstr_fd("minishell: ", 2);
             ft_putstr_fd(red->file, 2);
             ft_putstr_fd(": ", 2);
             ft_putendl_fd(strerror(errno), 2);
+            g_sh.status = 1;
         }
         if (red->next && cmd->fdout && red->next->type[0] != '<')
             close(cmd->fdout);

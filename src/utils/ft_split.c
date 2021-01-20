@@ -11,7 +11,7 @@ int     is_seperator(char *s, int i, char *set)
 		{
 			if (i > 0)
 			{
-				if (s[(i - 1 < 0 ? 0 : i - 1)] != '\\' || !is_specialcar(s[i]))
+				if (s[(i - 1 < 0 ? 1 : i - 1)] != '\\' || !is_specialcar(s[i]))
 					return 1;
 			}
 		}
