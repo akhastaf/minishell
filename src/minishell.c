@@ -74,7 +74,7 @@ void    ft_print_prompt()
         ft_putstr_fd(pwd, 2);
     ft_putstr_fd("$>\033[0m", 2);
 }
-void        minishell_loop(char **env, int c)
+void        minishell_loop(char **env)
 {
     int status;
     int r;
@@ -85,7 +85,7 @@ void        minishell_loop(char **env, int c)
     while(status)
     {
         g_sh.error = 0;
-        if (!c)
+        if (!g_sh.c)
         {
             g_sh.line = NULL;
             tmp = NULL;
@@ -110,7 +110,7 @@ void        minishell_loop(char **env, int c)
             g_sh.status = 258;
         }
         free(g_sh.line);
-        if (c)
+        if (g_sh.c)
             exit(g_sh.status);
         g_sh.pid = 0;
     }

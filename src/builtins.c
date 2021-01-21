@@ -17,24 +17,19 @@ int     builtins_env(char **arg)
 int     builtins_exit(char **arg)
 {
     int i;
-    int j;
 
     i = 0;
     if (ft_size_arg(arg) > 2)
     {
-        write(2, "minishell: exit: too many arguments\n", 33);
+        ft_putendl_fd("minishell: exit: too many arguments", 2);
         return 1;
     }
     if (arg[1])
     {
-        j = 0;
-        while (arg[1][i] && ft_isdigit(arg[1][i]))
-        {
-            j++;
+        while (arg[1][i] && (arg[1][i] == ' ' || arg[1][i] == '\t'))
             i++;
-        }
-        if (arg[1][i] == 0 && j <= 10)
-            g_sh.ret = ft_atoi(arg[1]);
+        if (ft_isdigit(arg[1][i]))
+            g_sh.ret = ft_atoi(arg[1] + i);
         else
         {
             ft_putendl_fd("exit", 2);
@@ -45,10 +40,12 @@ int     builtins_exit(char **arg)
         }
         if (g_sh.ret > 255)
             g_sh.ret = g_sh.ret % 256;
-        ft_putendl_fd("exit", 2);
+        if (!g_sh.c)
+            ft_putendl_fd("exit", 2);
         exit(g_sh.ret);
     }
-    ft_putendl_fd("exit", 2);
+    if (!g_sh.c)
+        ft_putendl_fd("exit", 2);
     exit(g_sh.status);
     return g_sh.ret;
 }
@@ -212,7 +209,7 @@ int     builtins_export(char **arg)
             ft_putendl_fd("minishell: export: `=': not a valid identifier", 2);
             return 1;
         }
-        else if (n && arg[i][n + 1]  != '=')
+        else if (n && n < ft_strchrn(arg[i], '=') && arg[i][n + 1]  != '=')
         {
              ft_putstr_fd("minishell: export: `",2);
              ft_putstr_fd(arg[i], 2);
@@ -258,21 +255,23 @@ int     builtins_export(char **arg)
 int     builtins_unset(char **arg)
 {
     int i;
+    int ret;
 
     i = 1;
+    ret = 0;
     while (arg[i])
     {
-        if (ft_strchr(arg[i], ' ') || ft_strchr(arg[i], '='))
+        if (ft_strchr(arg[i], ' ') || ft_strchr(arg[i], '=') || ft_is_empty(arg[i]))
         {
             ft_putstr_fd("minishell: unset: `", 2);
             ft_putstr_fd(arg[i], 2);
             ft_putendl_fd("': not a valid identifier", 2);
-            return 1;
+            ret = 1;
         }
         ft_envremove(arg[i]);
         i++;
     }
-    return 0;
+    return ret;
 }
 
 void    builtins_init()

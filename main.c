@@ -26,9 +26,6 @@ void sig_c(int signum)
 
 int     main(int ac, char **av, char **env)
 {
-    int c;
-    // char *cmd;
-    // char *cmd1;
     signal(SIGINT, sig_c);
     signal(SIGQUIT, sig_c);
     init_sh(env);
@@ -45,11 +42,11 @@ int     main(int ac, char **av, char **env)
     if (ac == 3 && !ft_strcmp(av[1], "-c"))
     {
         g_sh.line = ft_strdup(av[2]);
-        c = 1;
+        g_sh.c = 1;
     }
     else
-     c = 0;
-    minishell_loop(env, c);
+     g_sh.c = 0;
+    minishell_loop(env);
     return g_sh.ret;
 }
 
@@ -59,7 +56,9 @@ void    increment_shlvl()
     char *env;
 
     env = ft_getenv("SHLVL");
-    value = ft_atoi(env ? env : "");
+    value = ft_atol(env ? env : "");
+    if (value >= 2147483647)
+        value = -1;
     if (value >= 200000)
     {
         ft_putstr_fd("minishell: warning: shell level (", 2);
@@ -67,6 +66,8 @@ void    increment_shlvl()
         ft_putendl_fd(") too high, resetting to 1", 2);
         value = 0;
     }
+    else if (value < 0)
+        value = -1;
     ft_envremove("SHLVL");
     ft_setenv("SHLVL", ft_itoa(value + 1));
 }

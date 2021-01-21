@@ -61,13 +61,12 @@ void    ft_launch(t_cmd *cmd)
             path = cmd->path;
             if (!ft_strchr(cmd->path, '/') && (!ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH"))))
                 path = ft_strjoin("./", cmd->path);
-            printf("%s\n", path);
             dir = opendir(path);
             ft_putstr_fd("minishell: ", 2);
             if (err == 2 || dir)
             {
                 ft_putstr_fd(cmd->path, 2);
-                if (!ft_strchr(cmd->path, '/'))
+                if (ft_strchr(cmd->path, '/'))
                 {
                     ft_putstr_fd(": ", 2);
                     ft_putendl_fd(strerror(errno), 2);
@@ -121,5 +120,6 @@ void    ft_warp_ref(t_cmd **cmd)
         i++;
     }
     arg[j] = NULL;
+    //print_arg(arg);
     (*cmd)->arg = arg;
 }

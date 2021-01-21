@@ -72,11 +72,12 @@ typedef struct s_sh
     int     error;
     char    *errors[10];
     char    *home;
+    int     c;
 }       t_sh;
 t_sh    g_sh;
 
 // MINISHELLL
-void        minishell_loop(char **env, int c);
+void        minishell_loop(char **env);
 void    ft_print_prompt();
 int    init_sh(char **env);
 int    ft_envadd(char *var);
@@ -187,4 +188,5 @@ int     ft_is_empty(char *s);
 void	*ft_memdel(void *ptr);
 int		ft_tolower(int c);
 char *ft_strtolower(char *str);
+long		ft_atol(const char *str);
 #endif
