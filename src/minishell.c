@@ -144,8 +144,8 @@ char    *check_syntax()
     g_sh.errors[5] = ft_strdup("minishell: syntax error near unexpected token `|;'");
     g_sh.errors[6] = ft_strdup("minishell: syntax error near unexpected token `;|'");
     g_sh.errors[7] = ft_strdup("minishell: syntax error near unexpected token `<<'");
-    g_sh.errors[8] = ft_strdup("minishell: syntax error near unexpected token `>>>'");
-    g_sh.errors[9] = ft_strdup("minishell: syntax error near unexpected token");
+    g_sh.errors[8] = ft_strdup("minishell: syntax error near unexpected token `>'");
+    g_sh.errors[9] = ft_strdup("minishell: syntax error near unexpected token `newline'");
 
     if ((r = check_pipe()))
         return g_sh.errors[r];

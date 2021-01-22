@@ -15,7 +15,7 @@ char    *ft_getenv(char *var)
                 break;
             j++;
         }
-        if (g_sh.env[i][j] == '=')
+        if (g_sh.env[i][j] == '=' && ft_strlen(var) == j)
                 return g_sh.env[i] + j + 1;
         
         i++;

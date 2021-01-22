@@ -120,6 +120,6 @@ void    ft_warp_ref(t_cmd **cmd)
         i++;
     }
     arg[j] = NULL;
-    //print_arg(arg);
+    // print_arg(arg);
     (*cmd)->arg = arg;
 }

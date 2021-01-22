@@ -38,12 +38,14 @@ void    setup_redirection(t_cmd *cmd)
 t_red   *get_redirection(char *cmd)
 {
     int i;
+    int j;
     char *type;
     t_red *red;
     t_red *redlist;
     char *file;
 
     i = 0;
+    j = 0;
     type = NULL;
     redlist = NULL;
     while (cmd[i])
@@ -68,6 +70,8 @@ t_red   *get_redirection(char *cmd)
         {
             file = ft_getword(cmd + i + 1, " ><|;");
             file = ft_strtrim(file, " ");
+            file = ft_strremove(file, '\'');
+            file = ft_strremove(file, '"');
             red = ft_red_new(type, file);
             ft_red_add_back(&redlist, red);
         }
@@ -79,14 +83,35 @@ t_red   *get_redirection(char *cmd)
 
 char    *remove_red(char *cmd)
 {
-    int s;
+    int i;
+    int j;
     int len;
     char *new;
 
-    len = ft_redcount(cmd, (int)ft_strlen(cmd));
-    s = ft_strnchrn(cmd, "><");
-    new = ft_strndup(cmd, s);
-    new = ft_strjoin(new, cmd + len + s);
+    new = malloc(ft_strlen(cmd) + 1);
+    i = 0;
+    j = 0;
+    while (cmd[i])
+    {
+        if (cmd[i] == '>' && cmd[i] == '>')
+        {
+            i += 2;
+            i += ft_strlen(ft_getword(cmd + i + 1, " ><|;"));
+        }
+        else if (cmd[i] == '<' || cmd[i] == '>')
+        {
+            i++;
+            i += ft_strlen(ft_getword(cmd + i + 1, " ><|;"));
+        }
+        else
+        {
+            new[j] = cmd[i];
+            j++;
+        }
+        i++;
+    }
+    new[j] = 0;
+    //printf("|%s|\n", new);
     return new;
 }
 

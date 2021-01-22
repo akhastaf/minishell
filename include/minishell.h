@@ -68,7 +68,7 @@ typedef struct s_sh
     int     in;
     int     out;
     int     is_b;
-    int     ret;
+    long     ret;
     int     error;
     char    *errors[10];
     char    *home;
@@ -189,4 +189,5 @@ void	*ft_memdel(void *ptr);
 int		ft_tolower(int c);
 char *ft_strtolower(char *str);
 long		ft_atol(const char *str);
+int     ft_strisdigit(char *str);
 #endif

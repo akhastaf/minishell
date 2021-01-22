@@ -19,6 +19,7 @@ int     builtins_exit(char **arg)
     int i;
 
     i = 0;
+    
     if (ft_size_arg(arg) > 2)
     {
         ft_putendl_fd("minishell: exit: too many arguments", 2);
@@ -26,13 +27,14 @@ int     builtins_exit(char **arg)
     }
     if (arg[1])
     {
-        while (arg[1][i] && (arg[1][i] == ' ' || arg[1][i] == '\t'))
+        while (arg[1][i] && (arg[1][i] == ' ' || arg[1][i] == '\t' || arg[1][i] == '\r' || arg[1][i] == '\f'))
             i++;
-        if (ft_isdigit(arg[1][i]))
-            g_sh.ret = ft_atoi(arg[1] + i);
-        else
+        if (ft_strisdigit(arg[1]))
+            g_sh.ret = ft_atol(arg[1] + i);
+        else if (g_sh.ret > 9223372036854775807 || !ft_strisdigit(arg[1]))
         {
-            ft_putendl_fd("exit", 2);
+            if (!g_sh.c)
+                ft_putendl_fd("exit", 2);
             ft_putstr_fd("minishell: exit: ", 2);
             ft_putstr_fd(arg[1],2);
             ft_putendl_fd(": numeric argument required", 2);
@@ -169,9 +171,11 @@ int     builtins_export(char **arg)
     int n;
     char *var;
     char *val;
+    int ret;
 
     val = NULL;
     n = 0;
+    ret = 0;
     if (ft_size_arg(arg) == 1)
     {
         i = 0;
@@ -217,11 +221,6 @@ int     builtins_export(char **arg)
              return 1;
         }
         n = ft_strchrn(arg[i], '=');
-        if (!n)
-        {
-            ft_envadd(arg[i]);
-            return 0;
-        }
         if (arg[i][n - 1] == '+')
         {
             var = ft_strndup(arg[i], n - 1);
@@ -229,27 +228,34 @@ int     builtins_export(char **arg)
         }
         else if (n)
             var = ft_strndup(arg[i], n);
-        if (ft_isdigit(var[0]))
+        if (ft_isdigit(var[0]) || ft_strnchrn(var, "|!;&$@'\""))
         {
             ft_putstr_fd("minishell: export: `", 2);
-            ft_putstr_fd(var, 2);
+            ft_putstr_fd(arg[i], 2);
             ft_putendl_fd("': not a valid identifier", 2);
-            return 1;
+            ret = 1;
         }
-        val = ft_strjoin(val, arg[i] + n + 1);
-        val = ft_strtrim(val, "'\"");
-        arg[i] = ft_strjoin(var, "=");
-        arg[i] = ft_strjoin(arg[i], val);
-        if (ft_getenv(var))
+        if (!n && !ft_strnchrn(var, "|!;&$@'\""))
+            ft_envadd(arg[i]);
+        else if (!ft_strnchrn(var, "|!;&$@'\""))
         {
-            ft_envremove(var);
-            ft_envadd(arg[i]);
+            val = ft_strjoin(val, arg[i] + n + 1);
+            val = ft_strtrim(val, "'\"");
+            arg[i] = ft_strjoin(var, "=");
+            arg[i] = ft_strjoin(arg[i], val);
+            if (ft_getenv(var))
+            {
+                ft_envremove(var);
+                ft_envadd(arg[i]);
+            }
+            else if (var && arg[i][0] != '$')
+                ft_envadd(arg[i]);
         }
-        else if (var && arg[i][0] != '$')
-            ft_envadd(arg[i]);
         i++;
+        free(val);
+        val = NULL;
     }
-    return 0;
+    return ret;
 }
 
 int     builtins_unset(char **arg)
