@@ -210,7 +210,9 @@ int     builtins_export(char **arg)
         n = ft_strchrn(arg[i], '+');
         if (arg[i][0] == '=')
         {
-            ft_putendl_fd("minishell: export: `=': not a valid identifier", 2);
+            ft_putstr_fd("minishell: export: `", 2);
+            ft_putstr_fd(arg[i], 2);
+            ft_putendl_fd("': not a valid identifier", 2);
             return 1;
         }
         else if (n && n < ft_strchrn(arg[i], '=') && arg[i][n + 1]  != '=')
@@ -221,23 +223,23 @@ int     builtins_export(char **arg)
              return 1;
         }
         n = ft_strchrn(arg[i], '=');
-        if (arg[i][n - 1] == '+')
+        if (arg[i][n - 1 < 0 ? n : n - 1] == '+')
         {
             var = ft_strndup(arg[i], n - 1);
             val = ft_getenv(var);
         }
         else if (n)
             var = ft_strndup(arg[i], n);
-        if (ft_isdigit(var[0]) || ft_strnchrn(var, "|!;&$@'\""))
+        if (ft_isdigit(var[0]) || ft_strnchrn(var, " |!;&$@\\'\""))
         {
             ft_putstr_fd("minishell: export: `", 2);
             ft_putstr_fd(arg[i], 2);
             ft_putendl_fd("': not a valid identifier", 2);
             ret = 1;
         }
-        if (!n && !ft_strnchrn(var, "|!;&$@'\""))
+        if (!n && !ft_strnchrn(var, " |!;&$@\\'\""))
             ft_envadd(arg[i]);
-        else if (!ft_strnchrn(var, "|!;&$@'\""))
+        else if (!ft_strnchrn(var, " |!;&$@\\'\""))
         {
             val = ft_strjoin(val, arg[i] + n + 1);
             val = ft_strtrim(val, "'\"");

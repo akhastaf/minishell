@@ -7,14 +7,8 @@ int     is_seperator(char *s, int i, char *set)
     j = 0;
     while (set[j])
     {
-        if (set[j] == s[i])
-		{
-			if (i > 0)
-			{
-				if (s[(i - 1 < 0 ? 1 : i - 1)] != '\\' || !is_specialcar(s[i]))
-					return 1;
-			}
-		}
+        if (set[j] == s[i] && (s[(i - 1 < 0 ? 1 : i - 1)] != '\\' || !is_specialcar(s[i])))
+			return 1;
         j++;
     }
     return 0;

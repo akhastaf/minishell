@@ -60,8 +60,10 @@ void    process_line()
             if (opr)
                 arg = ft_remove_arg(arg, opr);
             if (!arg[0])
-                arg[0] = ft_strdup("");    
-            new = ft_cmd_new(ft_strtrim(ft_getpath(ft_strtrim(arg[0], " ")), " "), arg, opr, red);
+                arg[0] = ft_strdup(""); 
+            else if (ft_is_empty(arg[0]) && arg[1])
+                arg = arg + 1;
+            new = ft_cmd_new(ft_strtrim(ft_getpath(ft_strtrim(ft_strremove(arg[0], '\''), " ")), " "), arg, opr, red);
             ft_cmd_add_back(&g_sh.cmdlist, new);
             if (!opr && cmd[i + 1])
                 break;

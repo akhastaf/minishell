@@ -100,8 +100,12 @@ void    ft_warp_ref(t_cmd **cmd)
     int j;
     char **arg;
     char *tmp;
-
-    (*cmd)->path = ft_refactor_line((*cmd)->path);
+    
+    if ((*cmd)->path && !ft_is_empty((*cmd)->path))
+    {
+        (*cmd)->path = ft_refactor_line((*cmd)->path);
+        (*cmd)->path = ft_strremove((*cmd)->path, '\\');
+    }
     arg = malloc((ft_size_arg((*cmd)->arg) + 1) * sizeof(char*));
     i = 0;
     j = 0;
@@ -113,8 +117,10 @@ void    ft_warp_ref(t_cmd **cmd)
             arg[j] = tmp;
             arg[j] = ft_strremove(arg[j], '"');
             arg[j] = ft_strremove(arg[j], '\'');
+            printf("before |%s|\n", arg[j]);
             arg[j] = ft_strremove(arg[j], '\\');
             //arg[j] = ft_strtrim(arg[j], " ");
+            printf("after |%s|\n", arg[j]);
             j++;
         }
         i++;

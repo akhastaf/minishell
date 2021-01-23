@@ -108,14 +108,14 @@ char		*ft_strtrim(char const *s1, char const *set)
 	s3 = (char*)s1 + ft_strlen(s1) - 1;
 	i = -1;
 	while (set[++i])
-		if (*s2 == set[i])
+		if (*s2 == set[i] && *(s2 - 1) != '\\')
 		{
 			s2++;
 			i = -1;
 		}
 	i = -1;
 	while (set[++i])
-		if (*s3 == set[i])
+		if (*s3 == set[i] && *(s3 - 1) != '\\')
 		{
 			s3--;
 			i = -1;
