@@ -230,16 +230,18 @@ int     builtins_export(char **arg)
         }
         else if (n)
             var = ft_strndup(arg[i], n);
-        if (ft_isdigit(var[0]) || ft_strnchrn(var, " |!;&$@\\'\""))
+        else
+            var = ft_strdup(arg[i]);
+        if (ft_isdigit(var[0]) || ft_isstrnchr(var, " |!;&$@\\'\"") || ft_is_empty(var))
         {
             ft_putstr_fd("minishell: export: `", 2);
             ft_putstr_fd(arg[i], 2);
             ft_putendl_fd("': not a valid identifier", 2);
             ret = 1;
         }
-        if (!n && !ft_strnchrn(var, " |!;&$@\\'\""))
+        if (!n && !ft_isstrnchr(var, " |!;&$@\\'\""))
             ft_envadd(arg[i]);
-        else if (!ft_strnchrn(var, " |!;&$@\\'\""))
+        else if (!ft_isstrnchr(var, " |!;&$@\\'\""))
         {
             val = ft_strjoin(val, arg[i] + n + 1);
             val = ft_strtrim(val, "'\"");

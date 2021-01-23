@@ -190,4 +190,5 @@ int		ft_tolower(int c);
 char *ft_strtolower(char *str);
 long		ft_atol(const char *str);
 int     ft_strisdigit(char *str);
+int     ft_isstrnchr(char *s, char *set);
 #endif

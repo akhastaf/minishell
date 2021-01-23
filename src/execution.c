@@ -62,30 +62,44 @@ void    ft_launch(t_cmd *cmd)
             if (!ft_strchr(cmd->path, '/') && (!ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH"))))
                 path = ft_strjoin("./", cmd->path);
             dir = opendir(path);
-            ft_putstr_fd("minishell: ", 2);
+            if (dir && (ft_strchr(cmd->path, '/') || !ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH"))))
+            {
+                ft_putstr_fd("minishell: ", 2);
+                ft_putstr_fd(cmd->path, 2);
+                ft_putendl_fd(": is a directory", 2);
+                closedir(dir);
+                exit(126);
+            }
+            else if (!ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH")))
+            {
+                ft_putstr_fd("minishell: ", 2);
+                ft_putstr_fd(cmd->path, 2);
+                ft_putendl_fd(": No such file or directory", 2);
+                exit(127);
+            }
             if (err == 2 || dir)
             {
+                ft_putstr_fd("minishell: ", 2);
                 ft_putstr_fd(cmd->path, 2);
                 if (ft_strchr(cmd->path, '/'))
                 {
                     ft_putstr_fd(": ", 2);
                     ft_putendl_fd(strerror(errno), 2);
                 }
-                else if (dir)
-                {
-                    ft_putendl_fd(": is a directory", 2);
-                    closedir(dir);
-                }
                 else
                     ft_putendl_fd(": command not found", 2);
                 exit(127);
             }
-            else
+            else if (err != 8)
             {
+                ft_putstr_fd("minishell: ", 2);
                 ft_putstr_fd(cmd->path, 2);
                 ft_putendl_fd(": Permission denied", 2);
+                exit(126);
             }
-            exit(126);
+            // printf("%d\n", err);
+            // ft_putendl_fd(strerror(err), 2);
+            exit(0);
         }
     }
     close(cmd->pipe[1]);
@@ -117,10 +131,8 @@ void    ft_warp_ref(t_cmd **cmd)
             arg[j] = tmp;
             arg[j] = ft_strremove(arg[j], '"');
             arg[j] = ft_strremove(arg[j], '\'');
-            printf("before |%s|\n", arg[j]);
             arg[j] = ft_strremove(arg[j], '\\');
             //arg[j] = ft_strtrim(arg[j], " ");
-            printf("after |%s|\n", arg[j]);
             j++;
         }
         i++;
