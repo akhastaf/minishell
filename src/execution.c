@@ -21,7 +21,9 @@ int     excute(t_cmd *cmdlist)
             {
                 if (!ft_strcmp(cmd->path, g_sh.builtins_str[i]))
                 {
-                    if (!ft_strcmp(cmd->path, "exit") && cmd->prev && cmd->prev->opr &&  cmd->prev->opr[0] == '|')
+                    if (!ft_strcmp(cmd->path, "export") && ((cmd->prev && cmd->prev->opr && cmd->prev->opr[0] == '|') || (cmd->opr && cmd->opr[0] == '|')))
+                        g_sh.is_b++;
+                    else if (!ft_strcmp(cmd->path, "exit") && cmd->prev && cmd->prev->opr &&  cmd->prev->opr[0] == '|')
                         reset_std();
                     else if (!ft_strcmp(cmd->path, "exit") && cmd->opr && cmd->opr[0] == '|')
                         reset_std();
@@ -138,6 +140,6 @@ void    ft_warp_ref(t_cmd **cmd)
         i++;
     }
     arg[j] = NULL;
-    // print_arg(arg);
+    print_arg(arg);
     (*cmd)->arg = arg;
 }

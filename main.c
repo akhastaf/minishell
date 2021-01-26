@@ -56,7 +56,7 @@ void    increment_shlvl()
     char *env;
 
     env = ft_getenv("SHLVL");
-    value = ft_atol(env ? env : "");
+    value = ft_atoll(env ? env : "");
     if (value >= 2147483647)
         value = -1;
     if (value >= 200000)

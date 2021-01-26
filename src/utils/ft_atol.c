@@ -1,10 +1,10 @@
 #include "../../include/minishell.h"
 
-long		ft_atol(const char *str)
+long long		ft_atoll(const char *str)
 {
 	int		i;
 	int		signe;
-	unsigned long	n;
+	unsigned long long	n;
 
 	i = 0;
 	signe = 1;
@@ -24,5 +24,5 @@ long		ft_atol(const char *str)
 		// 	return ((signe > 0) ? -1 : 0);
 		i++;
 	}
-	return ((long)(n * signe));
+	return ((long long)(n * signe));
 }
