@@ -46,7 +46,7 @@ int     main(int ac, char **av, char **env)
     }
     else
      g_sh.c = 0;
-    minishell_loop(env);
+    minishell_loop();
     return g_sh.ret;
 }
 
@@ -75,6 +75,7 @@ void    increment_shlvl()
 void    ft_set_pwd()
 {
     char *pwd;
+    char *lstcmd;
 
     if (!(pwd = ft_getenv("PWD")))
     {
@@ -83,14 +84,44 @@ void    ft_set_pwd()
         ft_setenv("PWD", pwd);
         //ft_envadd(pwd);
     }
+    // if (!(lstcmd = ft_getenv("_")))
+    // {
+    //     lstcmd = ft_strdup("./minishell");
+    //     ft_setenv("_", lstcmd);
+    // }
 }
 
-void    ft_set_lstcmd()
+void    ft_set_lstcmd(t_cmd *cmd)
 {
+    int n;
+    int l;
     char *lstcmd;
+    t_cmd *lcmd;
 
-    lstcmd = ft_strdup(ft_cmd_last(g_sh.cmdlist)->path);
-    if (ft_getenv("_"))
-        ft_envremove("_");
-    ft_setenv("_", lstcmd);
+    n = 0;
+    l = 0;
+    if (!ft_strcmp(cmd->path, "echo") && !ft_argcmp(cmd->arg, "$_") && cmd->prev)
+        lcmd = cmd->prev;
+    else if (!ft_strcmp(cmd->path, "echo") && !ft_argcmp(cmd->arg, "$_"))
+        lcmd = NULL;
+    else
+        lcmd = cmd;
+    if (lcmd)
+    {
+        n = ft_size_arg(lcmd->arg) - 1;
+        if (cmd->prev && cmd->prev->opr && !ft_strcmp(cmd->prev->opr, "|"))
+            lstcmd = ft_strdup("");
+        else if (lcmd)
+        {
+            if (( l = ft_strchrn(lcmd->arg[n], '=')))
+                lstcmd = ft_substr(lcmd->arg[n], 0, l);
+            else if (!(ft_strcmp(ft_strtolower(ft_strdup(lcmd->arg[0])), "env")))
+                lstcmd = ft_strdup(lcmd->path);
+            else
+                lstcmd = ft_strdup(lcmd->arg[n]);
+        }
+        if (ft_getenv("_"))
+            ft_envremove("_");
+        ft_setenv("_", lstcmd);
+    }
 }

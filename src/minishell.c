@@ -20,7 +20,7 @@ void    print_arg(char **arg)
     i = 0;
     while (arg[i])
     {
-        printf("|%s|\n", arg[i]);
+        printf("arg[%d] = |%s|\n", i, arg[i]);
         i++;
     }
 }
@@ -74,7 +74,7 @@ void    ft_print_prompt()
         ft_putstr_fd(pwd, 2);
     ft_putstr_fd("$>\033[0m", 2);
 }
-void        minishell_loop(char **env)
+void        minishell_loop()
 {
     int status;
     int r;
@@ -90,7 +90,7 @@ void        minishell_loop(char **env)
             g_sh.line = NULL;
             tmp = NULL;
             ft_print_prompt();
-            while ((r = readline()) == 0)
+            while ((r = readline()) <= 0)
                 tmp = ft_strjoin(tmp, g_sh.line);
             g_sh.line = ft_strjoin(tmp, g_sh.line);
         }

@@ -77,7 +77,7 @@ typedef struct s_sh
 t_sh    g_sh;
 
 // MINISHELLL
-void        minishell_loop(char **env);
+void        minishell_loop();
 void    ft_print_prompt();
 int    init_sh(char **env);
 int    ft_envadd(char *var);
@@ -121,7 +121,10 @@ int     builtins_pwd(char **arg);
 int     builtins_env(char **arg);
 int     builtins_cd(char **arg);
 int     builtins_echo(char **arg);
+int     check_dashn(char **arg, int *index);
 int     builtins_unset(char **arg);
+int     builtins_export(char **arg);
+int     builtins_exit(char **arg);
 int     ft_isbuiltins(char *path);
 void    builtins_init();
 
@@ -191,4 +194,6 @@ char *ft_strtolower(char *str);
 long		ft_atol(const char *str);
 int     ft_strisdigit(char *str);
 int     ft_isstrnchr(char *s, char *set);
+int     ft_argcmp(char **arg, char *s);
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
 #endif

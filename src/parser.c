@@ -18,7 +18,7 @@ int    readline()
 	// printf("|%s\n", g_sh.line);
     r = get_next_line(0, &g_sh.line);
 	// printf("|%s| %d\n", g_sh.line, r);
-	if ((r == -2 && !g_sh.line) || (!r && !g_sh.line[0]))
+	if ((r == -2 && !g_sh.line))
 	{
 		ft_putendl_fd("\nexit", 2);
 		exit(g_sh.status);
@@ -70,7 +70,7 @@ int		get_next_line(int fd, char **line)
 		return (-1);
 	if (n == -2 && !str[fd])
 		return -2;
-	if ((s = ft_strchr(str[fd], '\n')))
+	if (str[fd] && (s = ft_strchr(str[fd], '\n')))
 	{
 		*line = ft_strndup(str[fd], s - str[fd]);
 		tmp = str[fd];

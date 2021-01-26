@@ -9,14 +9,14 @@ int     excute(t_cmd *cmdlist)
     cmd = cmdlist;
     while (cmd)
     {
+        if (!cmd->next)
+            ft_set_lstcmd(cmd);
         ft_warp_ref(&cmd);
         setup_pipe(cmd);
         setup_redirection(cmd);
         i = 0;
         if (!g_sh.error && cmd->path)
         {
-            if (!cmd->next)
-                ft_set_lstcmd();
             while (i < BUILTINS_NUM)
             {
                 if (!ft_strcmp(cmd->path, g_sh.builtins_str[i]))
@@ -114,7 +114,7 @@ void    ft_warp_ref(t_cmd **cmd)
     int j;
     char **arg;
     char *tmp;
-    
+
     if ((*cmd)->path && !ft_is_empty((*cmd)->path))
     {
         (*cmd)->path = ft_refactor_line((*cmd)->path);
@@ -129,9 +129,9 @@ void    ft_warp_ref(t_cmd **cmd)
         if (tmp)
         {
             arg[j] = tmp;
+            arg[j] = ft_strremove(arg[j], '\\');
             arg[j] = ft_strremove(arg[j], '"');
             arg[j] = ft_strremove(arg[j], '\'');
-            arg[j] = ft_strremove(arg[j], '\\');
             //arg[j] = ft_strtrim(arg[j], " ");
             j++;
         }

@@ -104,6 +104,8 @@ char		*ft_strtrim(char const *s1, char const *set)
 	char	*s2;
 	if (!s1 || !set)
 		return (NULL);
+	if (!ft_strlen(s1))
+		return ft_strdup(s1);
 	s2 = (char*)s1;
 	s3 = (char*)s1 + ft_strlen(s1) - 1;
 	i = -1;

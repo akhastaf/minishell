@@ -43,6 +43,7 @@ void    process_line()
     char *opr;
     t_cmd *new;
     t_red *red;
+    char *path;
     int i;
 
     if (g_sh.line)
@@ -60,10 +61,14 @@ void    process_line()
             if (opr)
                 arg = ft_remove_arg(arg, opr);
             if (!arg[0])
-                arg[0] = ft_strdup(""); 
-            else if (ft_is_empty(arg[0]) && arg[1])
+            {
+                arg[0] = ft_strdup("");
+                arg[1] = NULL;
+            }
+            if (ft_is_empty(arg[0]) && arg[1])
                 arg = arg + 1;
-            new = ft_cmd_new(ft_strtrim(ft_getpath(ft_strtrim(ft_strremove(arg[0], '\''), " ")), " "), arg, opr, red);
+            path = ft_getpath(ft_strremove(ft_strremove(ft_strtrim(arg[0], " "), '\''), '"'));
+            new = ft_cmd_new(path, arg, opr, red);
             ft_cmd_add_back(&g_sh.cmdlist, new);
             if (!opr && cmd[i + 1])
                 break;
@@ -85,6 +90,7 @@ char    *ft_refactor_line(char *s)
     {
         if (s[i] == '\'' && s[(i - 1 < 0 ? 1 : i - 1)] != '\\')
         {
+            line = ft_strappend(line, s[i]);
             i++;
             while (s[i] != '\'')
             {
@@ -94,7 +100,7 @@ char    *ft_refactor_line(char *s)
         }
         if (s[i] == '$' && !ft_is_space(s[i + 1]) && s[(i - 1 < 0 ? 1 : i - 1)] != '\\')
         {
-            var = ft_getword(s + i + 1, "\" '\\$=");
+            var = ft_getword(s + i + 1, "\" |'\\$=,][@");
             if (s[i + 1] == '?')
             {
                 line = ft_strjoin(line, ft_itoa(g_sh.status));

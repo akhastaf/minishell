@@ -1,0 +1,5 @@
+TERM=xterm-256color$
+PATH=/Users/akhastaf/Desktop/minishell/minishell_test/bin$
+PWD=/Users/akhastaf/Desktop/minishell/minishell_test/sandbox$
+SHLVL=1$
+_=/Users/akhastaf/Desktop/minishell/minishell_test/bin/enV$
