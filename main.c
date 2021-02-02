@@ -115,8 +115,8 @@ void    ft_set_lstcmd(t_cmd *cmd)
         {
             if (( l = ft_strchrn(lcmd->arg[n], '=')))
                 lstcmd = ft_substr(lcmd->arg[n], 0, l);
-            else if (!(ft_strcmp(ft_strtolower(ft_strdup(lcmd->arg[0])), "env")))
-                lstcmd = ft_strdup(lcmd->path);
+            else if (!(ft_strcmp(ft_strtolower(ft_strdup(lcmd->arg[0])), "env"))) // arg[0] = "Env" env
+                lstcmd = ft_strdup(lcmd->path); // /bin/Env // env
             else
                 lstcmd = ft_strdup(lcmd->arg[n]);
         }

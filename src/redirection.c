@@ -39,6 +39,7 @@ t_red   *get_redirection(char *cmd)
 {
     int i;
     int j;
+    int len;
     char *type;
     t_red *red;
     t_red *redlist;
@@ -48,14 +49,15 @@ t_red   *get_redirection(char *cmd)
     j = 0;
     type = NULL;
     redlist = NULL;
-    while (cmd[i])
+    len = ft_strlen(cmd);
+    while (i < len)
     {
         if (cmd[i] == '"')
         {
             i++;
-            while (cmd[i] != '"')
+            while (cmd[i] && cmd[i] != '"')
                 i++;
-            i++;
+            // i++;
         }
         if (cmd[i] == '>' && cmd[i + 1] == '>')
         {
@@ -72,6 +74,7 @@ t_red   *get_redirection(char *cmd)
             file = ft_strtrim(file, " ");
             file = ft_strremove(file, '\'');
             file = ft_strremove(file, '"');
+            file = ft_refactor_line(file);
             red = ft_red_new(type, file);
             ft_red_add_back(&redlist, red);
         }

@@ -88,11 +88,11 @@ char    *ft_refactor_line(char *s)
     i = 0;
     while (s[i])
     {
-        if (s[i] == '\'' && s[(i - 1 < 0 ? 1 : i - 1)] != '\\')
+        if (s[i + 1] && s[i] == '\'' && s[(i - 1 < 0 ? 1 : i - 1)] != '\\')
         {
             line = ft_strappend(line, s[i]);
             i++;
-            while (s[i] != '\'')
+            while (s[i] && s[i] != '\'')
             {
                 line = ft_strappend(line, s[i]);
                 i++;
@@ -150,3 +150,28 @@ char    *ft_tilde(char *s, char *line, int i)
     }
     return line;
 }
+
+
+// char    *ft_quote(char *str, char c)
+// {
+//     int i;
+//     int q;
+//     int s;
+
+//     i = 0;
+//     q = 0;
+//     s = 0;
+//     while (str[i])
+//     {
+//         if (str[i] == '"')
+//         {
+            
+//             q = 1;
+//         }
+        
+
+
+
+//         i++;
+//     }
+// }

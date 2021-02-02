@@ -72,6 +72,13 @@ void    ft_launch(t_cmd *cmd)
                 closedir(dir);
                 exit(126);
             }
+            else if (errno == 13 && (ft_strchr(cmd->path, '/') || !ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH"))))
+            {
+                ft_putstr_fd("minishell: ", 2);
+                ft_putstr_fd(cmd->path, 2);
+                ft_putendl_fd(": is a directory", 2);
+                exit(126);
+            }
             else if (!ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH")))
             {
                 ft_putstr_fd("minishell: ", 2);
@@ -79,7 +86,7 @@ void    ft_launch(t_cmd *cmd)
                 ft_putendl_fd(": No such file or directory", 2);
                 exit(127);
             }
-            if (err == 2 || dir)
+            else if (err == 2 || dir)
             {
                 ft_putstr_fd("minishell: ", 2);
                 ft_putstr_fd(cmd->path, 2);
@@ -116,7 +123,6 @@ void    ft_warp_ref(t_cmd **cmd)
     int j;
     char **arg;
     char *tmp;
-
     if ((*cmd)->path && !ft_is_empty((*cmd)->path))
     {
         (*cmd)->path = ft_refactor_line((*cmd)->path);
@@ -131,8 +137,8 @@ void    ft_warp_ref(t_cmd **cmd)
         if (tmp)
         {
             arg[j] = tmp;
-            arg[j] = ft_strremove(arg[j], '\\');
             arg[j] = ft_strremove(arg[j], '"');
+            arg[j] = ft_strremove(arg[j], '\\');
             arg[j] = ft_strremove(arg[j], '\'');
             //arg[j] = ft_strtrim(arg[j], " ");
             j++;
@@ -140,6 +146,6 @@ void    ft_warp_ref(t_cmd **cmd)
         i++;
     }
     arg[j] = NULL;
-    print_arg(arg);
+    // print_arg(arg);
     (*cmd)->arg = arg;
 }

@@ -8,6 +8,7 @@ int     builtins_echo(char **arg)
     char *p;
     
     n = check_dashn(arg, &i);
+    // printf("|%s|\n", arg[1]);
     while (arg[i])
     {
         p = ft_strtrim(arg[i], " ");

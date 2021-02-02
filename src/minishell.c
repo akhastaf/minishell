@@ -146,13 +146,14 @@ char    *check_syntax()
     g_sh.errors[7] = ft_strdup("minishell: syntax error near unexpected token `<<'");
     g_sh.errors[8] = ft_strdup("minishell: syntax error near unexpected token `>'");
     g_sh.errors[9] = ft_strdup("minishell: syntax error near unexpected token `newline'");
+    g_sh.errors[10] = ft_strdup("minishell: syntax error multiline");
 
     if ((r = check_pipe()))
         return g_sh.errors[r];
     if ((r = check_red()))
         return g_sh.errors[r];
-    // if ((r = check_quote()))
-    //     return g_sh.errors[r];
+    if ((r = check_quote()))
+        return g_sh.errors[r];
     return NULL;
 }
 
@@ -205,7 +206,7 @@ int     check_red()
             i+= 2;
             while (g_sh.line[i] == ' ')
                 i++;
-            if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
+            if (g_sh.line[i] != '$' && (is_specialcar(g_sh.line[i]) || !g_sh.line[i]))
                 return 9;
         }
         else if (g_sh.line[i] == '>' || g_sh.line[i] == '<')
@@ -213,7 +214,7 @@ int     check_red()
             i++;
             while (g_sh.line[i] == ' ')
                     i++;
-            if (is_specialcar(g_sh.line[i]) || !g_sh.line[i])
+            if (g_sh.line[i] != '$' && (is_specialcar(g_sh.line[i]) || !g_sh.line[i]))
                 return 9;
         }
         i++;
@@ -223,20 +224,53 @@ int     check_red()
 
 int     check_quote()
 {
+    if (count_doubleq(g_sh.line) % 2 != 0)
+        return 10;
+    if (count_singleq(g_sh.line) % 2 != 0)
+        return 10;
+    return 0;
+}
+
+int     count_singleq(char *str)
+{
     int i;
-    int d;
-    int s;
-    int error;
+    int j;
+    int q;
 
     i = 0;
-    error = 9;
-    while (g_sh.line[i])
+    q = 0;
+    j = 0;
+    while (str[i])
     {
-        if (g_sh.line[i] == '"' && g_sh.line[(i - 1 < 0 ? 1 : i - 1)] != '\\')
-            error += (ft_strchr(g_sh.line + i + 1, '"')) ? 0 : 1;
-        if (g_sh.line[i] == '\'' && g_sh.line[(i - 1 < 0 ? 1 : i - 1)] != '\\' && !d)
-            error += (ft_strchr(g_sh.line + i + 1, '\'')) ? 0 : 1;
+        if (str[i] == '"' && !q)
+            q = 1;
+        else if (str[i] == '"' && q)
+            q = 0;
+        else if (str[i] == '\'' && !q && str[(i - 1 < 0 ? 0 : i - 1)] != '\\')
+            j++;
         i++;
     }
-    return error;
+    return j;
+}
+
+int     count_doubleq(char *str)
+{
+    int i;
+    int j;
+    int sq;
+
+    i = 0;
+    sq = 0;
+    j = 0;
+    while (str[i])
+    {
+        if (str[i] == '\'' && !sq)
+            sq = 1;
+        else if (str[i] == '\'' && sq)
+            sq = 0;
+        else if (str[i] == '"' && !sq && str[(i - 1 < 0 ? 0 : i - 1)] != '\\')
+            j++;
+        i++;
+    }
+    return j;
 }

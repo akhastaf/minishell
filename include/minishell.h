@@ -70,7 +70,7 @@ typedef struct s_sh
     int     is_b;
     long long     ret;
     int     error;
-    char    *errors[10];
+    char    *errors[11];
     char    *home;
     int     c;
 }       t_sh;
@@ -99,6 +99,9 @@ char    *check_syntax();
 int     check_pipe();
 int     check_red();
 int     check_quote();
+int     count_singleq(char *str);
+int     count_doubleq(char *str);
+
 
 // ENV
 char    *ft_getenv(char *var);
@@ -120,6 +123,7 @@ int     builtins(t_cmd cmd);
 int     builtins_pwd(char **arg);
 int     builtins_env(char **arg);
 int     builtins_cd(char **arg);
+char        *get_oldpwd();
 int     builtins_echo(char **arg);
 int     check_dashn(char **arg, int *index);
 int     builtins_unset(char **arg);
