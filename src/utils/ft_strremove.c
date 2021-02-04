@@ -33,22 +33,16 @@ char	*ft_strremove(char *s, char c)
 			sq = 1;
 		else if (s[l] == '\'' && sq)
 			sq = 0;
-		/*if (c == '\\' && s[l] == c && !is_specialcar(s[l + 1]))
+		if ((s[l] != c) || (s[l] == c && q && c != '"') || (c == '\\' && (s[l + 1] == c)))
 		{
 			new[i] = s[l];
 			i++;
 		}
-		else */if ((s[l] != c) || (s[l] == c && q && c != '"') || (c == '\\' && (s[l + 1] == c)))
+		else if ((s[l - 1 > 0 ? l - 1 : 0] == '\\' && is_specialcar(s[l]) && c != '\''))
 		{
 			new[i] = s[l];
 			i++;
 		}
-		else if (s[l - 1 > 0 ? l - 1 : 0] == '\\' && is_specialcar(s[l]))
-		{
-			new[i] = s[l];
-			i++;
-		}
-		
 		l++;
 	}
 	new[i] = 0;

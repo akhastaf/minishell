@@ -49,7 +49,7 @@ void    process_line()
     if (g_sh.line)
     {
         new = NULL;
-        cmd = ft_split(g_sh.line, "|;");
+        cmd = ft_split(g_sh.line, "|;"); // 
         cmd = ft_argtrim(cmd, " ");
         i = 0;
         while (cmd[i])

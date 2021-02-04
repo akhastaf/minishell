@@ -236,17 +236,23 @@ int     count_singleq(char *str)
     int i;
     int j;
     int q;
+    int sq;
 
     i = 0;
     q = 0;
+    sq = 0;
     j = 0;
     while (str[i])
     {
-        if (str[i] == '"' && !q)
+        if (str[i] == '"' && !q && !sq)
             q = 1;
         else if (str[i] == '"' && q)
             q = 0;
-        else if (str[i] == '\'' && !q && str[(i - 1 < 0 ? 0 : i - 1)] != '\\')
+        if (str[i] == '\'' && !sq && !q)
+            sq = 1;
+        else if (str[i] == '\'' && sq)
+            sq = 0;
+        if (str[i] == '\'' && !q)
             j++;
         i++;
     }
@@ -258,17 +264,23 @@ int     count_doubleq(char *str)
     int i;
     int j;
     int sq;
+    int q;
 
     i = 0;
     sq = 0;
+    q = 0;
     j = 0;
     while (str[i])
     {
-        if (str[i] == '\'' && !sq)
+        if (str[i] == '\'' && !sq && !q)
             sq = 1;
         else if (str[i] == '\'' && sq)
             sq = 0;
-        else if (str[i] == '"' && !sq && str[(i - 1 < 0 ? 0 : i - 1)] != '\\')
+        if (str[i] == '"' && !q)
+            q = 1;
+        else if (str[i] == '"' && q)
+            q = 0;
+        if (str[i] == '"' && !sq && str[(i - 1 < 0 ? 0 : i - 1)] != '\\')
             j++;
         i++;
     }

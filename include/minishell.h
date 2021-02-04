@@ -117,6 +117,7 @@ char *ft_getpath(char *file);
 //EXECUTION
 int     excute(t_cmd *cmdlist);
 void     ft_launch(t_cmd *cmd);
+char    *ft_putbackslash(char *s);
 
 // BUILTINS
 int     builtins(t_cmd cmd);

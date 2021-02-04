@@ -106,8 +106,6 @@ void    ft_launch(t_cmd *cmd)
                 ft_putendl_fd(": Permission denied", 2);
                 exit(126);
             }
-            // printf("%d\n", err);
-            // ft_putendl_fd(strerror(err), 2);
             exit(0);
         }
     }
@@ -123,6 +121,7 @@ void    ft_warp_ref(t_cmd **cmd)
     int j;
     char **arg;
     char *tmp;
+
     if ((*cmd)->path && !ft_is_empty((*cmd)->path))
     {
         (*cmd)->path = ft_refactor_line((*cmd)->path);
@@ -137,10 +136,10 @@ void    ft_warp_ref(t_cmd **cmd)
         if (tmp)
         {
             arg[j] = tmp;
+            arg[j] = ft_putbackslash(arg[j]);
             arg[j] = ft_strremove(arg[j], '"');
-            arg[j] = ft_strremove(arg[j], '\\');
             arg[j] = ft_strremove(arg[j], '\'');
-            //arg[j] = ft_strtrim(arg[j], " ");
+            arg[j] = ft_strremove(arg[j], '\\');
             j++;
         }
         i++;
@@ -149,3 +148,40 @@ void    ft_warp_ref(t_cmd **cmd)
     // print_arg(arg);
     (*cmd)->arg = arg;
 }
+
+
+char    *ft_putbackslash(char *s)
+{
+    int i;
+    int j;
+    int q;
+    int sq;
+    char *new;
+
+    i = 0;
+    q = 0;
+    sq = 0;
+    j = 0;
+    new = NULL;
+    while (s[i])
+    {
+        if (s[i] == '\'' && !sq && !q)
+            sq = 1;
+        else if (s[i] == '\'' && sq )
+            sq = 0;
+        if (s[i] == '"' && !q && !sq)
+            q = 1;
+        else if (s[i] == '"' && q)
+            q = 0;
+        if ((s[i] == '"' && sq) || (s[i] == '\'' && q) || (s[i] == '\\' && sq))
+        {
+            new = ft_strappend(new, '\\');
+            j++;
+        }
+        new = ft_strappend(new, s[i]);
+        i++;
+    }
+    new[i + j] = 0;
+    return new;
+}
+
