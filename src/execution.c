@@ -53,6 +53,7 @@ void    ft_launch(t_cmd *cmd)
     DIR *dir;
     char *path;
     int err;
+    int j;
 
     g_sh.pid = fork();
     if (g_sh.pid == 0)
@@ -111,7 +112,10 @@ void    ft_launch(t_cmd *cmd)
     }
     close(cmd->pipe[1]);
     //if (!cmd->opr || (cmd->opr && cmd->opr[0] != '|'))
-    waitpid(g_sh.pid, &g_sh.status, 0);
+    if ((cmd->opr && cmd->opr[0] == ';') || (!cmd->opr))
+        waitpid(g_sh.pid, &g_sh.status, 0);
+    else
+        j++;
     g_sh.status = WEXITSTATUS(g_sh.status);
 }
 
@@ -175,6 +179,7 @@ char    *ft_putbackslash(char *s)
             q = 0;
         if ((s[i] == '"' && sq) || (s[i] == '\'' && q) || (s[i] == '\\' && sq))
         {
+            // printf("%c q : %d sq : %d\n", s[i], q, sq);
             new = ft_strappend(new, '\\');
             j++;
         }
@@ -182,6 +187,7 @@ char    *ft_putbackslash(char *s)
         i++;
     }
     new[i + j] = 0;
+    // printf("%s\n", new);
     return new;
 }
 

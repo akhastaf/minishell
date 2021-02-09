@@ -14,6 +14,7 @@ char	*ft_strremove(char *s, char c)
 	sq = 0;
 
 	l = ft_countcahr(s, c);
+	// printf("%d %c\n", l, c);
 	if (!l)
 		return ft_strdup(s);
 	if (ft_strlen(s) ==  l)

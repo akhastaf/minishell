@@ -36,9 +36,9 @@ int     main(int ac, char **av, char **env)
     g_sh.ret = 0;
     g_sh.in = dup(0);
     g_sh.out = dup(1);
-    increment_shlvl();
     ft_envremove("OLDPWD");
     ft_set_pwd();
+    increment_shlvl();
     if (ac == 3 && !ft_strcmp(av[1], "-c"))
     {
         g_sh.line = ft_strdup(av[2]);
