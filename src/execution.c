@@ -177,9 +177,8 @@ char    *ft_putbackslash(char *s)
             q = 1;
         else if (s[i] == '"' && q)
             q = 0;
-        if ((s[i] == '"' && sq) || (s[i] == '\'' && q) || (s[i] == '\\' && sq))
+        if ((s[i] == '"' && sq) || (s[i] == '\'' && q) || (s[i] == '\\' && sq) || (s[i] == '\\' && s[i +1] != '\\' && s[i + 1] != '"' && s[i + 1] != '$' && q))
         {
-            // printf("%c q : %d sq : %d\n", s[i], q, sq);
             new = ft_strappend(new, '\\');
             j++;
         }

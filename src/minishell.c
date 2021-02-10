@@ -280,7 +280,9 @@ int     count_doubleq(char *str)
             q = 1;
         else if (str[i] == '"' && q)
             q = 0;
-        if (!(str[i] == '\\' && str[i + 1] == '\\') && (str[i] == '"' && !sq && str[(i - 1 < 0 ? 0 : i - 1)] != '\\'))
+        if (str[i] == '"' && str[(i - 1 < 0 ? 0 : i - 1)] == '\\' && count_backslash(ft_strndup(str, i)) % 2 == 0)
+            j++;
+        else if (!(str[i] == '\\' && str[i + 1] == '\\') && (str[i] == '"' && !sq && str[(i - 1 < 0 ? 0 : i - 1)] != '\\'))
             j++;
         i++;
     }
@@ -294,9 +296,9 @@ int     count_backslash(char *str)
     int sq;
 
     sq = 0;
-    i = 0;
+    i = ft_strlen(str) - 1;
     j = 0;
-    while (str[i])
+    while (i >= 0)
     {
         if (str[i] == '\'' && !sq)
             sq = 0;
@@ -304,7 +306,9 @@ int     count_backslash(char *str)
             sq = 0;
         if (str[i] == '\\' && !sq)
             j++;
-        i++;
+        else if (str[i] != '\\')
+            break; 
+        i--;
     }
     return j;
 }

@@ -101,7 +101,7 @@ int     check_red();
 int     check_quote();
 int     count_singleq(char *str);
 int     count_doubleq(char *str);
-
+int     count_backslash(char *str);
 
 // ENV
 char    *ft_getenv(char *var);
