@@ -1,6 +1,9 @@
 .vscode/
 minishell.dSYM/
 minishell
+t0/
+t2/
+t3/
 a.out
 minishell-tester/
 minishell_test/
