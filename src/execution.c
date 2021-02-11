@@ -43,6 +43,11 @@ int     excute(t_cmd *cmdlist)
         g_sh.is_b = 0;
         g_sh.error = 0;
         reset_std();
+        if (cmd->prev && cmd->prev->opr && cmd->prev->opr[0] == '|')
+        {
+            close(cmd->prev->pipe[0]);
+            close(cmd->prev->pipe[1]);
+        }
         cmd = cmd->next;
     }
     return g_sh.status;
@@ -111,11 +116,8 @@ void    ft_launch(t_cmd *cmd)
         }
     }
     close(cmd->pipe[1]);
-    //if (!cmd->opr || (cmd->opr && cmd->opr[0] != '|'))
     if ((cmd->opr && cmd->opr[0] == ';') || (!cmd->opr))
         waitpid(g_sh.pid, &g_sh.status, 0);
-    else
-        j++;
     g_sh.status = WEXITSTATUS(g_sh.status);
 }
 
@@ -141,8 +143,8 @@ void    ft_warp_ref(t_cmd **cmd)
         {
             arg[j] = tmp;
             arg[j] = ft_putbackslash(arg[j]);
-            arg[j] = ft_strremove(arg[j], '"');
             arg[j] = ft_strremove(arg[j], '\'');
+            arg[j] = ft_strremove(arg[j], '"');
             arg[j] = ft_strremove(arg[j], '\\');
             j++;
         }
@@ -177,7 +179,7 @@ char    *ft_putbackslash(char *s)
             q = 1;
         else if (s[i] == '"' && q)
             q = 0;
-        if ((s[i] == '"' && sq) || (s[i] == '\'' && q) || (s[i] == '\\' && sq) || (s[i] == '\\' && s[i +1] != '\\' && s[i + 1] != '"' && s[i + 1] != '$' && q))
+        if ((s[i] == '"' && sq) || (s[i] == '\\' && sq) || (s[i] == '\\' && s[i +1] != '\\' && s[i + 1] != '"' && s[i + 1] != '$' && q))
         {
             new = ft_strappend(new, '\\');
             j++;

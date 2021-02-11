@@ -30,7 +30,7 @@ char	*ft_strremove(char *s, char c)
 			q = 1;
 		else if (s[l] == '"' && q)
 			q = 0;
-		if (s[l] == '\'' && !sq)
+		if (s[l] == '\'' && !sq && !q)
 			sq = 1;
 		else if (s[l] == '\'' && sq)
 			sq = 0;
@@ -39,7 +39,7 @@ char	*ft_strremove(char *s, char c)
 			new[i] = s[l];
 			i++;
 		}
-		if (c == '\'' && s[l] == c && q)
+		if ((c == '\'' && s[l] == c) && q)
 		{
 			new[i] = s[l];
 			i++;
@@ -74,5 +74,6 @@ char	*ft_strremove(char *s, char c)
 		free(s);
 		s = NULL;
 	}
+	// printf("%c | |%s|\n", c, new);
 	return new;
 }
