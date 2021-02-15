@@ -187,6 +187,14 @@ int     check_pipe()
         return 5;
     if (ft_strnchr(g_sh.line, ";|"))
         return 6;
+    if (ft_strnchr(g_sh.line, ">|"))
+        return 1;
+    if (ft_strnchr(g_sh.line, "<|"))
+        return 1;
+    if (ft_strnchr(g_sh.line, "<;"))
+        return 2;
+    if (ft_strnchr(g_sh.line, ">;"))
+        return 2;
     return 0;
 }
 
@@ -214,7 +222,7 @@ int     check_red()
             i++;
             while (g_sh.line[i] == ' ')
                     i++;
-            if (g_sh.line[i] != '$' && (is_specialcar(g_sh.line[i]) || !g_sh.line[i]))
+            if (g_sh.line[i] != '$' && (is_specialcar(g_sh.line[i] && g_sh.line[i] != '\'' && g_sh.line[i] != '"') || !g_sh.line[i]))
                 return 9;
         }
         i++;

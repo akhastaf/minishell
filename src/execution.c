@@ -168,6 +168,8 @@ char    *ft_putbackslash(char *s)
     q = 0;
     sq = 0;
     j = 0;
+    if (!s[0])
+        return (ft_strdup(s));
     new = NULL;
     while (s[i])
     {
@@ -187,8 +189,8 @@ char    *ft_putbackslash(char *s)
         new = ft_strappend(new, s[i]);
         i++;
     }
-    new[i + j] = 0;
-    // printf("%s\n", new);
+    if (s[0] != '\0')
+        new[i + j] = 0;
     return new;
 }
 

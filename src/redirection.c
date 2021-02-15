@@ -13,7 +13,7 @@ void    setup_redirection(t_cmd *cmd)
             cmd->fdin = open(red->file, get_option(red), S_IRWXU);
         if (red && red->type[0] == '>')
             cmd->fdout = open(red->file, get_option(red), S_IRWXU);
-        if (cmd->fdin < 0 || cmd->fdout< 0)
+        if ((cmd->fdin < 0 || cmd->fdout< 0))
         {
             g_sh.error = 1;
             ft_putstr_fd("minishell: ", 2);
@@ -90,19 +90,34 @@ char    *remove_red(char *cmd)
     int j;
     int len;
     char *new;
+    int sq;
+    int q;
 
     new = malloc(ft_strlen(cmd) + 1);
     i = 0;
     j = 0;
+    sq = 0;
+    q = 0;
     while (cmd[i])
     {
-        if (cmd[i] == '>' && cmd[i] == '>')
+        if (cmd[i] == '\'' && !sq && !q)
+            sq = 1;
+        else if (cmd[i] == '\'' && sq)
+            sq = 0;
+        if (cmd[i] == '"' && !q && !sq)
+            q = 1;
+        else if (cmd[i] == '"' && q)
+            q = 0;
+        // printf("%c\n", cmd[i]);
+        if (cmd[i] == '>' && cmd[i + 1] == '>')
         {
             i += 2;
             i += ft_strlen(ft_getword(cmd + i + 1, " ><|;"));
+            // ft_putendl_fd(ft_getword(cmd + i + 2, " ><|;"), 2);
         }
         else if (cmd[i] == '<' || cmd[i] == '>')
         {
+            // ft_putendl_fd(ft_getword(cmd + i + 1, " ><|;"), 2);
             i++;
             i += ft_strlen(ft_getword(cmd + i + 1, " ><|;"));
         }
@@ -114,7 +129,7 @@ char    *remove_red(char *cmd)
         i++;
     }
     new[j] = 0;
-    //printf("|%s|\n", new);
+    // printf("|%s|\n", new);
     return new;
 }
 

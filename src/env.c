@@ -105,14 +105,29 @@ char    **ft_envcount(char *line)
 char    *ft_getword(char *word, char *set)
 {
     int i;
+    int q;
+    int sq;
     char *w;
 
     i = 0;
+    q = 0;
+    sq = 0;
+    // printf("word : |%s|\n", word);
     while (word[i] == ' ')
         i++;
     while(word[i])
     {
-        if (ft_strchr(set, word[i]))
+        if (word[i] == '\'' && !sq && !q)
+            sq = 1;
+        else if (word[i] == '\'' && sq)
+            sq = 0;
+        if (word[i] == '"' && !q && !sq)
+            q = 1;
+        else if (word[i] == '"' && q)
+            q = 0;
+        if (ft_strchr(set, word[i]) && word[i] != ' ')
+            break;
+        else if (word[i] == ' ' && !q && !sq)
             break;
         i++;
     }
