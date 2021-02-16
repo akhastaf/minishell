@@ -129,7 +129,8 @@ char    *remove_red(char *cmd)
         i++;
     }
     new[j] = 0;
-    // printf("|%s|\n", new);
+    if (cmd)
+        free(cmd);
     return new;
 }
 

@@ -191,6 +191,8 @@ char    *ft_putbackslash(char *s)
     }
     if (s[0] != '\0')
         new[i + j] = 0;
+    if (s)
+        free(s);
     return new;
 }
 

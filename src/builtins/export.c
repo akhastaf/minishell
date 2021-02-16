@@ -79,7 +79,7 @@ int     builtins_export(char **arg)
         else if (!ft_isstrnchr(var, " |!;&$@\\'\""))
         {
             val = ft_strjoin(val, arg[i] + n + 1);
-            val = ft_strtrim(val, "'\"");
+            // val = ft_strtrim(val, "'\"");
             arg[i] = ft_strjoin(var, "=");
             arg[i] = ft_strjoin(arg[i], val);
             if (ft_getenv(var))
