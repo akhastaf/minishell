@@ -13,19 +13,12 @@ char	*ft_strremove(char *s, char c)
 	q = 0;
 	sq = 0;
 
-	// l = ft_countcahr(s, c);
-	// if (!l)
-	// // 	return ft_strdup(s);
-	// if (ft_strlen(s) ==  l)
-	// 	return ft_strdup("");
 	if (!(new = malloc(sizeof(char) * (ft_strlen(s)  + 1))))
 		return NULL;
 	l = 0;
 	i = 0;
-	// printf("|%s|\n", s);
 	while (s[l])
 	{
-		// printf("%c\n", s[l]);
 		if (s[l] == '"' && !q && !sq)
 			q = 1;
 		else if (s[l] == '"' && q)
@@ -44,28 +37,16 @@ char	*ft_strremove(char *s, char c)
 			new[i] = s[l];
 			i++;
 		}
-		if (c == '\\' && s[l] == c && (sq || (s[l - 1 > 0 ? l - 1 : 0] == '\\' && count_backslash(ft_strndup(s, l)) % 2 != 0))) // \"hi\"
+		if (c == '\\' && s[l] == c && (sq || (s[l - 1 > 0 ? l - 1 : 0] == '\\' && count_backslash(ft_strndup(s, l)) % 2 != 0)))
 		{
 			new[i] = s[l];
 			i++;
 		}
 		if ((s[l] != '\\' && c == '\\') || (s[l] != '"' && c == '"') || (s[l] != '\'' && c == '\''))
 		{
-			//printf("f\\\n");
 			new[i] = s[l];
 			i++;
 		}
-
-		// if ((s[l] != c) || (s[l] == c && q && c != '"') || (c == '\\' && (s[l + 1] == c) )) // ""
-		// {
-		// 	new[i] = s[l];
-		// 	i++;
-		// }
-		// else if ((s[l - 1 > 0 ? l - 1 : 0] == '\\' && is_specialcar(s[l]) && c != '\''))
-		// {
-		// 	new[i] = s[l];
-		// 	i++;
-		// }
 		l++;
 	}
 	new[i] = 0;
@@ -74,6 +55,5 @@ char	*ft_strremove(char *s, char c)
 		free(s);
 		s = NULL;
 	}
-	// printf("%c | |%s|\n", c, new);
 	return new;
 }

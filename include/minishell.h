@@ -27,7 +27,7 @@
 #include <dirent.h>
 #include <signal.h>
 
-# define BUFFER_SIZE 1
+# define BUFFER_SIZE 1024
 # define ULIMIT 1
 # define BUILTINS_NUM 7
 
@@ -78,8 +78,10 @@ t_sh    g_sh;
 
 // MINISHELLL
 void        minishell_loop();
-void    ft_print_prompt();
-int    init_sh(char **env);
+void    prompt();
+void    init_sh();
+void    init_errors();
+int    init_env(char **env);
 int    ft_envadd(char *var);
 int        readline();
 char    *ft_tilde(char *s, char *line, int i);

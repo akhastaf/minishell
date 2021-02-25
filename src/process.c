@@ -49,7 +49,7 @@ void    process_line()
     if (g_sh.line)
     {
         new = NULL;
-        cmd = ft_split(g_sh.line, "|;"); // 
+        cmd = ft_split(g_sh.line, "|;"); 
         cmd = ft_argtrim(cmd, " ");
         i = 0;
         while (cmd[i])
@@ -74,12 +74,14 @@ void    process_line()
                 break;
             i++;
         }
+        ft_delete_arg(cmd);
     }
 }
 
 char    *ft_refactor_line(char *s)
 {
     char *var;
+    char *str;
     char *line;
     int i;
     int j;
@@ -108,7 +110,9 @@ char    *ft_refactor_line(char *s)
             }
             else if (var[0])
             {
-                line = ft_strjoin(line, ft_getenv(var));
+                str = ft_getenv(var);
+                line = ft_strjoin(line, str);
+                free(str);
                 i = i + ft_strlen(var);
             }
             else

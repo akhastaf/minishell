@@ -10,6 +10,7 @@ void    ft_cmd_list_remove(t_cmd **cmdlist)
     {
         next = cmd->next;
         ft_cmd_remove(cmd);
+        ft_red_list_remove(&(cmd->red));
         free(cmd);
         cmd = next;
     }

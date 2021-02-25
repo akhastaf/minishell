@@ -63,36 +63,31 @@ void	print_cmd(t_cmd *l)
 		tmp = tmp->next;
 	}
 }
-void    ft_print_prompt()
+void    prompt()
 {
-    char *pwd;
-
-    if (!(pwd = getcwd(NULL, 0)))
-        pwd = ft_getenv("PWD");
-    ft_putstr_fd("\033[0;32m", 2);
-    if (pwd)
-        ft_putstr_fd(pwd, 2);
-    ft_putstr_fd("$>\033[0m", 2);
+    ft_putstr_fd("\033[0;32mMinishell$>\033[0m", 2);
 }
 void        minishell_loop()
 {
-    int status;
     int r;
     char *tmp;
+    char *tmp2;
     char *err;
 
-    status = 1;
-    while(status)
+    while(1)
     {
         g_sh.error = 0;
         if (!g_sh.c)
         {
             g_sh.line = NULL;
             tmp = NULL;
-            ft_print_prompt();
+            prompt();
             while ((r = readline()) <= 0)
                 tmp = ft_strjoin(tmp, g_sh.line);
+            tmp2 = g_sh.line;
             g_sh.line = ft_strjoin(tmp, g_sh.line);
+            free(tmp);
+            free(tmp2);
         }
         if (!(err = check_syntax()))
         {
@@ -116,7 +111,7 @@ void        minishell_loop()
     }
 }
 
-int    init_sh(char **env)
+int    init_env(char **env)
 {
     int l;
     int i;
@@ -137,16 +132,6 @@ int    init_sh(char **env)
 char    *check_syntax()
 {
     int r;
-    g_sh.errors[1] = ft_strdup("minishell: syntax error near unexpected token `|'");
-    g_sh.errors[2] = ft_strdup("minishell: syntax error near unexpected token `;'");
-    g_sh.errors[3] = ft_strdup("minishell: syntax error near unexpected token `||'");
-    g_sh.errors[4] = ft_strdup("minishell: syntax error near unexpected token `;;'");
-    g_sh.errors[5] = ft_strdup("minishell: syntax error near unexpected token `|;'");
-    g_sh.errors[6] = ft_strdup("minishell: syntax error near unexpected token `;|'");
-    g_sh.errors[7] = ft_strdup("minishell: syntax error near unexpected token `<<'");
-    g_sh.errors[8] = ft_strdup("minishell: syntax error near unexpected token `>'");
-    g_sh.errors[9] = ft_strdup("minishell: syntax error near unexpected token `newline'");
-    g_sh.errors[10] = ft_strdup("minishell: syntax error multiline");
 
     if ((r = check_pipe()))
         return g_sh.errors[r];
@@ -260,7 +245,7 @@ int     count_singleq(char *str)
             sq = 1;
         else if (str[i] == '\'' && sq)
             sq = 0;
-        if (str[i] == '\'' && !q)
+        if (str[i] == '\'' && !q && str[i - 1 > 0 ? i - 1 : 0] != '\\')
             j++;
         i++;
     }

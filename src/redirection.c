@@ -44,6 +44,7 @@ t_red   *get_redirection(char *cmd)
     t_red *red;
     t_red *redlist;
     char *file;
+    char *tmp;
 
     i = 0;
     j = 0;
@@ -71,7 +72,9 @@ t_red   *get_redirection(char *cmd)
         if (type)
         {
             file = ft_getword(cmd + i + 1, " ><|;");
+            tmp = file;
             file = ft_strtrim(file, " ");
+            free(tmp);
             file = ft_strremove(file, '\'');
             file = ft_strremove(file, '"');
             file = ft_refactor_line(file);
@@ -108,16 +111,13 @@ char    *remove_red(char *cmd)
             q = 1;
         else if (cmd[i] == '"' && q)
             q = 0;
-        // printf("%c\n", cmd[i]);
         if (cmd[i] == '>' && cmd[i + 1] == '>')
         {
             i += 2;
             i += ft_strlen(ft_getword(cmd + i + 1, " ><|;"));
-            // ft_putendl_fd(ft_getword(cmd + i + 2, " ><|;"), 2);
         }
         else if (cmd[i] == '<' || cmd[i] == '>')
         {
-            // ft_putendl_fd(ft_getword(cmd + i + 1, " ><|;"), 2);
             i++;
             i += ft_strlen(ft_getword(cmd + i + 1, " ><|;"));
         }

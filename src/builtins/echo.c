@@ -8,7 +8,6 @@ int     builtins_echo(char **arg)
     char *p;
     
     n = check_dashn(arg, &i);
-    // printf("|%s|\n", arg[1]);
     while (arg[i])
     {
         p = ft_strtrim(arg[i], " ");
@@ -25,6 +24,7 @@ int     builtins_echo(char **arg)
         }
         if (arg[i + 1])
             ft_putstr_fd(" ", 1);
+        free(p);
         i++;
     }
     if (!n)

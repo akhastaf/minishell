@@ -10,6 +10,5 @@ void    ft_delete_arg(char **arg)
         free(arg[i]);
         i++;
     }
-    if (arg)
-        free(arg);
+    free(arg);
 }

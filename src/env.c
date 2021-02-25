@@ -16,7 +16,7 @@ char    *ft_getenv(char *var)
             j++;
         }
         if (g_sh.env[i][j] == '=' && ft_strlen(var) == j)
-                return g_sh.env[i] + j + 1;
+                return ft_strdup(g_sh.env[i] + j + 1);
         
         i++;
     }
@@ -59,6 +59,7 @@ int    ft_setenv(char *var, char *val)
         }
         if (j == ft_strlen(var))
         {
+            free(g_sh.env[i]);
             g_sh.env[i] = new;
             return 1;
         }
@@ -145,8 +146,10 @@ int    ft_envadd(char *var)
     if (!(env = malloc((l + 2 ) * sizeof(char*))))
         return 0;
     ft_memcpy(env, g_sh.env, sizeof(char*) * l);
-    env[l] = ft_strdup(var);
+    //env[l] = ft_strdup(var);
+    env[l] = var;
     env[l + 1] = NULL;
+    free(g_sh.env);
     g_sh.env = env;
     l = ft_size_arg(g_sh.env);
     return 1;

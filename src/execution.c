@@ -57,6 +57,7 @@ void    ft_launch(t_cmd *cmd)
 {
     DIR *dir;
     char *path;
+    char *vpath;
     int err;
     int j;
 
@@ -66,11 +67,12 @@ void    ft_launch(t_cmd *cmd)
         if (execve(cmd->path, cmd->arg, g_sh.env))
         {
             err = errno;
-            path = cmd->path;
-            if (!ft_strchr(cmd->path, '/') && (!ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH"))))
+            vpath = ft_getenv("PATH");
+            //path = cmd->path;
+            if (!ft_strchr(cmd->path, '/') && (!vpath || ft_is_empty(vpath)))
                 path = ft_strjoin("./", cmd->path);
             dir = opendir(path);
-            if (dir && (ft_strchr(cmd->path, '/') || !ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH"))))
+            if (dir && (ft_strchr(cmd->path, '/') || !vpath || ft_is_empty(vpath)))
             {
                 ft_putstr_fd("minishell: ", 2);
                 ft_putstr_fd(cmd->path, 2);
@@ -78,14 +80,14 @@ void    ft_launch(t_cmd *cmd)
                 closedir(dir);
                 exit(126);
             }
-            else if (errno == 13 && (ft_strchr(cmd->path, '/') || !ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH"))))
+            else if (errno == 13 && (ft_strchr(cmd->path, '/') || !vpath || ft_is_empty(vpath)))
             {
                 ft_putstr_fd("minishell: ", 2);
                 ft_putstr_fd(cmd->path, 2);
                 ft_putendl_fd(": is a directory", 2);
                 exit(126);
             }
-            else if (!ft_getenv("PATH") || ft_is_empty(ft_getenv("PATH")))
+            else if (!vpath || ft_is_empty(vpath))
             {
                 ft_putstr_fd("minishell: ", 2);
                 ft_putstr_fd(cmd->path, 2);
@@ -112,6 +114,7 @@ void    ft_launch(t_cmd *cmd)
                 ft_putendl_fd(": Permission denied", 2);
                 exit(126);
             }
+            free(vpath);
             exit(0);
         }
     }
@@ -151,6 +154,7 @@ void    ft_warp_ref(t_cmd **cmd)
         i++;
     }
     arg[j] = NULL;
+    free((*cmd)->arg);
     // print_arg(arg);
     (*cmd)->arg = arg;
 }
