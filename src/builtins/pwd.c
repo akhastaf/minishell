@@ -8,5 +8,6 @@ int     builtins_pwd(char **arg)
     if (!pwd)
         pwd = ft_getenv("PWD");
     ft_putendl_fd(pwd, 1);
+    free(pwd);
     return 0;
 }

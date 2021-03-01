@@ -114,6 +114,7 @@ char    *ft_refactor_line(char *s)
                 line = ft_strjoin(line, str);
                 free(str);
                 i = i + ft_strlen(var);
+                free(var);
             }
             else
                 line = ft_strappend(line, s[i]);
@@ -121,7 +122,7 @@ char    *ft_refactor_line(char *s)
         else if (s[i] == '~'  && s[(i - 1 < 0 ? 1 : i - 1)] != '\\')
         {
             line = ft_tilde(s, line, i);
-            i = (s[i + 1] == '+' ? i + 1 : i) + (s[i + 1] == '-' ? i + 1 : i);
+            // i = (s[i + 1] == '+' ? i + 1 : i) + (s[i + 1] == '-' ? i + 1 : i);
         }
         else
             line = ft_strappend(line, s[i]);
@@ -133,24 +134,39 @@ char    *ft_refactor_line(char *s)
 
 char    *ft_tilde(char *s, char *line, int i)
 {
-    if (s[i + 1] == '+' && ft_getenv("PWD") && (ft_is_space(s[i+ 2]) || s[i+2]==0))
-        return ft_strjoin(line, ft_getenv("PWD"));
-    else if (s[i + 1] == '-' && ft_getenv("OLDPWD")  && (ft_is_space(s[i+ 2]) || s[i+2]==0))
-        return ft_strjoin(line, ft_getenv("OLDPWD"));
-    else if (s[i + 1] == '+' || s[i + 1] == '-')
+    char *tmp;
+    char *tmp1;
+
+    if (s[i + 1] == '+' && ft_checkenv("PWD") && (ft_is_space(s[i+ 2]) || s[i+2]==0))
     {
-            line = ft_strappend(line, '~');
-            line = ft_strappend(line, s[i+1]);
+        tmp = ft_getenv("PWD");
+        tmp1 = ft_strjoin(line, tmp);
+        free(tmp);
+        return tmp1;
     }
+    else if (s[i + 1] == '-' && ft_checkenv("OLDPWD")  && (ft_is_space(s[i+ 2]) || s[i+2]==0))
+    {
+        tmp = ft_getenv("OLDPWD");
+        tmp1 = ft_strjoin(line, tmp);
+        free(tmp);
+        return tmp1;
+    }
+    // else if (s[i + 1] == '+' || s[i + 1] == '-')
+    // {
+    //         line = ft_strappend(line, '~');
+    //         line = ft_strappend(line, s[i+1]);
+    // }
     else
     {
-        if (ft_getenv("HOME"))
-            return ft_strjoin(line, ft_getenv("HOME"));
-        else
+        if (ft_checkenv("HOME"))
         {
-            printf("%s\n", g_sh.home);
-            return ft_strjoin(line, g_sh.home);
+            tmp = ft_getenv("HOME");
+            tmp1 = ft_strjoin(line, tmp);
+            free(tmp);
+            return tmp1;
         }
+        else
+            return ft_strjoin(line, g_sh.home);
     }
     return line;
 }

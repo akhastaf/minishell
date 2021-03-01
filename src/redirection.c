@@ -71,9 +71,8 @@ t_red   *get_redirection(char *cmd)
             type = ft_strdup("<");
         if (type)
         {
-            file = ft_getword(cmd + i + 1, " ><|;");
-            tmp = file;
-            file = ft_strtrim(file, " ");
+            tmp = ft_getword(cmd + i + 1, " ><|;");
+            file = ft_strtrim(tmp, " ");
             free(tmp);
             file = ft_strremove(file, '\'');
             file = ft_strremove(file, '"');

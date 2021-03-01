@@ -107,6 +107,7 @@ int     count_backslash(char *str);
 
 // ENV
 char    *ft_getenv(char *var);
+int    ft_checkenv(char *var);
 char    **ft_envcount(char *line);
 char    *ft_envreplace(char *line);
 char    *ft_getword(char *word, char *set);

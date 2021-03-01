@@ -1,5 +1,17 @@
 #include "../include/minishell.h"
 
+int    ft_checkenv(char *var)
+{
+    char *tmp;
+
+    tmp = ft_getenv(var);
+    if (tmp)
+    {
+        free(tmp);
+        return 1;
+    }
+    return (0);
+}
 char    *ft_getenv(char *var)
 {
     int i;

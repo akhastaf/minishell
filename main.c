@@ -105,6 +105,7 @@ void    ft_set_lstcmd(t_cmd *cmd)
     char *lstcmd;
     char *oldlstcmd;
     t_cmd *lcmd;
+    char *tmp;
 
     n = 0;
     l = 0;
