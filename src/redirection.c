@@ -58,7 +58,6 @@ t_red   *get_redirection(char *cmd)
             i++;
             while (cmd[i] && cmd[i] != '"')
                 i++;
-            // i++;
         }
         if (cmd[i] == '>' && cmd[i + 1] == '>')
         {
@@ -92,6 +91,7 @@ char    *remove_red(char *cmd)
     int j;
     int len;
     char *new;
+    char *tmp;
     int sq;
     int q;
 
@@ -100,6 +100,7 @@ char    *remove_red(char *cmd)
     j = 0;
     sq = 0;
     q = 0;
+    tmp = NULL;
     while (cmd[i])
     {
         if (cmd[i] == '\'' && !sq && !q)
@@ -113,12 +114,16 @@ char    *remove_red(char *cmd)
         if (cmd[i] == '>' && cmd[i + 1] == '>')
         {
             i += 2;
-            i += ft_strlen(ft_getword(cmd + i + 1, " ><|;"));
+            tmp = ft_getword(cmd + i + 1, " ><|;");
+            i += ft_strlen(tmp);
+            free(tmp);
         }
         else if (cmd[i] == '<' || cmd[i] == '>')
         {
             i++;
-            i += ft_strlen(ft_getword(cmd + i + 1, " ><|;"));
+            tmp = ft_getword(cmd + i + 1, " ><|;");
+            i += ft_strlen(tmp);
+            free(tmp);
         }
         else
         {

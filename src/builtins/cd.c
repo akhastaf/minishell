@@ -7,7 +7,7 @@ int     builtins_cd(char **arg)
     char *str;
     char *tmp;
 
-    str = arg[1];
+    str = ft_strdup(arg[1]);
     oldpwd = ft_checkenv("PWD") ? ft_getenv("PWD") : ft_strdup("");
     if (!arg[1])
     {
@@ -24,6 +24,7 @@ int     builtins_cd(char **arg)
     }
     if (!ft_strcmp(str, "-"))
     {
+        free(str);
         str = ft_getenv("OLDPWD");
         if (str)
             ft_putendl_fd(str, 1);
@@ -61,6 +62,7 @@ int     builtins_cd(char **arg)
             free(str);
         return 1;
     }
+    free(str);
     return 0;
 }
 

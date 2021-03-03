@@ -7,8 +7,10 @@ int     builtins_export(char **arg)
     char *var;
     char *val;
     int ret;
+    char *tmp;
 
     val = NULL;
+    tmp = NULL;
     n = 0;
     ret = 0;
     if (ft_size_arg(arg) == 1)
@@ -78,11 +80,15 @@ int     builtins_export(char **arg)
             ft_envadd(arg[i]);
         else if (!ft_isstrnchr(var, " |!;&$@\\'\""))
         {
+            tmp = val;
             val = ft_strjoin(val, arg[i] + n + 1);
+            free(val);
             // val = ft_strtrim(val, "'\"");
+            tmp = arg[i];
             arg[i] = ft_strjoin(var, "=");
+            free(tmp);
             arg[i] = ft_strjoin(arg[i], val);
-            if (ft_getenv(var))
+            if (ft_checkenv(var))
             {
                 ft_envremove(var);
                 ft_envadd(arg[i]);
@@ -92,6 +98,7 @@ int     builtins_export(char **arg)
         }
         i++;
         free(val);
+        free(var);
         val = NULL;
     }
     return ret;
