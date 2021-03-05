@@ -77,24 +77,25 @@ int     builtins_export(char **arg)
             ret = 1;
         }
         if (!n && !ft_isstrnchr(var, " |!;&$@\\'\""))
-            ft_envadd(arg[i]);
+            ft_envadd(ft_strdup(arg[i]));
         else if (!ft_isstrnchr(var, " |!;&$@\\'\""))
         {
             tmp = val;
             val = ft_strjoin(val, arg[i] + n + 1);
-            free(val);
-            // val = ft_strtrim(val, "'\"");
+            free(tmp);
             tmp = arg[i];
             arg[i] = ft_strjoin(var, "=");
             free(tmp);
+            tmp = arg[i];
             arg[i] = ft_strjoin(arg[i], val);
+            free(tmp);
             if (ft_checkenv(var))
             {
                 ft_envremove(var);
-                ft_envadd(arg[i]);
+                ft_envadd(ft_strdup(arg[i]));
             }
             else if (var && arg[i][0] != '$')
-                ft_envadd(arg[i]);
+                ft_envadd(ft_strdup(arg[i]));
         }
         i++;
         free(val);

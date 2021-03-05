@@ -64,6 +64,7 @@ void    ft_launch(t_cmd *cmd)
     g_sh.pid = fork();
     if (g_sh.pid == 0)
     {
+        close_pipe();
         if (execve(cmd->path, cmd->arg, g_sh.env))
         {
             err = errno;
@@ -119,7 +120,7 @@ void    ft_launch(t_cmd *cmd)
         }
     }
     close(cmd->pipe[1]);
-    if ((cmd->opr && cmd->opr[0] == ';') || (!cmd->opr))
+    if ((0&& cmd->opr[0] == ';') || (!cmd->opr))
         waitpid(g_sh.pid, &g_sh.status, 0);
     g_sh.status = WEXITSTATUS(g_sh.status);
 }

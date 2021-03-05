@@ -158,12 +158,10 @@ int    ft_envadd(char *var)
     if (!(env = malloc((l + 2 ) * sizeof(char*))))
         return 0;
     ft_memcpy(env, g_sh.env, sizeof(char*) * l);
-    //env[l] = ft_strdup(var);
     env[l] = var;
     env[l + 1] = NULL;
     free(g_sh.env);
     g_sh.env = env;
-    l = ft_size_arg(g_sh.env);
     return 1;
 }
 
