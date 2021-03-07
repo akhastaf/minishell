@@ -1,9 +1,9 @@
 #include "../../include/minishell.h"
 
-long long		ft_atoll(const char *str)
+long long	ft_atoll(const char *str)
 {
-	int		i;
-	int		signe;
+	int					i;
+	int					signe;
 	unsigned long long	n;
 
 	i = 0;
@@ -20,8 +20,6 @@ long long		ft_atoll(const char *str)
 	while (str[i] >= 48 && str[i] <= 57 && str[i] != '\0')
 	{
 		n = n * 10 + str[i] - 48;
-		// if (n > 9223372036854775807)
-		// 	return ((signe > 0) ? -1 : 0);
 		i++;
 	}
 	return ((long long)(n * signe));

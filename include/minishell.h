@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akhastaf <akhastaf@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: akhastaf <akhastaf@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/22 10:55:50 by akhastaf          #+#    #+#             */
-/*   Updated: 2020/12/27 11:37:43 by akhastaf         ###   ########.fr       */
+/*   Updated: 2021/03/07 14:30:38 by akhastaf         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,4 +204,5 @@ int     ft_strisdigit(char *str);
 int     ft_isstrnchr(char *s, char *set);
 int     ft_argcmp(char **arg, char *s);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
+void    ft_puterror(char *f, char *ar, char *l);
 #endif

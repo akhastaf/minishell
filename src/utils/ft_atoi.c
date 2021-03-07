@@ -1,6 +1,6 @@
 #include "../../include/minishell.h"
 
-int		ft_atoi(const char *str)
+int	ft_atoi(const char *str)
 {
 	int		i;
 	int		signe;
@@ -21,7 +21,11 @@ int		ft_atoi(const char *str)
 	{
 		n = n * 10 + str[i] - 48;
 		if (n > 9223372036854775807)
-			return ((signe > 0) ? -1 : 0);
+		{
+			if (signe > 0)
+				return (1);
+			return (0);
+		}
 		i++;
 	}
 	return ((int)(n * signe));
